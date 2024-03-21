@@ -4,18 +4,19 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# NetConnect Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Acknowledgements**
+[//]: # (## **Acknowledgements**)
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
-
---------------------------------------------------------------------------------------------------------------------
+[//]: # ()
+[//]: # (_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_)
+[//]: # ()
+[//]: # (--------------------------------------------------------------------------------------------------------------------)
 
 ## **Setting up, getting started**
 
@@ -154,110 +155,6 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Implementation**
-
-This section describes some noteworthy details on how certain features are implemented.
-
-### \[Proposed\] Undo/redo feature
-
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedNetConnect`. It extends `NetConnect` with an undo/redo history, stored internally as an `netConnectStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedNetConnect#commit()` — Saves the current netconnect state in its history.
-* `VersionedNetConnect#undo()` — Restores the previous netconnect state from its history.
-* `VersionedNetConnect#redo()` — Restores a previously undone netconnect state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitNetConnect()`, `Model#undoNetConnect()` and `Model#redoNetConnect()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedNetConnect` will be initialized with the initial netconnect state, and the `currentStatePointer` pointing to that single netconnect state.
-
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the netconnect. The `delete` command calls `Model#commitNetConnect()`, causing the modified state of the netconnect after the `delete 5` command executes to be saved in the `netConnectStateList`, and the `currentStatePointer` is shifted to the newly inserted netconnect state.
-
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitNetConnect()`, causing another modified netconnect state to be saved into the `netConnectStateList`.
-
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
-
-<box type="info" seamless>
-
-**Note:** If a command fails its execution, it will not call `Model#commitNetConnect()`, so the netconnect state will not be saved into the `netConnectStateList`.
-
-</box>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoNetConnect()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous netconnect state, and restores the netconnect to that state.
-
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
-
-
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial NetConnect state, then there are no previous NetConnect states to restore. The `undo` command uses `Model#canUndoNetConnect()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</box>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />
-
-<box type="info" seamless>
-
-**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</box>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
-
-The `redo` command does the opposite — it calls `Model#redoNetConnect()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the netconnect to that state.
-
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index `netConnectStateList.size() - 1`, pointing to the latest netconnect state, then there are no undone NetConnect states to restore. The `redo` command uses `Model#canRedoNetConnect()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</box>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the netconnect, such as `list`, will usually not call `Model#commitNetConnect()`, `Model#undoNetConnect()` or `Model#redoNetConnect()`. Thus, the `netConnectStateList` remains unchanged.
-
-<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
-
-Step 6. The user executes `clear`, which calls `Model#commitNetConnect()`. Since the `currentStatePointer` is not pointing at the end of the `netConnectStateList`, all netconnect states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<puml src="diagrams/CommitActivityDiagram.puml" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire netconnect.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
-
---------------------------------------------------------------------------------------------------------------------
-
 ## **Documentation, logging, testing, configuration, dev-ops**
 
 * [Documentation guide](Documentation.md)
@@ -292,19 +189,22 @@ easily, and to keep track of past interactions.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​          | I want to …​                               | So that I can…​                                                      |
-|----------|------------------|--------------------------------------------|----------------------------------------------------------------------|
-| `* * *`  | occasional user  | add a new person                           |                                                                      |
-| `* * *`  | occasional user  | delete a person                            | remove entries that I no longer need                                 |
-| `* * *`  | occasional user  | find a person by name                      | quickly access their contact details                                 |
-| `* * *`  | occasional user  | find a person by contact number            | see who contacted me                                                 |
-| `* * *`  | occasional user  | tag members with custom tag                | see distinctions and manage using tags                               |
-| `* *`    | occasional user  | go back to the state from where i left off | avoid going back to the same page/state when I close the application |
-| `* *`    | occasional user  | edit person information                    | refer to accurate personal information in the future                 |
-| `* *`    | experienced user | export contact lists to a CSV file         | create backups or use the data in other applications                 |
-| `* *`    | new user         | see usage instructions                     | refer to instructions when I forget how to use the App               |
-
-*{More to be added}*
+| Priority | As a …​          | I want to …​                                 | So that I can…​                                                      |
+|----------|------------------|----------------------------------------------|----------------------------------------------------------------------|
+| `* * *`  | occasional user  | add a new person                             |                                                                      |
+| `* * *`  | occasional user  | delete a person                              | remove entries that I no longer need                                 |
+| `* * *`  | occasional user  | find a person by name                        | quickly access their contact details                                 |
+| `* * *`  | occasional user  | find a person by contact number              | see who contacted me                                                 |
+| `* * *`  | occasional user  | find a person by remark                      | view all people with a particular remark                             |
+| `* * *`  | occasional user  | find a person by role                        | view all roles separately                                            |
+| `* * *`  | occasional user  | tag roles to members                         | see distinctions and manage using roles                              |
+| `* *`    | occasional user  | go back to the state from where i left off   | avoid going back to the same page/state when I close the application |
+| `* *`    | occasional user  | edit person information                      | refer to accurate personal information in the future                 |
+| `* *`    | experienced user | export contact lists to a CSV file           | create backups or use the data in other applications                 |
+| `* *`    | experienced user | relate two profiles together                 | connect two contacts together                                        |
+| `* *`    | experienced user | view which contacts are related to a profile | assign tasks to my employees                                         |
+| `* *`    | new user         | see usage instructions                       | refer to instructions when I forget how to use the App               |
+| `* *`    | new user         | clear all existing contacts                  | populate with my actual contacts                                     |
 
 ### Use cases
 
@@ -355,7 +255,37 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: UC04 - Add a New Person**
+**Use case: UC04 - Find a Specific Person by Role**
+
+**MSS**
+
+1. User requests for the person with the matching role.
+2. NetConnect shows the person with matching role.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. There is no person with a matching role.
+
+  Use case ends.
+
+**Use case: UC05 - Find a Specific Person by Remark**
+
+**MSS**
+
+1. User requests for the person with the matching remark.
+2. NetConnect shows the person with matching remark.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. There is no person with a matching number.
+
+  Use case ends.
+
+**Use case: UC06 - Add a New Person**
 
 **MSS**
 
@@ -372,7 +302,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC05 - Delete a Person by UID**
+**Use case: UC07 - Delete a Person by UID**
 
 **MSS**
 
@@ -389,7 +319,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC06 - Delete a Person by Name**
+**Use case: UC08 - Delete a Person by Name**
 
 **MSS**
 
@@ -414,7 +344,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests for the list of persons matching a name.
 2. NetConnect shows a list of persons with matching name.
 
-**Use case: UC07 - Tag a Person by UID with Custom Tag**
+**Use case: UC09 - Tag a Person by UID with Custom Tag**
 
 **MSS**
 
@@ -431,7 +361,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC08 - Tag a Person by Name with Custom Tag**
+**Use case: UC10 - Tag a Person by Name with Custom Tag**
 
 **MSS**
 
@@ -455,7 +385,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-**Use case: UC09 - Edit Person Information by UID**
+**Use case: UC11 - Edit Person Information by UID**
 
 **MSS**
 
@@ -478,7 +408,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC10 - Export Contact List to CSV File**
+**Use case: UC12 - Export Contact List to CSV File**
 
 **MSS**
 
@@ -500,6 +430,75 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1b1. NetConnect shows an error message.
 
       Use case ends.
+
+**Use case: UC13 - Relate two contacts together**
+
+**MSS**
+
+1. User requests to relate Contact A with Contact B.
+2. NetConnect adds a relation between the two contacts.
+
+**Extensions**
+
+* 1a. The given ID or name does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1c. There is an ambiguous command.
+
+    * 1c1. NetConnect shows an error message requesting to fix ambiguity.
+
+      Use case ends.
+
+* 1c. User relates contact to the same contact.
+
+    * 1c1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC14 - View all contacts related to a single contact**
+
+**MSS**
+
+1. User requests to see all contacts related to Contact A.
+2. NetConnect shows the list of related contacts.
+
+**Extensions**
+
+* 1a. The given ID or name does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC15 - Clear all contact list**
+
+**MSS**
+
+1. User requests to clear all contacts.
+2. NetConnect requests confirmation from user.
+3. User confirms the request.
+4. NetConnect deletes the entire contact list.
+
+   Use case ends.
 
 ### Non-Functional Requirements
 
@@ -548,8 +547,6 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -557,7 +554,7 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: Contact with index 1 is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
    1. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
@@ -565,12 +562,8 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
-
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
