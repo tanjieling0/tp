@@ -171,9 +171,11 @@ public class DeleteCommandTest {
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
         expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        expectedModel.updateFilteredPersonList(p -> p.getName().equals(ALICE.getName()));
 
         assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, ALICE.getName().fullName), expectedModel);
+                String.format(DeleteCommand.MESSAGE_DUPLICATE_NAME_USAGE,
+                model.countPersonsWithName(ALICE.getName()), ALICE.getName().fullName), expectedModel);
     }
 
     @Test
@@ -197,10 +199,11 @@ public class DeleteCommandTest {
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
         expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
-        showAllPersons(expectedModel);
+        expectedModel.updateFilteredPersonList(p -> p.getName().equals(ALICE.getName()));
 
         assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, ALICE.getName().fullName), expectedModel);
+                String.format(DeleteCommand.MESSAGE_DUPLICATE_NAME_USAGE,
+                model.countPersonsWithName(ALICE.getName()), ALICE.getName().fullName), expectedModel);
     }
 
     @Test

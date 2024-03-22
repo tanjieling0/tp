@@ -110,9 +110,9 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public boolean hasExactlyOnePersonByName(Name name) {
+    public int countPersonsWithName(Name name) {
         requireNonNull(name);
-        return netConnect.hasExactlyOnePersonByName(name);
+        return netConnect.countPersonsWithName(name);
     }
 
     @Override

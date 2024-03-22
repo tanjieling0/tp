@@ -75,10 +75,10 @@ public interface Model {
     Person getPersonById(Id id);
 
     /**
-     * Returns true if the NetConnect has exactly one {@code Person}
-     * with the specified name.
+     * Returns the number of {@code Person}s in the NetConnect with
+     * the specified name.
      */
-    boolean hasExactlyOnePersonByName(Name name);
+    int countPersonsWithName(Name name);
 
     /**
      * Returns the {@code Person} with the specified name.

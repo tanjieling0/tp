@@ -105,6 +105,29 @@ public class UniquePersonListTest {
     }
 
     @Test
+    public void getPersonByName_nullName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniquePersonList.getPersonByName(null));
+    }
+
+    @Test
+    public void getPersonByName_nameNotInList_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_oneNameInList_returnsPerson() {
+        uniquePersonList.add(ALICE);
+        assertEquals(ALICE, uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_twoNameInList_throwsPersonNotFoundException() {
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
     public void add_nullPerson_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> uniquePersonList.add(null));
     }

@@ -171,7 +171,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean hasExactlyOnePersonByName(Name name) {
+        public int countPersonsWithName(Name name) {
             throw new AssertionError("This method should not be called.");
         }
 

@@ -92,9 +92,9 @@ public class NetConnect implements ReadOnlyNetConnect {
      * Returns true if the NetConnect has exactly one {@code Person}
      * with the specified name.
      */
-    public boolean hasExactlyOnePersonByName(Name name) {
+    public int countPersonsWithName(Name name) {
         requireNonNull(name);
-        return persons.hasExactlyOnePersonByName(name);
+        return persons.countPersonsWithName(name);
     }
 
     /**

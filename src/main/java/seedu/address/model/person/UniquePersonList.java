@@ -60,11 +60,9 @@ public class UniquePersonList implements Iterable<Person> {
      * Returns true if the list has exactly one {@code Person}
      * with the specified name.
      */
-    public boolean hasExactlyOnePersonByName(Name toCheck) {
+    public int countPersonsWithName(Name toCheck) {
         requireNonNull(toCheck);
-        return internalList.stream().map(Person::getName)
-                .filter(name -> name.equals(toCheck))
-                .limit(2).count() == 1;
+        return (int) internalList.stream().filter(p -> p.getName().equals(toCheck)).count();
     }
 
     /**
@@ -74,7 +72,7 @@ public class UniquePersonList implements Iterable<Person> {
      */
     public Person getPersonByName(Name name) {
         requireNonNull(name);
-        if (!hasExactlyOnePersonByName(name)) {
+        if (countPersonsWithName(name) != 1) {
             throw new PersonNotFoundException();
         }
         return internalList.stream().filter(p -> p.getName().equals(name))

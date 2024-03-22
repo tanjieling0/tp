@@ -22,14 +22,19 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the person with the specified id or name.\n"
-            + "Either only id or name must be provided.\n"
-            + "Name has to be an exact match, and is case sensitive.\n"
+            + ": Deletes the person with the specified id or name\n"
+            + "Either only id or name must be provided\n"
+            + "Name has to be an exact match, and is case sensitive\n"
             + "Parameters: "
             + PREFIX_ID + "[ID] "
             + PREFIX_NAME + "[NAME]\n"
             + "Example: " + COMMAND_WORD + " i/1 "
             + "or " + COMMAND_WORD + " n/John";
+    public static final String MESSAGE_DUPLICATE_NAME_USAGE = "%1d %2$s found!\n"
+            + "Use id to delete instead\n"
+            + "Parameters: "
+            + PREFIX_ID + "[ID]\n"
+            + "Example: " + COMMAND_WORD + " i/1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
 
@@ -77,9 +82,14 @@ public class DeleteCommand extends Command {
             }
             personToDelete = model.getPersonById(targetId);
         } else {
-            if (!model.hasExactlyOnePersonByName(targetName)) {
+            int count = model.countPersonsWithName(targetName);
+            if (count < 1) {
                 model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_NAME, targetName.fullName));
+            }
+            if (count > 1) {
+                model.updateFilteredPersonList(p -> p.getName().equals(targetName));
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_NAME_USAGE, count, targetName.fullName));
             }
             personToDelete = model.getPersonByName(targetName);
         }
