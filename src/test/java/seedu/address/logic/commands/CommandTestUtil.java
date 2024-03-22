@@ -135,6 +135,18 @@ public class CommandTestUtil {
     /**
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
+     * - the {@code CommandException} message matches {@code expectedMessage} <br>
+     * - the {@code actualModel} matches {@code expectedModel}
+     */
+    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage,
+            Model expectedModel) {
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
+        assertEquals(expectedModel, actualModel);
+    }
+
+    /**
+     * Executes the given {@code command}, confirms that <br>
+     * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
      * - the address book, filtered person list and selected person in
      * {@code actualModel} remain unchanged
@@ -149,6 +161,7 @@ public class CommandTestUtil {
         assertEquals(expectedNetConnect, actualModel.getNetConnect());
         assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
     }
+
     /**
      * Updates {@code model}'s filtered list to show only the person at the given
      * {@code targetIndex} in the

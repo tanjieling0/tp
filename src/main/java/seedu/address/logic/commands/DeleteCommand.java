@@ -72,11 +72,13 @@ public class DeleteCommand extends Command {
 
         if (targetId != null) {
             if (!model.hasId(targetId)) {
+                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
             }
             personToDelete = model.getPersonById(targetId);
         } else {
             if (!model.hasExactlyOnePersonByName(targetName)) {
+                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_NAME, targetName.fullName));
             }
             personToDelete = model.getPersonByName(targetName);

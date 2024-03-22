@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
+import seedu.address.model.NetConnect;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
@@ -45,15 +46,6 @@ public class DeleteCommandTest {
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_invalidIdUnfilteredList_throwsCommandException() {
-        Id outOfBoundId = Id.generateNextId();
-        DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
-
-        assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value));
     }
 
     @Test
@@ -91,6 +83,31 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_invalidIdUnfilteredList_failure() {
+        Id outOfBoundId = Id.generateNextId();
+        DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
+
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value), expectedModel);
+    }
+
+    @Test
+    public void execute_invalidIdFilteredList_failure() {
+        showPersonAtId(model, ID_FIRST_PERSON);
+
+        Id outOfBoundId = Id.generateNextId();
+        DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
+
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        showAllPersons(expectedModel);
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value), expectedModel);
+    }
+
+    @Test
     public void execute_validNameUnfilteredList_success() {
         Person personToDelete = model.getPersonByName(ALICE.getName());
         DeleteCommand deleteCommand = DeleteCommand.byName(ALICE.getName());
@@ -102,23 +119,6 @@ public class DeleteCommandTest {
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_invalidNameUnfilteredList_throwsCommandException() {
-        // zero persons matching the name
-        Name invalidName = HOON.getName();
-        DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
-
-        assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName));
-
-        // more than one persons matching the name
-        model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
-        deleteCommand = DeleteCommand.byName(ALICE.getName());
-
-        assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, ALICE.getName().fullName));
     }
 
     @Test
@@ -153,6 +153,54 @@ public class DeleteCommandTest {
         showAllPersons(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidNameUnfilteredList_failure() {
+        // zero persons matching the name
+        Name invalidName = HOON.getName();
+        DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
+
+        ModelManager expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName), expectedModel);
+
+        // more than one persons matching the name
+        model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
+        deleteCommand = DeleteCommand.byName(ALICE.getName());
+
+        expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, ALICE.getName().fullName), expectedModel);
+    }
+
+    @Test
+    public void execute_invalidNameFilteredList_failure() {
+        // zero persons matching the name
+        showPersonAtId(model, ID_FIRST_PERSON);
+
+        Name invalidName = HOON.getName();
+        DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
+
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        showAllPersons(expectedModel);
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName), expectedModel);
+
+        // more than one persons matching the name
+        showPersonAtId(model, ID_FIRST_PERSON);
+
+        model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
+        deleteCommand = DeleteCommand.byName(ALICE.getName());
+
+        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        showAllPersons(expectedModel);
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, ALICE.getName().fullName), expectedModel);
     }
 
     @Test
