@@ -50,7 +50,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete i/1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -90,7 +90,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete i/1")` API call as an example.
 
 <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
@@ -556,16 +556,34 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete i/1`<br>
+      Expected: Contact with id 1 is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `delete 1`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   1. Other incorrect delete commands to try: `delete`, `delete i/x`, `...` (where no persons have id x)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+   1. Guarantees: Person with the specified id will be deleted from NetConnect and removed from the displayed list.
+
+1. Deleting a person while displayed list is filtered
+
+   1. Prerequisites: Filter displayed list using `find` command or one of its variants. Partial contact list displayed.
+
+   1. Test case: `delete i/x` (where x is the id of person displayed in the list)<br>
+      Expected: Contact with id x is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
+   1. Test case: `delete i/y` (where y is the id of a person **not** displayed in the list)<br>
+      Expected: Contact with id x is deleted from NetConnect, and displayed list displays the full list of persons in NetConnect (without the person with id y. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
+   1. Test case: `delete 1`<br>
+      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+   1. Other incorrect delete commands to try: `delete`, `delete i/z`, `...` (where no persons have id z)<br>
+      Expected: Similar to previous.
+
+   1. Guarantees: Person with the specified id will be deleted from NetConnect and removed from the displayed list. Full unfiltered list of persons will be displayed (similar to when `list` command is entered).
 
 ### Saving data
 
