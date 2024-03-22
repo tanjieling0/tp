@@ -53,6 +53,20 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_invalidIdFilteredList_failure() {
+        showPersonAtId(model, ID_FIRST_PERSON);
+
+        Id outOfBoundId = Id.generateNextId();
+        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundId);
+
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        showAllPersons(expectedModel);
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value), expectedModel);
+    }
+
+    @Test
     public void execute_validIdFilteredListPresent_success() {
         showPersonAtId(model, ID_FIRST_PERSON);
 
