@@ -36,6 +36,7 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
 
         if (!model.hasId(targetId)) {
+            model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
         }
 
