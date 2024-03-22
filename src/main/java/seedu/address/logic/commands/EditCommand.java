@@ -52,7 +52,7 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits the details of the person with the specified ID. "
+            + ": Edits the details of the person with the specified id. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: "
             + PREFIX_ID + "ID "

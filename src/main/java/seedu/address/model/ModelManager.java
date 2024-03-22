@@ -12,6 +12,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 
 /**
@@ -106,6 +107,18 @@ public class ModelManager implements Model {
     public Person getPersonById(Id id) {
         requireNonNull(id);
         return netConnect.getPersonById(id);
+    }
+
+    @Override
+    public boolean hasExactlyOnePersonByName(Name name) {
+        requireNonNull(name);
+        return netConnect.hasExactlyOnePersonByName(name);
+    }
+
+    @Override
+    public Person getPersonByName(Name name) {
+        requireNonNull(name);
+        return netConnect.getPersonByName(name);
     }
 
     @Override

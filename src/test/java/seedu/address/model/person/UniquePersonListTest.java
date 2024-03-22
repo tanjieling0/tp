@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.exceptions.DuplicateIdException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.IdNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
@@ -95,8 +94,8 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void getPersonById_idNotInList_throwsIdNotFoundException() {
-        assertThrows(IdNotFoundException.class, () -> uniquePersonList.getPersonById(ALICE.getId()));
+    public void getPersonById_idNotInList_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonById(ALICE.getId()));
     }
 
     @Test

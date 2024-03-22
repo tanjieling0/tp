@@ -22,7 +22,7 @@ import seedu.address.model.person.Employee;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Supplier;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.IdNotFoundException;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -102,8 +102,8 @@ public class NetConnectTest {
     }
 
     @Test
-    public void getPersonById_idNotInNetConnect_throwsIdNotFoundException() {
-        assertThrows(IdNotFoundException.class, () -> netConnect.getPersonById(ALICE.getId()));
+    public void getPersonById_idNotInNetConnect_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> netConnect.getPersonById(ALICE.getId()));
     }
 
     @Test

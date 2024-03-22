@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 
 /**
@@ -64,15 +65,25 @@ public interface Model {
     boolean hasPerson(Person person);
 
     /**
-     * Returns true if a person with the same id as {@code Id} exists in
-     * the netconnect.
+     * Returns true if a person with the specified id exists in the NetConnect.
      */
     boolean hasId(Id id);
 
     /**
-     * Returns the Person with the given {@code Id}.
+     * Returns the {@code Person} with the specified id.
      */
     Person getPersonById(Id id);
+
+    /**
+     * Returns true if the NetConnect has exactly one {@code Person}
+     * with the specified name.
+     */
+    boolean hasExactlyOnePersonByName(Name name);
+
+    /**
+     * Returns the {@code Person} with the specified name.
+     */
+    Person getPersonByName(Name name);
 
     /**
      * Deletes the given person.

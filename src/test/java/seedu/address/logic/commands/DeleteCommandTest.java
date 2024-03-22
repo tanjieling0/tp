@@ -9,17 +9,21 @@ import static seedu.address.logic.commands.CommandTestUtil.showPersonAtId;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.HOON;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.EmployeeBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -32,7 +36,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIdUnfilteredList_success() {
         Person personToDelete = model.getPersonById(ID_FIRST_PERSON);
-        DeleteCommand deleteCommand = new DeleteCommand(ID_FIRST_PERSON);
+        DeleteCommand deleteCommand = DeleteCommand.byId(ID_FIRST_PERSON);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
@@ -46,7 +50,7 @@ public class DeleteCommandTest {
     @Test
     public void execute_invalidIdUnfilteredList_throwsCommandException() {
         Id outOfBoundId = Id.generateNextId();
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundId);
+        DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
 
         assertCommandFailure(deleteCommand, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value));
@@ -57,7 +61,7 @@ public class DeleteCommandTest {
         showPersonAtId(model, ID_FIRST_PERSON);
 
         Person personToDelete = model.getPersonById(ID_FIRST_PERSON);
-        DeleteCommand deleteCommand = new DeleteCommand(ID_FIRST_PERSON);
+        DeleteCommand deleteCommand = DeleteCommand.byId(ID_FIRST_PERSON);
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
@@ -74,7 +78,72 @@ public class DeleteCommandTest {
         showPersonAtId(model, ID_SECOND_PERSON);
 
         Person personToDelete = model.getPersonById(ID_FIRST_PERSON);
-        DeleteCommand deleteCommand = new DeleteCommand(ID_FIRST_PERSON);
+        DeleteCommand deleteCommand = DeleteCommand.byId(ID_FIRST_PERSON);
+
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
+                Messages.format(personToDelete));
+
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        expectedModel.deletePerson(personToDelete);
+        showAllPersons(expectedModel);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_validNameUnfilteredList_success() {
+        Person personToDelete = model.getPersonByName(ALICE.getName());
+        DeleteCommand deleteCommand = DeleteCommand.byName(ALICE.getName());
+
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
+                Messages.format(personToDelete));
+
+        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        expectedModel.deletePerson(personToDelete);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidNameUnfilteredList_throwsCommandException() {
+        // zero persons matching the name
+        Name invalidName = HOON.getName();
+        DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName));
+
+        // more than one persons matching the name
+        model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
+        deleteCommand = DeleteCommand.byName(ALICE.getName());
+
+        assertCommandFailure(deleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, ALICE.getName().fullName));
+    }
+
+    @Test
+    public void execute_validNameFilteredListPresent_success() {
+        showPersonAtId(model, ALICE.getId());
+
+        Person personToDelete = model.getPersonByName(ALICE.getName());
+        DeleteCommand deleteCommand = DeleteCommand.byName(ALICE.getName());
+
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
+                Messages.format(personToDelete));
+
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        expectedModel.deletePerson(personToDelete);
+        showNoPerson(expectedModel);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_validNameFilteredListAbsent_success() {
+        showPersonAtId(model, BENSON.getId());
+
+        Person personToDelete = model.getPersonByName(ALICE.getName());
+        DeleteCommand deleteCommand = DeleteCommand.byName(ALICE.getName());
 
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
@@ -88,14 +157,35 @@ public class DeleteCommandTest {
 
     @Test
     public void equals() {
-        DeleteCommand deleteFirstCommand = new DeleteCommand(ID_FIRST_PERSON);
-        DeleteCommand deleteSecondCommand = new DeleteCommand(ID_SECOND_PERSON);
+        // by id
+        DeleteCommand deleteFirstCommand = DeleteCommand.byId(ID_FIRST_PERSON);
+        DeleteCommand deleteSecondCommand = DeleteCommand.byId(ID_SECOND_PERSON);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
-        DeleteCommand deleteFirstCommandCopy = new DeleteCommand(ID_FIRST_PERSON);
+        DeleteCommand deleteFirstCommandCopy = DeleteCommand.byId(ID_FIRST_PERSON);
+        assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(deleteFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(deleteFirstCommand.equals(null));
+
+        // different person -> returns false
+        assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
+
+        // by name
+        deleteFirstCommand = DeleteCommand.byName(ALICE.getName());
+        deleteSecondCommand = DeleteCommand.byName(BENSON.getName());
+
+        // same object -> returns true
+        assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
+
+        // same values -> returns true
+        deleteFirstCommandCopy = DeleteCommand.byName(ALICE.getName());
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // different types -> returns false
@@ -110,10 +200,19 @@ public class DeleteCommandTest {
 
     @Test
     public void toStringMethod() {
-        Index targetIndex = Index.fromOneBased(1);
+        // by id
         Id targetId = ID_FIRST_PERSON;
-        DeleteCommand deleteCommand = new DeleteCommand(targetId);
-        String expected = DeleteCommand.class.getCanonicalName() + "{targetId=" + targetId + "}";
+        DeleteCommand deleteCommand = DeleteCommand.byId(targetId);
+        String expected = DeleteCommand.class.getCanonicalName()
+                + "{targetId=" + targetId
+                + ", targetName=null}";
+        assertEquals(expected, deleteCommand.toString());
+
+        // by name
+        Name targetName = ALICE.getName();
+        deleteCommand = DeleteCommand.byName(targetName);
+        expected = DeleteCommand.class.getCanonicalName()
+                + "{targetId=null, targetName=" + targetName + "}";
         assertEquals(expected, deleteCommand.toString());
     }
 

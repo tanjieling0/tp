@@ -58,7 +58,7 @@ public class NetConnectParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(PersonUtil.getDeleteCommand(ALICE));
-        assertEquals(new DeleteCommand(ALICE.getId()), command);
+        assertEquals(DeleteCommand.byId(ALICE.getId()), command);
     }
 
     @Test

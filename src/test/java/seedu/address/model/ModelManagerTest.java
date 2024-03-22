@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
-import seedu.address.model.person.exceptions.IdNotFoundException;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.NetConnectBuilder;
 
 public class ModelManagerTest {
@@ -112,8 +112,8 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void getPersonById_idNotInNetConnect_throwsIdNotFoundException() {
-        assertThrows(IdNotFoundException.class, () -> modelManager.getPersonById(ALICE.getId()));
+    public void getPersonById_idNotInNetConnect_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> modelManager.getPersonById(ALICE.getId()));
     }
 
     @Test

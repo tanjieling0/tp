@@ -23,6 +23,7 @@ import seedu.address.model.NetConnect;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
@@ -166,6 +167,16 @@ public class AddCommandTest {
 
         @Override
         public Person getPersonById(Id id) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasExactlyOnePersonByName(Name name) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Person getPersonByName(Name name) {
             throw new AssertionError("This method should not be called.");
         }
 
