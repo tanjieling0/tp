@@ -1,6 +1,5 @@
 package seedu.address.model;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -131,7 +130,7 @@ public class NetConnectTest {
      * The method asserts that no exceptions are thrown during the process.
      */
     @Test
-    public void addPerson_differentRolesWithSameIdentityFields_handlesCorrectly() {
+    public void addPerson_differentRolesWithSameIdentityFields_throwsDuplicatePersonException() {
         netConnect.addPerson(ALICE);
         Employee aliceEmployee = new EmployeeBuilder().withName(ALICE.getName().toString())
                 .withPhone(ALICE.getPhone().toString())
@@ -141,7 +140,7 @@ public class NetConnectTest {
                 .withJobTitle("Engineer")
                 .build();
 
-        assertDoesNotThrow(() -> netConnect.addPerson(aliceEmployee));
+        assertThrows(DuplicatePersonException.class, () -> netConnect.addPerson(aliceEmployee));
 
         Supplier aliceSupplier = new SupplierBuilder().withName(ALICE.getName().toString())
                 .withPhone(ALICE.getPhone().toString())
@@ -150,11 +149,11 @@ public class NetConnectTest {
                 .withTermsOfService("1 Year Warranty")
                 .build();
 
-        assertDoesNotThrow(() -> netConnect.addPerson(aliceSupplier));
+        assertThrows(DuplicatePersonException.class, () -> netConnect.addPerson(aliceSupplier));
     }
 
     @Test
-    public void hasPerson_diffRolesWithSameIdentityFieldsInNetConnect_returnsFalse() {
+    public void hasPerson_diffRolesWithSameIdentityFieldsInNetConnect_returnsTrue() {
         netConnect.addPerson(ALICE);
         Employee aliceEmployee = new EmployeeBuilder().withName(ALICE.getName().toString())
                 .withPhone(ALICE.getPhone().toString())
@@ -162,7 +161,7 @@ public class NetConnectTest {
                 .withAddress(ALICE.getAddress().toString())
                 .withDepartment("Engineering")
                 .build();
-        assertFalse(netConnect.hasPerson(aliceEmployee));
+        assertTrue(netConnect.hasPerson(aliceEmployee));
     }
 
     /**
