@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import seedu.address.commons.util.ToStringBuilder;
+
 /**
  * Represents a predicate that checks if a person's role contains any of the specified keywords.
  * This predicate is used to filter a list of persons based on their roles.
@@ -66,5 +68,15 @@ public class RoleContainsKeywordsPredicate implements Predicate<Person> {
         }
         RoleContainsKeywordsPredicate otherPredicate = (RoleContainsKeywordsPredicate) other;
         return keywords.equals(otherPredicate.keywords);
+    }
+
+    /**
+     * Returns a string representation of the predicate.
+     *
+     * @return A string representation of the predicate.
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).add("roles", keywords).toString();
     }
 }
