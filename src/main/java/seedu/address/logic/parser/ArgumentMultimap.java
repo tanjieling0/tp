@@ -77,4 +77,14 @@ public class ArgumentMultimap {
             throw new ParseException(Messages.getErrorMessageForDuplicatePrefixes(duplicatedPrefixes));
         }
     }
+
+    /**
+     * Throws a {@code ParseException} if more than one prefix is given in the arguments.
+     */
+    public void verifyOnlyOnePrefix() throws ParseException {
+        // check more than 2 since preamble is added into the multimap
+        if (argMultimap.values().stream().filter(v -> v.size() > 0).count() != 2) {
+            throw new ParseException(Messages.MESSAGE_NON_UNIQUE_FIELDS);
+        }
+    }
 }

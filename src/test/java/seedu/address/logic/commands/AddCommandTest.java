@@ -190,6 +190,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void stackFilters(Predicate<Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public boolean exportCsv(String filename) {
             throw new AssertionError("This method should not be called.");
         }

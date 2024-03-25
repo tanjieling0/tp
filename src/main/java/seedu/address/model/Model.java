@@ -108,6 +108,19 @@ public interface Model {
     void updateFilteredPersonList(Predicate<Person> predicate);
 
     /**
+     * Updates the existing filter of the filtered person list with an additional filter by the given
+     * {@code predicate}.
+     *
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void stackFilters(Predicate<Person> predicate);
+
+    /**
+     * Prints out the current filters applied.
+     */
+    String printFilters();
+
+    /**
      * Exports the data from the address book as a CSV file with the specified filename.
      * Returns {@code true} if the export operation is successful, {@code false} otherwise.
      */

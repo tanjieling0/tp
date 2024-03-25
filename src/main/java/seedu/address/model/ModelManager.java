@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -11,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.person.Filter;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 
@@ -23,6 +25,7 @@ public class ModelManager implements Model {
     private final NetConnect netConnect;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private Filter filter = new Filter(Model.PREDICATE_SHOW_ALL_PERSONS);
 
     /**
      * Initializes a ModelManager with the given netConnect and userPrefs.
@@ -147,7 +150,21 @@ public class ModelManager implements Model {
     @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {
         requireNonNull(predicate);
+        filter = new Filter(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
+    public void stackFilters(Predicate<Person> predicate) {
+        requireNonNull(predicate);
+
+        filter = filter.add(predicate);
+        filteredPersons.setPredicate(filter);
+    }
+
+    @Override
+    public String printFilters() {
+        return filter.toString();
     }
 
     @Override
