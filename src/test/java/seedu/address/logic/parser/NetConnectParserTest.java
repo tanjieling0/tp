@@ -26,6 +26,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindNumCommand;
+import seedu.address.logic.commands.FindRemCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RemarkCommand;
@@ -34,6 +35,7 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PhoneContainsDigitsPredicate;
 import seedu.address.model.person.Remark;
+import seedu.address.model.person.RemarkContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -95,9 +97,9 @@ public class NetConnectParserTest {
     @Test
     public void parseCommand_findRem() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
+        FindRemCommand command = (FindRemCommand) parser.parseCommand(
+                FindRemCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindRemCommand(new RemarkContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
