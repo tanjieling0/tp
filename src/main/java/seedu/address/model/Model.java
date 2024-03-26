@@ -1,21 +1,17 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
-import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NetConnectPredicate;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
-    /**
-     * {@code Predicate} that always evaluate to true
-     */
-    Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -100,20 +96,18 @@ public interface Model {
     ObservableList<Person> getFilteredPersonList();
 
     /**
-     * Updates the filter of the filtered person list to filter by the given
-     * {@code predicate}.
+     * Clears all filters of the filtered person list. Displays all persons.
      *
-     * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredPersonList(Predicate<Person> predicate);
+    void clearFilter();
 
     /**
-     * Updates the existing filter of the filtered person list with an additional filter by the given
-     * {@code predicate}.
+     * Updates the existing filter of the filtered person list with an
+     * additional filter by the given {@code predicate}.
      *
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void stackFilters(Predicate<Person> predicate);
+    void stackFilters(NetConnectPredicate<Person> predicate);
 
     /**
      * Prints out the current filters applied.

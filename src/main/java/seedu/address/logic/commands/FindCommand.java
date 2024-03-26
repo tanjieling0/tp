@@ -2,12 +2,12 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.function.Predicate;
-
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.Filter;
+import seedu.address.model.person.filter.NetConnectPredicate;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
@@ -22,9 +22,9 @@ public class FindCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
-    private final Predicate<Person> predicate;
+    private final NetConnectPredicate<Person> predicate;
 
-    public FindCommand(Predicate<Person> predicate) {
+    public FindCommand(NetConnectPredicate<Person> predicate) {
         this.predicate = predicate;
     }
 
@@ -32,8 +32,9 @@ public class FindCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.stackFilters(predicate);
-        return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+        String output = String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size())
+                + "\n" + String.format(Filter.MESSAGE_FILTERS_APPLIED, model.printFilters());
+        return new CommandResult(output);
     }
 
     @Override

@@ -1,16 +1,16 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
 
 /**
  * Represents a predicate that checks if a person's tags contains a specified keyword.
  * This predicate is used to filter a list of persons based on their tags.
  */
-public class TagsContainsKeywordsPredicate implements Predicate<Person> {
+public class TagsContainsKeywordsPredicate extends NetConnectPredicate<Person> {
     private final List<String> keywords;
 
     /**
@@ -20,6 +20,11 @@ public class TagsContainsKeywordsPredicate implements Predicate<Person> {
      */
     public TagsContainsKeywordsPredicate(List<String> keywords) {
         this.keywords = keywords.stream().map(String::toLowerCase).collect(Collectors.toList());
+    }
+
+    @Override
+    public String formatFilter() {
+        return keywords.stream().map(keyword -> "t/" + keyword).collect(Collectors.joining(" "));
     }
 
     /**

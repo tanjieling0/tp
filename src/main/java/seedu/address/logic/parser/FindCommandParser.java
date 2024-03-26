@@ -6,14 +6,14 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Name;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.TagsContainsKeywordsPredicate;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -32,7 +32,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG);
         argMultimap.verifyOnlyOnePrefix();
 
-        Predicate<Person> predicate;
+        NetConnectPredicate<Person> predicate;
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             List<String> names = argMultimap.getAllValues(PREFIX_NAME);
             if (!names.stream().allMatch(Name::isValidName)) {

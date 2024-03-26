@@ -1,12 +1,12 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
-import java.util.function.Predicate;
+import seedu.address.model.person.Person;
 
 /**
  * Represents a predicate that checks if a person's role contains a specified keyword.
  * This predicate is used to filter a list of persons based on their roles.
  */
-public class RoleContainsKeywordsPredicate implements Predicate<Person> {
+public class RoleContainsKeywordsPredicate extends NetConnectPredicate<Person> {
     private final String keyword;
 
     /**
@@ -16,6 +16,11 @@ public class RoleContainsKeywordsPredicate implements Predicate<Person> {
      */
     public RoleContainsKeywordsPredicate(String keyword) {
         this.keyword = keyword.toLowerCase();
+    }
+
+    @Override
+    public String formatFilter() {
+        return "role/" + keyword;
     }
 
     /**

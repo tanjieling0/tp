@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtId;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
@@ -20,6 +19,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NetConnectPredicate;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -121,15 +121,15 @@ public class DeleteCommandTest {
      * Updates {@code model}'s filtered list to show no one.
      */
     private void showNoPerson(Model model) {
-        model.updateFilteredPersonList(p -> false);
+        model.stackFilters(NetConnectPredicate.box(p -> false));
 
         assertTrue(model.getFilteredPersonList().isEmpty());
     }
 
     /**
-     * Updates {@code model}'s filtered list to show no one.
+     * Updates {@code model}'s filtered list to show all persons.
      */
     private void showAllPersons(Model model) {
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.clearFilter();
     }
 }

@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.PhoneContainsDigitsPredicate;
+import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 
 /**
  * Finds and lists all persons in address book whose phone number contains any of the argument phone numbers.
@@ -29,7 +29,8 @@ public class FindNumCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredPersonList(predicate);
+        model.clearFilter();
+        model.stackFilters(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }

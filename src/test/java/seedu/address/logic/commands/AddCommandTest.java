@@ -10,7 +10,6 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +23,7 @@ import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NetConnectPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -185,12 +185,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
+        public void clearFilter() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void stackFilters(Predicate<Person> predicate) {
+        public void stackFilters(NetConnectPredicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
 
