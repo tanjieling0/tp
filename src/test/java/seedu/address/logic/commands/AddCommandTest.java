@@ -198,6 +198,11 @@ public class AddCommandTest {
         public boolean exportCsv(String filename) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public String printFilters() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

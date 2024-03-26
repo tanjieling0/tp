@@ -23,7 +23,7 @@ public class Messages {
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_NON_UNIQUE_FIELDS =
-            "Only one type of field is allowed for this command at any one time.";
+            "Only one type of field is allowed for this command at any one time";
     public static final String MESSAGE_INVALID_CLIENT_PROPERTY = "Client cannot have department, job title, skills, "
             + "and terms of service fields";
     public static final String MESSAGE_INVALID_EMPLOYEE_PROPERTY = "Employee cannot have preferences, products, "
