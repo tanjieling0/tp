@@ -1,5 +1,7 @@
 package seedu.address.model.person.filter;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,8 @@ public class TagsContainsKeywordsPredicate extends NetConnectPredicate<Person> {
      * @param keywords The keyword to match against the person's tags.
      */
     public TagsContainsKeywordsPredicate(List<String> keywords) {
+        requireNonNull(keywords);
+
         this.keywords = keywords.stream().map(String::toLowerCase).collect(Collectors.toList());
     }
 
@@ -35,7 +39,8 @@ public class TagsContainsKeywordsPredicate extends NetConnectPredicate<Person> {
      */
     @Override
     public boolean test(Person person) {
-        return person.getTags().stream().map(t -> t.tagName)
+        return person.getTags().stream()
+                .map(t -> t.tagName.toLowerCase())
                 .anyMatch(keywords::contains);
     }
 

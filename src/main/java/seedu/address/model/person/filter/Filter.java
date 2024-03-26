@@ -1,5 +1,7 @@
 package seedu.address.model.person.filter;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,10 +29,10 @@ public class Filter extends NetConnectPredicate<Person> {
 
     /**
      * Returns a {@code Filter} object with the given list of predicates.
-     * @param predicates
      */
     public Filter(List<NetConnectPredicate<Person>> predicates) {
-        filters = predicates;
+        requireNonNull(predicates);
+        filters = Collections.unmodifiableList(predicates);
     }
 
     /**
@@ -43,10 +45,16 @@ public class Filter extends NetConnectPredicate<Person> {
         return new Filter(Collections.unmodifiableList(newFilters));
     }
 
+    /**
+     * Returns a new empty Filter.
+     */
     public Filter clear() {
         return new Filter(List.of());
     }
 
+    /**
+     * Formats the filter in a user-readable format.
+     */
     @Override
     public String formatFilter() {
         List<String> formatted = filters.stream()

@@ -1,4 +1,4 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,10 +11,21 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 import seedu.address.testutil.ClientBuilder;
 
 public class PhoneContainsDigitsPredicateTest {
+
+    @Test
+    public void formatFilter() {
+        List<String> firstPredicateKeywordList = Collections.singletonList("first");
+        List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
+
+        PhoneContainsDigitsPredicate firstPredicate = new PhoneContainsDigitsPredicate(firstPredicateKeywordList);
+        PhoneContainsDigitsPredicate secondPredicate = new PhoneContainsDigitsPredicate(secondPredicateKeywordList);
+
+        assertEquals("p/first", firstPredicate.formatFilter());
+        assertEquals("p/first p/second", secondPredicate.formatFilter());
+    }
 
     @Test
     public void equals() {
