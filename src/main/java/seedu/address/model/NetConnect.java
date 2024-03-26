@@ -6,6 +6,8 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.utils.CsvExporter;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 
@@ -70,6 +72,20 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
+     * Returns true if a person with the same identity as {@code person} exists in
+     * the address book.
+     */
+    public boolean hasId(Id id) {
+        requireNonNull(id);
+        return persons.hasId(id);
+    }
+
+    public Person getPersonById(Id id) {
+        requireNonNull(id);
+        return persons.getPersonById(id);
+    }
+
+    /**
      * Adds a person to the address book.
      * The person must not already exist in the address book.
      */
@@ -96,6 +112,19 @@ public class NetConnect implements ReadOnlyNetConnect {
      */
     public void removePerson(Person key) {
         persons.remove(key);
+    }
+
+
+    /**
+     * Exports the data from the address book as a CSV file with the specified filename.
+     * Returns {@code true} if the export operation is successful, {@code false} otherwise.
+     *
+     * @return {@code true} if the export operation is successful, {@code false} otherwise.
+     */
+    public boolean exportCsv(String filename) {
+        CsvExporter exporter = new CsvExporter(persons, filename);
+        exporter.execute();
+        return exporter.getIsSuccessful();
     }
 
     //// util methods

@@ -2,7 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
@@ -21,8 +22,11 @@ import seedu.address.model.Model;
 import seedu.address.model.NetConnect;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.ClientBuilder;
+import seedu.address.testutil.EmployeeBuilder;
+import seedu.address.testutil.SupplierBuilder;
 
 public class AddCommandTest {
 
@@ -34,53 +38,71 @@ public class AddCommandTest {
     @Test
     public void execute_personAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person validPerson = new PersonBuilder().build();
 
-        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+        // Assuming PersonBuilder can handle role-specific fields
+        Person validClient = new ClientBuilder().build();
+        Person validEmployee = new EmployeeBuilder().build();
+        Person validSupplier = new SupplierBuilder().build();
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)),
-                commandResult.getFeedbackToUser());
-        assertEquals(List.of(validPerson), modelStub.personsAdded);
+        CommandResult commandResultClient = new AddCommand(validClient).execute(modelStub);
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validClient)),
+                commandResultClient.getFeedbackToUser());
+        assertEquals(List.of(validClient), modelStub.personsAdded);
+
+        modelStub.personsAdded.clear();
+
+        CommandResult commandResultEmployee = new AddCommand(validEmployee).execute(modelStub);
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validEmployee)),
+                commandResultEmployee.getFeedbackToUser());
+        assertEquals(List.of(validEmployee), modelStub.personsAdded);
+
+        modelStub.personsAdded.clear();
+
+        CommandResult commandResultSupplier = new AddCommand(validSupplier).execute(modelStub);
+        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validSupplier)),
+                commandResultSupplier.getFeedbackToUser());
+        assertEquals(List.of(validSupplier), modelStub.personsAdded);
     }
 
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
-        Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+        Person validClient = new ClientBuilder().build();
+        AddCommand addCommand = new AddCommand(validClient);
+        ModelStub modelStub = new ModelStubWithPerson(validClient);
 
         assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }
 
     @Test
     public void equals() {
-        Person alice = new PersonBuilder().withName("Alice").build();
-        Person bob = new PersonBuilder().withName("Bob").build();
+        Person alice = new ClientBuilder().withName("Alice").build();
+        Person bob = new ClientBuilder().withName("Bob").build();
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 
         // same object -> returns true
-        assertEquals(addAliceCommand, addAliceCommand);
+        assertTrue(addAliceCommand.equals(addAliceCommand));
 
         // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertEquals(addAliceCommand, addAliceCommandCopy);
+        AddCommand addAliceCommanddCopy = new AddCommand(alice);
+        assertTrue(addAliceCommand.equals(addAliceCommanddCopy));
 
         // different types -> returns false
-        assertNotEquals(1, addAliceCommand);
+        assertFalse(addAliceCommand.equals(1));
 
         // null -> returns false
-        assertNotEquals(null, addAliceCommand);
+        assertFalse(addAliceCommand.equals(null));
 
         // different person -> returns false
-        assertNotEquals(addAliceCommand, addBobCommand);
+        assertFalse(addAliceCommand.equals(addBobCommand));
     }
+
 
     @Test
     public void toStringMethod() {
         AddCommand addCommand = new AddCommand(ALICE);
         String expected = AddCommand.class.getCanonicalName() + "{toAdd=" + ALICE + "}";
-        assertEquals(expected, addCommand.toString());
+        assertTrue(expected.equals(addCommand.toString()));
     }
 
     /**
@@ -138,6 +160,16 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean hasId(Id id) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Person getPersonById(Id id) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void deletePerson(Person target) {
             throw new AssertionError("This method should not be called.");
         }
@@ -154,6 +186,11 @@ public class AddCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean exportCsv(String filename) {
             throw new AssertionError("This method should not be called.");
         }
     }
