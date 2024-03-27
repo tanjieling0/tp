@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.exceptions.DuplicateIdException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.IdModifiedException;
 import seedu.address.model.person.exceptions.IdNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.ClientBuilder;
@@ -184,13 +185,13 @@ public class UniquePersonListTest {
         assertEquals(expectedUniquePersonList, uniquePersonList);
     }
 
-
     @Test
     public void setPerson_editedPersonHasDifferentIdentity_success() {
         uniquePersonList.add(ALICE);
-        uniquePersonList.setPerson(ALICE, BOB);
+        Person bobWithAliceId = new EmployeeBuilder(BOB).withId(ALICE.getId().value).build();
+        uniquePersonList.setPerson(ALICE, bobWithAliceId);
         UniquePersonList expectedUniquePersonList = new UniquePersonList();
-        expectedUniquePersonList.add(BOB);
+        expectedUniquePersonList.add(bobWithAliceId);
         assertEquals(expectedUniquePersonList, uniquePersonList);
     }
 
@@ -202,11 +203,10 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void setPerson_editedPersonHasDuplicateId_throwsDuplicateIdException() {
+    public void setPerson_editedPersonHasModifiedId_throwsIdModifiedException() {
         uniquePersonList.add(ALICE);
-        uniquePersonList.add(BOB);
         Person editedAlice = new ClientBuilder(ALICE).withId(BOB.getId().value).build();
-        assertThrows(DuplicateIdException.class, () -> uniquePersonList.setPerson(ALICE, editedAlice));
+        assertThrows(IdModifiedException.class, () -> uniquePersonList.setPerson(ALICE, editedAlice));
     }
 
     @Test

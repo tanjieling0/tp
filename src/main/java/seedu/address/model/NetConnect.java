@@ -94,11 +94,11 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
-     * Replaces the given person {@code target} in the list with
-     * {@code editedPerson}.
-     * {@code target} must exist in the address book.
+     * Replaces the given person {@code target} in the list with {@code editedPerson}.
+     * {@code target} must exist in the list.
      * The person identity of {@code editedPerson} must not be the same as another
-     * existing person in the address book.
+     * existing person in the list.
+     * {@code target} and {@code editedPerson} must have the same id.
      */
     public void setPerson(Person target, Person editedPerson) {
         requireNonNull(editedPerson);
