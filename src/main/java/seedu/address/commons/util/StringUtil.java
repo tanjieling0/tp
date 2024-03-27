@@ -56,7 +56,7 @@ public class StringUtil {
     public static boolean hasPartialMatchIgnoreCase(String target, String source) {
         requireNonNull(target);
         requireNonNull(source);
-        checkArgument(!target.isEmpty(), "Target cannot be empty");
+        checkArgument(!target.trim().isEmpty(), "Target cannot be empty");
 
         return Pattern.compile(Pattern.quote(target), Pattern.CASE_INSENSITIVE).matcher(source).find();
     }
