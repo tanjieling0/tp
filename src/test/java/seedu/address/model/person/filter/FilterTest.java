@@ -17,28 +17,28 @@ import seedu.address.testutil.ClientBuilder;
 class FilterTest {
 
     @Test
-    public void constructor_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Filter(null));
+    public void of_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> Filter.of(null));
+    }
+
+    @Test
+    public void noFilter() {
+        // checks for cached empty filter
+        assertTrue(Filter.noFilter() == Filter.noFilter());
+        assertTrue(Filter.noFilter() == Filter.of(List.of()));
     }
 
     @Test
     public void add() {
         List<NetConnectPredicate<Person>> predicateList = Collections.singletonList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         List<NetConnectPredicate<Person>> expectedPredicateList = Arrays.asList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")),
                 new TagsContainsKeywordsPredicate(Collections.singletonList("friends")));
-        Filter expectedFilter = new Filter(expectedPredicateList);
+        Filter expectedFilter = Filter.of(expectedPredicateList);
         assertEquals(expectedFilter,
                 filter.add(new TagsContainsKeywordsPredicate(Collections.singletonList("friends"))));
-    }
-
-    @Test
-    public void clear() {
-        Filter filter = new Filter(List.of(new NameContainsKeywordsPredicate(Collections.singletonList("Alice"))));
-        assertEquals(filter.clear(), new Filter());
-        assertEquals(filter.clear(), new Filter(List.of()));
     }
 
     @Test
@@ -49,8 +49,8 @@ class FilterTest {
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")),
                 new TagsContainsKeywordsPredicate(Collections.singletonList("friends")));
 
-        Filter firstFilter = new Filter(firstPredicateList);
-        Filter secondFilter = new Filter(secondPredicateList);
+        Filter firstFilter = Filter.of(firstPredicateList);
+        Filter secondFilter = Filter.of(secondPredicateList);
 
         assertEquals("1. n/Alice", firstFilter.formatFilter());
         assertEquals("1. n/Alice\n2. t/friends", secondFilter.formatFilter());
@@ -61,7 +61,7 @@ class FilterTest {
         // exact match
         List<NetConnectPredicate<Person>> predicateList = Collections.singletonList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withName("Alice").build()));
 
         // partial match
@@ -71,14 +71,14 @@ class FilterTest {
         // mixed case
         predicateList = Collections.singletonList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("AliCe PAuLinE")));
-        filter = new Filter(predicateList);
+        filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withName("Alice Pauline").build()));
         assertTrue(filter.test(new ClientBuilder().withName("aLIcE paUlINe").build()));
 
         // multiple names
         predicateList = Collections.singletonList(
                 new NameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob")));
-        filter = new Filter(predicateList);
+        filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withName("Alice").build()));
         assertTrue(filter.test(new ClientBuilder().withName("Bob").build()));
     }
@@ -88,20 +88,20 @@ class FilterTest {
         // exact match
         List<NetConnectPredicate<Person>> predicateList = Collections.singletonList(
                 new TagsContainsKeywordsPredicate(Collections.singletonList("friends")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withTags("friends").build()));
 
         // mixed case
         predicateList = Collections.singletonList(
                 new TagsContainsKeywordsPredicate(Collections.singletonList("FriEnDs")));
-        filter = new Filter(predicateList);
+        filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withTags("friends").build()));
         assertTrue(filter.test(new ClientBuilder().withTags("fRIeNdS").build()));
 
         // multiple tags
         predicateList = Collections.singletonList(
                 new TagsContainsKeywordsPredicate(Arrays.asList("friends", "colleagues")));
-        filter = new Filter(predicateList);
+        filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withTags("friends").build()));
         assertTrue(filter.test(new ClientBuilder().withTags("colleagues").build()));
         assertTrue(filter.test(new ClientBuilder().withTags("friends", "boss").build()));
@@ -114,14 +114,14 @@ class FilterTest {
         List<NetConnectPredicate<Person>> predicateList = Arrays.asList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")),
                 new TagsContainsKeywordsPredicate(Collections.singletonList("friends")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withName("Alice").withTags("friends").build()));
 
         // mixed case
         predicateList = Arrays.asList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("AlIcE")),
                 new TagsContainsKeywordsPredicate(Collections.singletonList("fRiEnDs")));
-        filter = new Filter(predicateList);
+        filter = Filter.of(predicateList);
         assertTrue(filter.test(new ClientBuilder().withName("aLiCe").withTags("FrIeNdS").build()));
     }
 
@@ -130,7 +130,7 @@ class FilterTest {
         // Non-matching keyword
         List<NetConnectPredicate<Person>> predicateList = Collections.singletonList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         assertFalse(filter.test(new ClientBuilder().withName("Bob").build()));
     }
 
@@ -139,7 +139,7 @@ class FilterTest {
         // Non-matching keyword
         List<NetConnectPredicate<Person>> predicateList = Collections.singletonList(
                 new TagsContainsKeywordsPredicate(Collections.singletonList("friends")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         assertFalse(filter.test(new ClientBuilder().withTags("colleagues").build()));
     }
 
@@ -149,7 +149,7 @@ class FilterTest {
         List<NetConnectPredicate<Person>> predicateList = Arrays.asList(
                 new NameContainsKeywordsPredicate(Collections.singletonList("Alice")),
                 new TagsContainsKeywordsPredicate(Collections.singletonList("friends")));
-        Filter filter = new Filter(predicateList);
+        Filter filter = Filter.of(predicateList);
         assertFalse(filter.test(new ClientBuilder().withName("Alice").withTags("colleagues").build()));
 
         // matching tags, non-matching name
@@ -162,12 +162,12 @@ class FilterTest {
     public void equals() {
         List<NetConnectPredicate<Person>> predicates =
                 List.of(new NameContainsKeywordsPredicate(Arrays.asList("Alice")));
-        Filter emptyFilter = new Filter();
-        Filter filter = new Filter(predicates);
+        Filter emptyFilter = Filter.noFilter();
+        Filter filter = Filter.of(predicates);
 
         // same values -> returns true
-        assertTrue(emptyFilter.equals(new Filter()));
-        assertTrue(filter.equals(new Filter(predicates)));
+        assertTrue(emptyFilter.equals(Filter.noFilter()));
+        assertTrue(filter.equals(Filter.of(predicates)));
 
         // same object -> returns true
         assertTrue(emptyFilter.equals(emptyFilter));
@@ -181,7 +181,7 @@ class FilterTest {
 
         // different values -> returns false
         assertFalse(emptyFilter.equals(
-                new Filter(List.of(new NameContainsKeywordsPredicate(Arrays.asList("Alice"))))));
+                Filter.of(List.of(new NameContainsKeywordsPredicate(Arrays.asList("Alice"))))));
     }
 
     // from: https://stackoverflow.com/questions/4449728/how-can-i-do-unit-test-for-hashcode
@@ -189,8 +189,8 @@ class FilterTest {
     public void testSymmetricEquals() {
         List<NetConnectPredicate<Person>> predicates =
                 List.of(new NameContainsKeywordsPredicate(Arrays.asList("Alice")));
-        Filter firstFilter = new Filter(predicates);
-        Filter secondFilter = new Filter(predicates);
+        Filter firstFilter = Filter.of(predicates);
+        Filter secondFilter = Filter.of(predicates);
         assertTrue(secondFilter.equals(firstFilter) && firstFilter.equals(secondFilter));
         assertTrue(secondFilter.hashCode() == firstFilter.hashCode());
     }
@@ -199,8 +199,8 @@ class FilterTest {
     public void toStringMethod() {
         List<NetConnectPredicate<Person>> predicates =
                 List.of(new NameContainsKeywordsPredicate(Arrays.asList("Alice")));
-        Filter emptyFilter = new Filter();
-        Filter filter = new Filter(predicates);
+        Filter emptyFilter = Filter.noFilter();
+        Filter filter = Filter.of(predicates);
 
         String expected = Filter.class.getCanonicalName() + "{filters=" + List.of() + "}";
         assertEquals(expected, emptyFilter.toString());

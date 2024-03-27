@@ -110,7 +110,7 @@ public interface Model {
     void stackFilters(NetConnectPredicate<Person> predicate);
 
     /**
-     * Prints out the current filters applied.
+     * Returns the current filters applied in a user readable format.
      */
     String printFilters();
 

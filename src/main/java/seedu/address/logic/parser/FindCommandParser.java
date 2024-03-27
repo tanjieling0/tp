@@ -32,26 +32,33 @@ public class FindCommandParser implements Parser<FindCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG);
         argMultimap.verifyOnlyOnePrefix();
 
-        NetConnectPredicate<Person> predicate;
+        return new FindCommand(createPredicate(argMultimap));
+    }
+
+    /**
+     * Creates the matching NetConnectPredicate based on the provided values in
+     * the given {@code argMultimap}.
+     *
+     * @throws ParseException if the given values are not valid
+     */
+    private static NetConnectPredicate<Person> createPredicate(
+            ArgumentMultimap argMultimap) throws ParseException {
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             List<String> names = argMultimap.getAllValues(PREFIX_NAME);
             if (!names.stream().allMatch(Name::isValidName)) {
                 throw new ParseException(Name.MESSAGE_CONSTRAINTS);
             }
-            predicate = new NameContainsKeywordsPredicate(names);
+            return new NameContainsKeywordsPredicate(names);
         } else if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
             List<String> tags = argMultimap.getAllValues(PREFIX_TAG);
             if (!tags.stream().allMatch(Tag::isValidTagName)) {
                 throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
             }
-            predicate = new TagsContainsKeywordsPredicate(tags);
+            return new TagsContainsKeywordsPredicate(tags);
         } else {
             // no field provided
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
-
-        return new FindCommand(predicate);
     }
-
 }

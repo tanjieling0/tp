@@ -24,7 +24,7 @@ public class ModelManager implements Model {
     private final NetConnect netConnect;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
-    private Filter filter = new Filter();
+    private Filter filter = Filter.noFilter();
 
     /**
      * Initializes a ModelManager with the given netConnect and userPrefs.
@@ -148,7 +148,7 @@ public class ModelManager implements Model {
 
     @Override
     public void clearFilter() {
-        filter = filter.clear();
+        filter = Filter.noFilter();
         filteredPersons.setPredicate(filter);
     }
 

@@ -18,21 +18,36 @@ public class Filter extends NetConnectPredicate<Person> {
 
     public static final String MESSAGE_FILTERS_APPLIED = "Current filters applied:\n%1$s";
 
-    private final List<NetConnectPredicate<Person>> filters;
+    /** Cached empty filter object */
+    private static final Filter EMPTY_FILTER = new Filter(List.of());
 
-    /**
-     * Returns an empty {@code Filter} object.
-     */
-    public Filter() {
-        filters = List.of();
-    }
+    private final List<NetConnectPredicate<Person>> filters;
 
     /**
      * Returns a {@code Filter} object with the given list of predicates.
      */
-    public Filter(List<NetConnectPredicate<Person>> predicates) {
+    private Filter(List<NetConnectPredicate<Person>> predicates) {
         requireNonNull(predicates);
         filters = Collections.unmodifiableList(predicates);
+    }
+
+    /**
+     * Returns a Filter with the give list of predicates, or return the
+     * empty Filter if the given list of predicates is empty.
+     */
+    public static Filter of(List<NetConnectPredicate<Person>> predicates) {
+        requireNonNull(predicates);
+        if (predicates.isEmpty()) {
+            return EMPTY_FILTER;
+        }
+        return new Filter(predicates);
+    }
+
+    /**
+     * Returns a new empty Filter.
+     */
+    public static Filter noFilter() {
+        return EMPTY_FILTER;
     }
 
     /**
@@ -43,13 +58,6 @@ public class Filter extends NetConnectPredicate<Person> {
         ArrayList<NetConnectPredicate<Person>> newFilters = new ArrayList<>(filters);
         newFilters.add(p);
         return new Filter(Collections.unmodifiableList(newFilters));
-    }
-
-    /**
-     * Returns a new empty Filter.
-     */
-    public Filter clear() {
-        return new Filter(List.of());
     }
 
     /**

@@ -9,6 +9,10 @@ import seedu.address.model.person.Person;
  * to format the text to output to users.
  */
 public abstract class NetConnectPredicate<T> implements Predicate<T> {
+
+    /**
+     * Returns the predicate in a user readable format.
+     */
     public abstract String formatFilter();
 
     /**
