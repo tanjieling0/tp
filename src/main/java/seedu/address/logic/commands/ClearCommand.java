@@ -1,10 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.ui.DestructiveConfirmationWindow.handleDestructiveConfirmation;
 
 import seedu.address.model.Model;
 import seedu.address.model.NetConnect;
-import seedu.address.ui.ClearConfirmationWindow;
 
 /**
  * Clears the address book.
@@ -12,17 +12,19 @@ import seedu.address.ui.ClearConfirmationWindow;
 public class ClearCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";
-    public static final String MESSAGE_SUCCESS = "Address book has been cleared!";
-
+    public static final String CLEAR_SUCCESS_MESSAGE = "Address book has been cleared!";
+    public static final String CLEAR_CANCELLED_MESSAGE = "Clear command cancelled";
+    private static Model model;
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        if (ClearConfirmationWindow.isConfirmedClear()) {
-            ClearConfirmationWindow.resetConfirmation();
-            model.setNetConnect(new NetConnect());
-            return new CommandResult(MESSAGE_SUCCESS);
+        this.model = model;
+        boolean isConfirmed = handleDestructiveConfirmation(false, true);
+        if (!isConfirmed) {
+            return new CommandResult(CLEAR_CANCELLED_MESSAGE, false, false);
         }
-        return new CommandResult("Clear command cancelled");
+        model.setNetConnect(new NetConnect());
+        return new CommandResult(CLEAR_SUCCESS_MESSAGE, false, false);
     }
 }
