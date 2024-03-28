@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.ui.DestructiveConfirmationWindow.handleDestructiveConfirmation;
+import static seedu.address.ui.MainWindow.handleDestructiveCommands;
 
 import seedu.address.model.Model;
 import seedu.address.model.NetConnect;
@@ -20,7 +20,7 @@ public class ClearCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         this.model = model;
-        boolean isConfirmed = handleDestructiveConfirmation(false, true);
+        boolean isConfirmed = handleDestructiveCommands(false, true);
         if (!isConfirmed) {
             return new CommandResult(CLEAR_CANCELLED_MESSAGE, false, false);
         }

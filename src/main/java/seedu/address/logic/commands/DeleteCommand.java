@@ -2,7 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
-import static seedu.address.ui.DestructiveConfirmationWindow.handleDestructiveConfirmation;
+import static seedu.address.ui.MainWindow.handleDestructiveCommands;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -37,7 +37,7 @@ public class DeleteCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        boolean isConfirmed = handleDestructiveConfirmation(true, false);
+        boolean isConfirmed = handleDestructiveCommands(true, false);
         if (!isConfirmed) {
             return new CommandResult(MESSAGE_DELETE_CANCELLED, false, false);
         }

@@ -23,26 +23,13 @@ public class CommandResult {
      */
     private final boolean exit;
 
-    private final boolean isDelete;
-    private final boolean isClear;
-
-    /**
-     * Constructs a {@code CommandResult} with the specified fields.
-     */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean isClear, boolean isDelete, boolean exit) {
-        this.feedbackToUser = requireNonNull(feedbackToUser);
-        this.showHelp = showHelp;
-        this.isClear = isClear;
-        this.isDelete = isDelete;
-        this.exit = exit;
-    }
-
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
     public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
-        this(feedbackToUser, showHelp, false, false, false);
-
+        this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.showHelp = showHelp;
+        this.exit = exit;
     }
 
     /**
@@ -60,12 +47,7 @@ public class CommandResult {
     public boolean isShowHelp() {
         return showHelp;
     }
-    public boolean isDelete() {
-        return isDelete;
-    }
-    public boolean isClear() {
-        return isClear;
-    }
+
     public boolean isExit() {
         return exit;
     }
@@ -84,8 +66,6 @@ public class CommandResult {
         CommandResult otherCommandResult = (CommandResult) other;
         return feedbackToUser.equals(otherCommandResult.feedbackToUser)
                 && showHelp == otherCommandResult.showHelp
-                && isDelete == otherCommandResult.isDelete
-                && isClear == otherCommandResult.isClear
                 && exit == otherCommandResult.exit;
     }
 

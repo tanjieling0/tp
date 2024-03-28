@@ -15,9 +15,18 @@ public class DestructiveConfirmationWindow {
     private static final Logger logger = LogsCenter.getLogger(DestructiveConfirmationWindow.class);
 
     private static final String TITLE = "Destructive Action Confirmation";
-    private static final String CLEAR_HEADER_TEXT = "Are you sure you want to clear the address book? This action cannot be undone.";
-    private static final String DELETE_HEADER_TEXT = "Are you sure you want to delete this person? This action cannot be undone";
+    private static final String CLEAR_HEADER_TEXT =
+            "Are you sure you want to clear the address book? This action cannot be undone.";
+    private static final String DELETE_HEADER_TEXT =
+            "Are you sure you want to delete this person? This action cannot be undone";
 
+    /**
+     * Shows a confirmation dialog for destructive actions.
+     *
+     * @param isDeleteCommand true if the command is a delete command
+     * @param isClearCommand true if the command is a clear command
+     * @return true if the user confirms the action, false otherwise
+     */
     @FXML
     public static boolean handleDestructiveConfirmation(boolean isDeleteCommand, boolean isClearCommand) {
 
