@@ -15,16 +15,31 @@ public class ClearCommand extends Command {
     public static final String CLEAR_SUCCESS_MESSAGE = "Address book has been cleared!";
     public static final String CLEAR_CANCELLED_MESSAGE = "Clear command cancelled";
     private static Model model;
+    private static boolean doNotSkipConfirmation = true;
+
+
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
         this.model = model;
-        boolean isConfirmed = handleDestructiveCommands(false, true);
-        if (!isConfirmed) {
-            return new CommandResult(CLEAR_CANCELLED_MESSAGE, false, false);
+
+        if (doNotSkipConfirmation) {
+            boolean isConfirmed = handleDestructiveCommands(false, true);
+            if (!isConfirmed) {
+                return new CommandResult(CLEAR_CANCELLED_MESSAGE, false, false);
+            }
         }
+
         model.setNetConnect(new NetConnect());
         return new CommandResult(CLEAR_SUCCESS_MESSAGE, false, false);
+    }
+
+    public static void setUpForTesting() {
+        doNotSkipConfirmation = false;
+    }
+
+    public static void cleanUpAfterTesting() {
+        doNotSkipConfirmation = true;
     }
 }

@@ -6,11 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtId;
+import static seedu.address.logic.commands.DeleteCommand.cleanUpAfterTesting;
+import static seedu.address.logic.commands.DeleteCommand.setUpForTesting;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -26,8 +30,16 @@ import seedu.address.model.person.Person;
  * {@code DeleteCommand}.
  */
 public class DeleteCommandTest {
-
     private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    @BeforeAll
+    public static void setUp() {
+        setUpForTesting();
+    }
+
+    @AfterAll
+    public static void close() {
+        cleanUpAfterTesting();
+    }
 
     @Test
     public void execute_validIdUnfilteredList_success() {
@@ -55,7 +67,6 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIdFilteredListPresent_success() {
         showPersonAtId(model, ID_FIRST_PERSON);
-
         Person personToDelete = model.getPersonById(ID_FIRST_PERSON);
         DeleteCommand deleteCommand = new DeleteCommand(ID_FIRST_PERSON);
 
@@ -72,7 +83,6 @@ public class DeleteCommandTest {
     @Test
     public void execute_validIdFilteredListAbsent_success() {
         showPersonAtId(model, ID_SECOND_PERSON);
-
         Person personToDelete = model.getPersonById(ID_FIRST_PERSON);
         DeleteCommand deleteCommand = new DeleteCommand(ID_FIRST_PERSON);
 

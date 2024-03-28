@@ -26,7 +26,7 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
     public static final String MESSAGE_DELETE_CANCELLED = "Delete cancelled";
-
+    private static boolean doNotSkipConfirmation = true;
     private final Id targetId;
 
     public DeleteCommand(Id targetId) {
@@ -37,14 +37,19 @@ public class DeleteCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        boolean isConfirmed = handleDestructiveCommands(true, false);
-        if (!isConfirmed) {
-            return new CommandResult(MESSAGE_DELETE_CANCELLED, false, false);
-        }
-
+        // check if the ID is valid
         if (!model.hasId(targetId)) {
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
         }
+
+        if (doNotSkipConfirmation) {
+            // obtain confirmation from
+            boolean isConfirmed = handleDestructiveCommands(true, false);
+            if (!isConfirmed) {
+                return new CommandResult(MESSAGE_DELETE_CANCELLED, false, false);
+            }
+        }
+
 
         Person personToDelete = model.getPersonById(targetId);
         boolean showList = !model.getFilteredPersonList().contains(personToDelete);
@@ -68,6 +73,14 @@ public class DeleteCommand extends Command {
 
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
         return targetId.equals(otherDeleteCommand.targetId);
+    }
+
+    public static void setUpForTesting() {
+        doNotSkipConfirmation = false;
+    }
+
+    public static void cleanUpAfterTesting() {
+        doNotSkipConfirmation = true;
     }
 
     @Override
