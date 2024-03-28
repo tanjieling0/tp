@@ -1,7 +1,7 @@
 ---
-layout: default.md
-title: "Developer Guide"
-pageNav: 3
+  layout: default.md
+  title: "Developer Guide"
+  pageNav: 3
 ---
 
 # AB-3 Developer Guide
@@ -193,16 +193,16 @@ Step 2. The user changes the input in the command box. The `StateStorage#writeSt
 **Aspect: How save state executes:**
 
 * **Alternative 1 (current choice):** Update the storage file at every change in input.
-    * Pros: Lower risk of data loss.
-    * Cons: Constantly updating the storage file with every change in input may introduce performance overhead.
+  * Pros: Lower risk of data loss.
+  * Cons: Constantly updating the storage file with every change in input may introduce performance overhead.
 
 * **Alternative 2:** Update the storage file only when the application is closed.
-    * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
-    * Cons: Does not save the state of the command box in case of a crash.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: Does not save the state of the command box in case of a crash.
 
 * **Alternative 3:** Update the storage file when there is a pause in typing.
-    * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
-    * Cons: May not save the state of the command box in case of a crash.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: May not save the state of the command box in case of a crash.
 
 ### \[Proposed\] Undo/redo feature
 
@@ -287,13 +287,13 @@ The following activity diagram summarizes what happens when a user executes a ne
 **Aspect: How undo & redo executes:**
 
 * **Alternative 1 (current choice):** Saves the entire netconnect.
-    * Pros: Easy to implement.
-    * Cons: May have performance issues in terms of memory usage.
+  * Pros: Easy to implement.
+  * Cons: May have performance issues in terms of memory usage.
 
 * **Alternative 2:** Individual command knows how to undo/redo by
   itself.
-    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-    * Cons: We must ensure that the implementation of each individual command are correct.
+  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+  * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
 
@@ -363,7 +363,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests to list all persons.
 2. NetConnect shows the list of all persons.
 
-   Use case ends.
+    Use case ends.
 
 **Extensions**
 
@@ -425,7 +425,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests to delete a specific person by UID.
 2. NetConnect deletes the person.
 
-   Use case ends.
+    Use case ends.
 
 **Extensions**
 
@@ -583,16 +583,16 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-    1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy into an empty folder
 
-    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
-    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-    1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
+   1. Re-launch the app by double-clicking the jar file.<br>
+      Expected: The most recent window size and location is retained.
 
 1. _{ more test cases …​ }_
 
@@ -600,16 +600,16 @@ testers are expected to do more *exploratory* testing.
 
 1. Deleting a person while all persons are being shown
 
-    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-    1. Test case: `delete 1`<br>
-       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete 1`<br>
+     Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-    1. Test case: `delete 0`<br>
-       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `delete 0`<br>
+     Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-       Expected: Similar to previous.
+   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+     Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
 
@@ -617,6 +617,6 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
