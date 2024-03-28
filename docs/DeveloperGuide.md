@@ -1,7 +1,7 @@
 ---
-  layout: default.md
-  title: "Developer Guide"
-  pageNav: 3
+layout: default.md
+title: "Developer Guide"
+pageNav: 3
 ---
 
 # AB-3 Developer Guide
@@ -148,6 +148,11 @@ The `Storage` component,
 * inherits from both `NetConnectStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
+The `StateStorage` component,
+* is a separate component that stores the String in the command box and is updated at each change in the input.
+* the data is stored in a file called `state.txt` in the data folder.
+
+
 ### Common classes
 
 Classes used by multiple components are in the `seedu.netconnect.commons` package.
@@ -157,6 +162,46 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Save state feature
+The save state feature is implemented using the `StateStorage` component. The `StateStorage` component is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
+* `StateStorage#writeState(String state)` — Saves the current state of the command box into file.
+* `StateStorage#loadState()` — Reads the saved state of the command box from the file and returns the string.
+* `StateStorage#clearState()` — Clears the file storing the states.
+* `StateStorage#isStateStorageExists()` — Checks if the file storing the states exists.
+* `StateStorage#deleteStateStorage()` — Deletes the file storing the states.
+* `StateStorage#getLastCommand()` — Returns the last string that is present in the command box before it was last closed. If the file is found, the text in the file is loaded into the command box, else a new file is created and empty string is returned.
+* `StateStorage#getFilePath()` — Returns the file path of the file storing the states.
+* `StateStorage#getFilePathString()` — Returns the file path of the file storing the states as a string.
+* `StateStorage#getDirectoryPath()` — Returns the directory path of the file storing the states.
+
+Given below is an example usage scenario and how the save state feature behaves at each step.
+
+Step 1. The user launches the application. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file retrieved via `StateStorage#loadState()` and loaded into the command box.
+
+**Note:** If the storage file is not found a new empty file is created.
+
+Step 2. The user changes the input in the command box. The `StateStorage#writeState(String state)` method is called to save the current state of the command box into the file.
+
+<puml src="diagrams/SaveStateActivityDiagram.puml" alt="SaveStateActivityDiagram" />
+
+<box type="info" seamless>
+
+#### Design considerations:
+
+**Aspect: How save state executes:**
+
+* **Alternative 1 (current choice):** Update the storage file at every change in input.
+    * Pros: Lower risk of data loss.
+    * Cons: Constantly updating the storage file with every change in input may introduce performance overhead.
+
+* **Alternative 2:** Update the storage file only when the application is closed.
+    * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+    * Cons: Does not save the state of the command box in case of a crash.
+
+* **Alternative 3:** Update the storage file when there is a pause in typing.
+    * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+    * Cons: May not save the state of the command box in case of a crash.
 
 ### \[Proposed\] Undo/redo feature
 
@@ -241,13 +286,13 @@ The following activity diagram summarizes what happens when a user executes a ne
 **Aspect: How undo & redo executes:**
 
 * **Alternative 1 (current choice):** Saves the entire netconnect.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+    * Pros: Easy to implement.
+    * Cons: May have performance issues in terms of memory usage.
 
 * **Alternative 2:** Individual command knows how to undo/redo by
   itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+    * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
 
@@ -317,7 +362,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests to list all persons.
 2. NetConnect shows the list of all persons.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
@@ -379,7 +424,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests to delete a specific person by UID.
 2. NetConnect deletes the person.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
@@ -537,15 +582,15 @@ testers are expected to do more *exploratory* testing.
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
 1. _{ more test cases …​ }_
@@ -554,16 +599,16 @@ testers are expected to do more *exploratory* testing.
 
 1. Deleting a person while all persons are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+    1. Test case: `delete 1`<br>
+       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+    1. Test case: `delete 0`<br>
+       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
 
@@ -571,6 +616,6 @@ testers are expected to do more *exploratory* testing.
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
