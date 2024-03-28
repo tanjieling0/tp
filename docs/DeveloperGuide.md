@@ -182,6 +182,11 @@ A `DeleteCommand` instance is instantiated in `DeleteCommandParser#parse(...)` b
 
 <puml src="diagrams/DeleteParseSequenceDiagram.puml" alt="DeleteParseSequenceDiagram" />
 
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
 Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)` or `Model#getPersonByName(Name)`, and `Model#deletePerson(Person))`. The sequence diagram below shows the execution of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
 
 <puml src="diagrams/DeleteExecuteSequenceDiagram.puml" alt="DeleteExecuteSequenceDiagram" />
