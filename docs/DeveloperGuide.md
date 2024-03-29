@@ -145,12 +145,9 @@ The `Model` component,
 
 The `Storage` component,
 * can save both netconnect data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `NetConnectStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* it can also save the state of the command box in a file called `state.txt` in the data folder.
+* inherits from both `NetConnectStorage`, `UserPrefStorage` as well as `StateStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
-
-The `StateStorage` component,
-* is a separate component that stores the String in the command box and is updated at each change in the input.
-* the data is stored in a file called `state.txt` in the data folder.
 
 ### Common classes
 
@@ -178,7 +175,7 @@ The save state feature is implemented using the `StateStorage` component. The `S
 
 Given below is an example usage scenario and how the save state feature behaves at each step.
 
-Step 1. The user launches the application. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file retrieved via `StateStorage#loadState()` and loaded into the command box.
+Step 1. The user launches the application. During set up, the presence of the state storage file is checked. If absent, a new storage file is created. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file is retrieved via `StateStorage#loadState()` and loaded into the command box.
 
 **Note:** If the storage file is not found a new empty file is created.
 
@@ -186,7 +183,6 @@ Step 2. The user changes the input in the command box. The `StateStorage#writeSt
 
 <puml src="diagrams/SaveStateActivityDiagram.puml" alt="SaveStateActivityDiagram" />
 
-<box type="info" seamless>
 
 #### Design considerations:
 
