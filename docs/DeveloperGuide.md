@@ -4,18 +4,19 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# NetConnect Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Acknowledgements**
+[//]: # (## **Acknowledgements**)
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
-
---------------------------------------------------------------------------------------------------------------------
+[//]: # ()
+[//]: # (_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_)
+[//]: # ()
+[//]: # (--------------------------------------------------------------------------------------------------------------------)
 
 ## **Setting up, getting started**
 
@@ -200,6 +201,55 @@ Step 2. The user changes the input in the command box. The `StateStorage#writeSt
   * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
   * Cons: May not save the state of the command box in case of a crash.
 
+### Delete feature
+
+#### Expected behaviour
+
+The `delete` command allows users to delete `Person` from NetConnect using either the target `Person`'s `Id` or `Name`. `Id` allows users to directly and accurately delete the `Person` if the `Id` is known, while `Name` provides the flexibility to delete using name if `Id` is not known. Exceptional behaviour:
+* If both `Id` and `Name` is provided, an error message is shown.
+* If there are no `Person`s with the given `Name` or `Id`, the display is updated to show all `Person`s, and an error message is shown.
+
+<puml src="diagrams/DeleteActivityDiagram.puml" alt="DeleteActivityDiagram" />
+
+* If `Name` is provided but there are more than one `Person` with the specified `Name` in NetConnect, all `Person`s with the matching `Name` will be displayed, and user will be prompted to re-input the `delete` command using `Id` instead.
+
+<puml src="diagrams/DeleteNameActivityDiagram.puml" alt="DeleteNameActivityDiagram" />
+
+`delete` can be done regardless of whether the target `Person` is in the current displayed list. If the `Person` is in the current displayed list, the display view does not change upon successful delete. If the `Person` is in not in the current displayed list, the display view is changed to display all `Person`s upon successful delete.
+
+<puml src="diagrams/DeleteDisplayActivityDiagram.puml" alt="DeleteDisplayActivityDiagram" />
+
+#### Current implementation
+
+A `DeleteCommand` instance is instantiated in `DeleteCommandParser#parse(...)` by the factory methods `DeleteCommand#byId(Id)` or `DeleteComamnd#byName(Name)`. The sequence diagram below shows the creation of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+<puml src="diagrams/DeleteParseSequenceDiagram.puml" alt="DeleteParseSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)` or `Model#getPersonByName(Name)`, and `Model#deletePerson(Person))`. The sequence diagram below shows the execution of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+<puml src="diagrams/DeleteExecuteSequenceDiagram.puml" alt="DeleteExecuteSequenceDiagram" />
+
+#### Design considerations
+
+**Aspect: How delete command executes:
+
+* **Alternative 1 (current choice):** A single `Model#deletePerson(Person)` method.
+  * Pros:
+    1. Implementation of `Model#getPersonById(Id)` and `Model#getPersonByName(Name)` can be reused for other purposes.
+    1. Simple implementation of `Model#deletePerson(Person)`.
+  * Cons: Need to ensure `Person` with matching `Id` or `Name` exists in the list before `Model#getPersonById(Id)`, `Model#getPersonByName(Name)` and `Model#deletePerson(Person)` are called.
+
+* **Alternative 2:** Separate methods of `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
+  * Pros: Simple implementation of `DeleteCommand#execute(...)`.
+  * Cons:
+    1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
+    1. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -278,25 +328,24 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 <puml src="diagrams/CommitActivityDiagram.puml" width="250" />
 
-#### Design considerations:
+#### Design considerations
 
 **Aspect: How undo & redo executes:**
 
 * **Alternative 1 (current choice):** Saves the entire netconnect.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+    * Pros: Easy to implement.
+    * Cons: May have performance issues in terms of memory usage.
 
 * **Alternative 2:** Individual command knows how to undo/redo by
   itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+    * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
 
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -334,19 +383,22 @@ easily, and to keep track of past interactions.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​          | I want to …​                               | So that I can…​                                                      |
-|----------|------------------|--------------------------------------------|----------------------------------------------------------------------|
-| `* * *`  | occasional user  | add a new person                           |                                                                      |
-| `* * *`  | occasional user  | delete a person                            | remove entries that I no longer need                                 |
-| `* * *`  | occasional user  | find a person by name                      | quickly access their contact details                                 |
-| `* * *`  | occasional user  | find a person by contact number            | see who contacted me                                                 |
-| `* * *`  | occasional user  | tag members with custom tag                | see distinctions and manage using tags                               |
-| `* *`    | occasional user  | go back to the state from where i left off | avoid going back to the same page/state when I close the application |
-| `* *`    | occasional user  | edit person information                    | refer to accurate personal information in the future                 |
-| `* *`    | experienced user | export contact lists to a CSV file         | create backups or use the data in other applications                 |
-| `* *`    | new user         | see usage instructions                     | refer to instructions when I forget how to use the App               |
-
-*{More to be added}*
+| Priority | As a …​          | I want to …​                                 | So that I can…​                                                      |
+|----------|------------------|----------------------------------------------|----------------------------------------------------------------------|
+| `* * *`  | occasional user  | add a new person                             |                                                                      |
+| `* * *`  | occasional user  | delete a person                              | remove entries that I no longer need                                 |
+| `* * *`  | occasional user  | find a person by name                        | quickly access their contact details                                 |
+| `* * *`  | occasional user  | find a person by contact number              | see who contacted me                                                 |
+| `* * *`  | occasional user  | find a person by remark                      | view all people with a particular remark                             |
+| `* * *`  | occasional user  | find a person by role                        | view all roles separately                                            |
+| `* * *`  | occasional user  | tag roles to members                         | see distinctions and manage using roles                              |
+| `* *`    | occasional user  | go back to the state from where i left off   | avoid going back to the same page/state when I close the application |
+| `* *`    | occasional user  | edit person information                      | refer to accurate personal information in the future                 |
+| `* *`    | experienced user | export contact lists to a CSV file           | create backups or use the data in other applications                 |
+| `* *`    | experienced user | relate two profiles together                 | connect two contacts together                                        |
+| `* *`    | experienced user | view which contacts are related to a profile | assign tasks to my employees                                         |
+| `* *`    | new user         | see usage instructions                       | refer to instructions when I forget how to use the App               |
+| `* *`    | new user         | clear all existing contacts                  | populate with my actual contacts                                     |
 
 ### Use cases
 
@@ -397,7 +449,37 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: UC04 - Add a New Person**
+**Use case: UC04 - Find a Specific Person by Role**
+
+**MSS**
+
+1. User requests for the person with the matching role.
+2. NetConnect shows the person with matching role.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. There is no person with a matching role.
+
+  Use case ends.
+
+**Use case: UC05 - Find a Specific Person by Remark**
+
+**MSS**
+
+1. User requests for the person with the matching remark.
+2. NetConnect shows the person with matching remark.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. There is no person with a matching number.
+
+  Use case ends.
+
+**Use case: UC06 - Add a New Person**
 
 **MSS**
 
@@ -414,7 +496,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC05 - Delete a Person by UID**
+**Use case: UC07 - Delete a Person by UID**
 
 **MSS**
 
@@ -431,7 +513,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC06 - Delete a Person by Name**
+**Use case: UC08 - Delete a Person by Name**
 
 **MSS**
 
@@ -456,7 +538,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests for the list of persons matching a name.
 2. NetConnect shows a list of persons with matching name.
 
-**Use case: UC07 - Tag a Person by UID with Custom Tag**
+**Use case: UC09 - Tag a Person by UID with Custom Tag**
 
 **MSS**
 
@@ -473,7 +555,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC08 - Tag a Person by Name with Custom Tag**
+**Use case: UC10 - Tag a Person by Name with Custom Tag**
 
 **MSS**
 
@@ -497,7 +579,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-**Use case: UC09 - Edit Person Information by UID**
+**Use case: UC11 - Edit Person Information by UID**
 
 **MSS**
 
@@ -520,7 +602,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC10 - Export Contact List to CSV File**
+**Use case: UC12 - Export Contact List to CSV File**
 
 **MSS**
 
@@ -542,6 +624,75 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1b1. NetConnect shows an error message.
 
       Use case ends.
+
+**Use case: UC13 - Relate two contacts together**
+
+**MSS**
+
+1. User requests to relate Contact A with Contact B.
+2. NetConnect adds a relation between the two contacts.
+
+**Extensions**
+
+* 1a. The given ID or name does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1c. There is an ambiguous command.
+
+    * 1c1. NetConnect shows an error message requesting to fix ambiguity.
+
+      Use case ends.
+
+* 1c. User relates contact to the same contact.
+
+    * 1c1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC14 - View all contacts related to a single contact**
+
+**MSS**
+
+1. User requests to see all contacts related to Contact A.
+2. NetConnect shows the list of related contacts.
+
+**Extensions**
+
+* 1a. The given ID or name does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC15 - Clear all contact list**
+
+**MSS**
+
+1. User requests to clear all contacts.
+2. NetConnect requests confirmation from user.
+3. User confirms the request.
+4. NetConnect deletes the entire contact list.
+
+   Use case ends.
 
 ### Non-Functional Requirements
 
@@ -590,8 +741,6 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -599,7 +748,7 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: Contact with index 1 is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
    1. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
@@ -607,12 +756,8 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
-
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
