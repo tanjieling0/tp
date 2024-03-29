@@ -33,7 +33,7 @@ public abstract class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Remark remark) {
-        requireAllNonNull(name, phone, email, address, tags);
+        requireAllNonNull(name, phone, email, address, tags, remark);
         this.id = Id.generateNextId();
         this.name = name;
         this.phone = phone;
@@ -47,7 +47,7 @@ public abstract class Person {
      * Create a {@code Person} object with a specified id.
      */
     public Person(Id id, Name name, Phone phone, Email email, Address address, Set<Tag> tags, Remark remark) {
-        requireAllNonNull(name, phone, email, address, tags);
+        requireAllNonNull(id, name, phone, email, address, tags, remark);
         this.id = id;
         this.name = name;
         this.phone = phone;
