@@ -189,15 +189,15 @@ The sequence diagram below illustrates the creation and execution of a `CsvExpor
 
 **Aspect: Handling of file paths in the `export` command:**
 
-- **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
-    - Pros:
+* **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
+  * Pros:
         1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
-    - Cons:
+    *Cons:
         1. Reduces user flexibility in determining where the CSV file should be saved.
-- **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
-    - Pros:
+* **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
+  * Pros:
         1. Provides flexibility for users to save the CSV file wherever they prefer.
-    - Cons:
+    * Cons:
         1. Additional error handling is required to manage invalid or inaccessible file paths.
 
 
