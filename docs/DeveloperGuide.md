@@ -318,7 +318,7 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
 
 #### Design considerations
 
-**Aspect: How delete command executes:
+**Aspect: How delete command executes:**
 
 * **Alternative 1 (current choice):** A single `Model#deletePerson(Person)` method.
   * Pros:
