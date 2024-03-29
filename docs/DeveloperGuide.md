@@ -330,7 +330,8 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
   * Pros: Simple implementation of `DeleteCommand#execute(...)`.
   * Cons:
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
-    1. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+    1. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+
 ### Unique `Id` of `Person`
 
 The unique id of `Person` is stored as a private field `Id` instance in `Person`. `Id` value is enforced to be unique between each `Person` by keeping the constructors of the `Id` class private, and by using a private static field `nextId`. The `Id` class provides 3 factory methods to instantiate `Id`:
@@ -346,6 +347,36 @@ The unique id of `Person` is stored as a private field `Id` instance in `Person`
 <puml src="diagrams/IdClassDiagram.puml" alt="IdClassDiagram" />
 
 Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
+
+### `Findnum` feature
+
+#### Expected behaviour
+The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers
+Exceptional behaviour:
+* If any of the phone numbers provided is invalid, an error message is shown.
+* If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
+
+<puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
+
+#### Current implementation
+Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object. 
+
+The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number. 
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed. 
+
+#### Design considerations
+
+**Aspect: How `PhoneContainsDigitsPredicate` tests a person's phone number**
+
+* **Alternative 1 (current choice)**: Use a regular expression to check if the phone number contains the specified numbers.
+  * Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
+  * Cons: Regular expressions can be difficult to understand and maintain.
+
+* **Alternative 2**: Instead of using `StringUtil#containsWordIgnoreCase(...)`, we could use Java's built-in `String#contains(...)` method.
+  * Pros: This method checks if the phone number string contains the specified number string.
+  * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
+=======
 
 ### \[Proposed\] Undo/redo feature
 
