@@ -199,31 +199,31 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
 * **Alternative 1 (current choice):** A single `Model#deletePerson(Person)` method.
   * Pros:
     1. Implementation of `Model#getPersonById(Id)` and `Model#getPersonByName(Name)` can be reused for other purposes.
-    2. Simple implementation of `Model#deletePerson(Person)`.
+    1. Simple implementation of `Model#deletePerson(Person)`.
   * Cons: Need to ensure `Person` with matching `Id` or `Name` exists in the list before `Model#getPersonById(Id)`, `Model#getPersonByName(Name)` and `Model#deletePerson(Person)` are called.
 
 * **Alternative 2:** Separate methods of `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
   * Pros: Simple implementation of `DeleteCommand#execute(...)`.
   * Cons:
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
-    2. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+    1. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
 
 ### Findnum feature
 
 #### Expected behaviour
 
-The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more 'Phone' numbers. Exceptional behaviour:
+The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers. Exceptional behaviour:
 * If any of the phone numbers provided is invalid, an error message is shown.
 * If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
 
 <puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
 
 #### Current implementation
-Given a command `find 98765432`, the `NetConnectParser` recognises the `find` command and first instantiates a 'FindNumCommandParser' object. It then passes the command string, where each 'number' is validated using the 
+Given a command `find 98765432`, the `NetConnectParser` recognises the `find` command and first instantiates a `FindNumCommandParser` object. It then passes the command string, where each 'number' is validated using the 
 `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` creates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create a `Command` object. 
 
 This `Command` object is a model, and is then passed into the `FindNumCommand` class using the `execute` method. The `FindNumCommand` class then calls the updateFilteredPersonList method, using the predicate created. Now, the `Model` class will update the filtered list of persons to only include persons with the given phone number.
-A 'CommandResult' object is then created and returned to the `Logic` class, which is then returned to the `UI` class. The `UI` class then updates the display to show the filtered list of persons.
+A `CommandResult` object is then created and returned to the `Logic` class, which is then returned to the `UI` class. The `UI` class then updates the display to show the filtered list of persons.
 
 #### Design considerations
 
@@ -236,9 +236,7 @@ Cons: Regular expressions can be difficult to understand and maintain.
 **Alternative 2**: Using Java's String.contains()
 Instead of using StringUtil.containsWordIgnoreCase(), we could use Java's built-in String.contains() method. 
 Pros: This method checks if the phone number string contains the specified number string.
-Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9.
-Hence we want an exact match, which is not possible with this method.
-
+Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9.  Hence we want an exact match, which is not possible with this method.
 
 ### \[Proposed\] Undo/redo feature
 
