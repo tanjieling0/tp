@@ -159,6 +159,55 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Delete feature
+
+#### Expected behaviour
+
+The `delete` command allows users to delete `Person` from NetConnect using either the target `Person`'s `Id` or `Name`. `Id` allows users to directly and accurately delete the `Person` if the `Id` is known, while `Name` provides the flexibility to delete using name if `Id` is not known. Exceptional behaviour:
+* If both `Id` and `Name` is provided, an error message is shown.
+* If there are no `Person`s with the given `Name` or `Id`, the display is updated to show all `Person`s, and an error message is shown.
+
+<puml src="diagrams/DeleteActivityDiagram.puml" alt="DeleteActivityDiagram" />
+
+* If `Name` is provided but there are more than one `Person` with the specified `Name` in NetConnect, all `Person`s with the matching `Name` will be displayed, and user will be prompted to re-input the `delete` command using `Id` instead.
+
+<puml src="diagrams/DeleteNameActivityDiagram.puml" alt="DeleteNameActivityDiagram" />
+
+`delete` can be done regardless of whether the target `Person` is in the current displayed list. If the `Person` is in the current displayed list, the display view does not change upon successful delete. If the `Person` is in not in the current displayed list, the display view is changed to display all `Person`s upon successful delete.
+
+<puml src="diagrams/DeleteDisplayActivityDiagram.puml" alt="DeleteDisplayActivityDiagram" />
+
+#### Current implementation
+
+A `DeleteCommand` instance is instantiated in `DeleteCommandParser#parse(...)` by the factory methods `DeleteCommand#byId(Id)` or `DeleteComamnd#byName(Name)`. The sequence diagram below shows the creation of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+<puml src="diagrams/DeleteParseSequenceDiagram.puml" alt="DeleteParseSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)` or `Model#getPersonByName(Name)`, and `Model#deletePerson(Person))`. The sequence diagram below shows the execution of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+<puml src="diagrams/DeleteExecuteSequenceDiagram.puml" alt="DeleteExecuteSequenceDiagram" />
+
+#### Design considerations
+
+**Aspect: How delete command executes:
+
+* **Alternative 1 (current choice):** A single `Model#deletePerson(Person)` method.
+  * Pros:
+    1. Implementation of `Model#getPersonById(Id)` and `Model#getPersonByName(Name)` can be reused for other purposes.
+    1. Simple implementation of `Model#deletePerson(Person)`.
+  * Cons: Need to ensure `Person` with matching `Id` or `Name` exists in the list before `Model#getPersonById(Id)`, `Model#getPersonByName(Name)` and `Model#deletePerson(Person)` are called.
+
+* **Alternative 2:** Separate methods of `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
+  * Pros: Simple implementation of `DeleteCommand#execute(...)`.
+  * Cons:
+    1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
+    1. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -237,7 +286,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 <puml src="diagrams/CommitActivityDiagram.puml" width="250" />
 
-#### Design considerations:
+#### Design considerations
 
 **Aspect: How undo & redo executes:**
 
