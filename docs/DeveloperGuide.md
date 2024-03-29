@@ -197,6 +197,50 @@ The sequence diagram below illustrates the creation and execution of a `CsvExpor
         1. Additional error handling is required to manage invalid or inaccessible file paths.
 
 
+### Person Roles (Employee, Client, and Supplier)
+
+The person can be categorized into three roles: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
+
+#### Overview
+
+* **Client**: Represents a customer, associated with products and preferences.
+* **Supplier**: Represents a vendor, associated with products and terms of service.
+* **Employee**: Represents an employee, associated with a department, job title, and skills.
+
+#### Implementation
+
+##### Class Additions
+
+* `Client`, `Supplier`, and `Employee` classes have been added, extending the `Person` class to include role-specific fields.
+* New classes `Department`, `JobTitle`, `Products`, `Skills`, and `TermsOfService` are introduced to encapsulate relevant attributes.
+
+##### Data Storage
+
+* The `JsonAdaptedPerson` class has been implemented to support the conversion to and from the new role-based classes, ensuring compatibility with the enhanced JSON schema.
+
+##### User Interface Enhancements
+
+* The UI has been enhanced to dynamically display optional fields based on the person's role, offering a tailored user experience.
+
+##### Command and Parser Modifications
+
+* Commands and parsers have been updated to recognize and process additional arguments related to the new person types.
+* Modified commands handle logic specific to each role, ensuring correct operation based on person type.
+
+#### Usage Scenario
+
+1. An administrator decides to add a new `Employee` to the system.
+2. The administrator inputs the employee's details, including department, job title, and skills.
+3. The system processes the input, updates the data storage, and the UI reflects the new employee's information, displaying department and job title.
+
+#### Design Considerations
+
+* **Flexible Data Handling**: Fields not applicable to all roles are made optional within the `Person` class to enable a scalable and adaptable system architecture.
+
+* **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
+
+<puml src="diagrams/ModelClassDiagram.puml" alt="ModelClassDiagram" />
+
 ### Delete feature
 
 #### Expected behaviour
