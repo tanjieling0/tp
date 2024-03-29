@@ -208,6 +208,23 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
     1. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
 
+### Findnum feature
+
+#### Expected behaviour
+
+The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more 'Phone' numbers. Exceptional behaviour:
+* If any of the phone numbers provided is invalid, an error message is shown.
+* If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
+
+<puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
+
+#### Current implementation
+A `FindNumCommand` instance is instantiated in `FindNumCommandParser#parse(...)` by the factory methods `DeleteCommand#byId(Id)` or `DeleteComamnd#byName(Name)`. 
+The sequence diagram below shows the creation of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+
+
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
