@@ -206,7 +206,7 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
   * Pros: Simple implementation of `DeleteCommand#execute(...)`.
   * Cons:
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
-    2. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+    2. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
 
 ### Findnum feature
 
