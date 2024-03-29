@@ -161,7 +161,7 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Person Roles (Employee, Client, and Supplier)
 
-This feature update introduces three new person types into the existing Person model: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
+The person can be categorized into three roles: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
 
 #### Overview
 
@@ -178,7 +178,7 @@ This feature update introduces three new person types into the existing Person m
 
 ##### Data Storage
 
-* The `JsonAdaptedPerson` class has been updated to support the conversion to and from the new role-based classes, ensuring compatibility with the enhanced JSON schema.
+* The `JsonAdaptedPerson` class has been implemented to support the conversion to and from the new role-based classes, ensuring compatibility with the enhanced JSON schema.
 
 ##### User Interface Enhancements
 
