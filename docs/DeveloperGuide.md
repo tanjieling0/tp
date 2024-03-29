@@ -10,13 +10,9 @@
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
-
-[//]: # (## **Acknowledgements**)
-
-[//]: # ()
-[//]: # (_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_)
-[//]: # ()
-[//]: # (--------------------------------------------------------------------------------------------------------------------)
+## **Acknowledgements**
+_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
 
@@ -146,7 +142,8 @@ The `Model` component,
 
 The `Storage` component,
 * can save both netconnect data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `NetConnectStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* it can also save the state of the command box in a file called `state.txt` in the data folder.
+* inherits from both `NetConnectStorage`, `UserPrefStorage` as well as `StateStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -158,6 +155,133 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+   
+### Export Feature
+
+#### Expected Behaviour
+
+The `export` command allows users to export contact data from NetConnect into a CSV file. Users have the option to specify a file name. If no file path is provided, the CSV file is saved as a default name. The command exhibits the following exceptional behaviors:
+
+* If the file name provided is invalid or inaccessible, an error message is displayed to the user.
+
+The successful execution of the `export` command results in the creation of a CSV file as the specified or default name at default location, containing all the contact data available in NetConnect.
+
+#### Current Implementation
+
+A `ExportCommand` instance is created in the `ExportCommandParser#parse(...)` method when the user issues the `export` command. The process involves the following steps:
+
+1. Parsing the command input to extract the file nqm3 if provided.
+2. If no filename is provided, setting the filename to a default value.
+3. Utilizing the `CsvExporter` component to write the data to the CSV file.
+
+The sequence diagram below illustrates the execution of a `ExportCommand`:
+
+<puml src="ExportCommandSequenceDiagram.puml" alt="ExportCommandSequenceDiagram" />
+
+The sequence diagram below illustrates the creation and execution of a `CsvExporter`:
+
+<puml src="ExportCommandSequenceDiagram.puml" alt="CsvExporterSequenceDiagram" />
+
+#### Design Considerations
+
+**Aspect: Handling of file paths in the `export` command:**
+
+* **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
+  * Pros:
+        1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
+    *Cons:
+        1. Reduces user flexibility in determining where the CSV file should be saved.
+* **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
+  * Pros:
+        1. Provides flexibility for users to save the CSV file wherever they prefer.
+    * Cons:
+        1. Additional error handling is required to manage invalid or inaccessible file paths.
+
+
+### Person Roles (Employee, Client, and Supplier)
+
+The person can be categorized into three roles: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
+
+#### Overview
+
+* **Client**: Represents a customer, associated with products and preferences.
+* **Supplier**: Represents a vendor, associated with products and terms of service.
+* **Employee**: Represents an employee, associated with a department, job title, and skills.
+
+#### Implementation
+
+##### Class Additions
+
+* `Client`, `Supplier`, and `Employee` classes have been added, extending the `Person` class to include role-specific fields.
+* New classes `Department`, `JobTitle`, `Products`, `Skills`, and `TermsOfService` are introduced to encapsulate relevant attributes.
+
+##### Data Storage
+
+* The `JsonAdaptedPerson` class has been implemented to support the conversion to and from the new role-based classes, ensuring compatibility with the enhanced JSON schema.
+
+##### User Interface Enhancements
+
+* The UI has been enhanced to dynamically display optional fields based on the person's role, offering a tailored user experience.
+
+##### Command and Parser Modifications
+
+* Commands and parsers have been updated to recognize and process additional arguments related to the new person types.
+* Modified commands handle logic specific to each role, ensuring correct operation based on person type.
+
+#### Usage Scenario
+
+1. An administrator decides to add a new `Employee` to the system.
+2. The administrator inputs the employee's details, including department, job title, and skills.
+3. The system processes the input, updates the data storage, and the UI reflects the new employee's information, displaying department and job title.
+
+#### Design Considerations
+
+* **Flexible Data Handling**: Fields not applicable to all roles are made optional within the `Person` class to enable a scalable and adaptable system architecture.
+
+* **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
+
+<puml src="diagrams/ModelClassDiagram.puml" alt="ModelClassDiagram" />
+
+### Save state feature
+
+The save state feature is implemented using the `StateStorage`.`StateStorage` is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
+
+* `StateStorage#writeState(String state)` — Saves the current state of the command box into file.
+* `StateStorage#loadState()` — Reads the saved state of the command box from the file and returns the string.
+* `StateStorage#clearState()` — Clears the file storing the states.
+* `StateStorage#isStateStorageExists()` — Checks if the file storing the states exists.
+* `StateStorage#deleteStateStorage()` — Deletes the file storing the states.
+* `StateStorage#getLastCommand()` — Returns the last string that is present in the command box before it was last closed. If the file is found, the text in the file is loaded into the command box, else a new file is created and empty string is returned.
+* `StateStorage#getFilePath()` — Returns the file path of the file storing the states.
+* `StateStorage#getFilePathString()` — Returns the file path of the file storing the states as a string.
+* `StateStorage#getDirectoryPath()` — Returns the directory path of the file storing the states.
+
+Given below is an example usage scenario and how the save state feature behaves at each step.
+
+Step 1. The user launches the application. During set up, the presence of the state storage file is checked. If absent, a new storage file is created. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file is retrieved via `StateStorage#loadState()` and loaded into the command box.
+
+**Note:** If the storage file is not found a new empty file is created.
+
+Step 2. The user changes the input in the command box. The `StateStorage#writeState(String state)` method is called to save the current state of the command box into the file.
+
+<puml src="diagrams/SaveStateActivityDiagram.puml" alt="SaveStateActivityDiagram" />
+
+
+#### Design considerations:
+
+**Aspect: How save state executes:**
+
+* **Alternative 1 (current choice):** Update the storage file at every change in input.
+  * Pros: Lower risk of data loss.
+  * Cons: Constantly updating the storage file with every change in input may introduce performance overhead.
+
+* **Alternative 2:** Update the storage file only when the application is closed.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: Does not save the state of the command box in case of a crash.
+
+* **Alternative 3:** Update the storage file when there is a pause in typing.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: May not save the state of the command box in case of a crash.
 
 ### Delete feature
 
@@ -208,35 +332,50 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
     1. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
 
-### Findnum feature
+### Unique `Id` of `Person`
+
+The unique id of `Person` is stored as a private field `Id` instance in `Person`. `Id` value is enforced to be unique between each `Person` by keeping the constructors of the `Id` class private, and by using a private static field `nextId`. The `Id` class provides 3 factory methods to instantiate `Id`:
+
+* `Id#generateNextId()` — instantiates an `Id` object with the next available value given by `nextId`.
+* `Id#generateId(int)` — instantiates an `Id` object with the given value, and updates nextId to be the given value + 1. This method is necessary to update `nextId` while keeping the `Id` value of each `Person` the same between different runs of the application.
+* `Id#generateTempId(int)` — instantiates an `Id` object with the given value, without changing the value of `nextId`. This method is used for non-`add` NetConnect commands that accepts id as an argument. This method is necessary as using `Id#generateId(int)` in non-`add` commands will cause `nextId` to be updated, even if there are no persons in the NetConnect using the previous `Id`. Example:
+  1. NetConnect has persons with `Id` 1 to 5.
+  1. User inputs `delete i/1000` command, where `Id#generateId(int)` is used.
+  1. `nextId` is updated to be 1001.
+  1. On the next `Id#generateNextId()`, `Id` value 1001 will be used although values 6 to 1000 are not used.
+
+<puml src="diagrams/IdClassDiagram.puml" alt="IdClassDiagram" />
+
+Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
+
+### `Findnum` feature
 
 #### Expected behaviour
-
-The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers. Exceptional behaviour:
+The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers
+Exceptional behaviour:
 * If any of the phone numbers provided is invalid, an error message is shown.
 * If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
 
 <puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
 
 #### Current implementation
-Given a command `find 98765432`, the `NetConnectParser` recognises the `find` command and first instantiates a `FindNumCommandParser` object. It then passes the command string, where each 'number' is validated using the 
-`Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` creates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create a `Command` object. 
+Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object. 
 
-This `Command` object is a model, and is then passed into the `FindNumCommand` class using the `execute` method. The `FindNumCommand` class then calls the updateFilteredPersonList method, using the predicate created. Now, the `Model` class will update the filtered list of persons to only include persons with the given phone number.
-A `CommandResult` object is then created and returned to the `Logic` class, which is then returned to the `UI` class. The `UI` class then updates the display to show the filtered list of persons.
+The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number. 
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed. 
 
 #### Design considerations
 
-**Aspect: How PhoneContainsDigitsPredicate tests a person's phone number**
+**Aspect: How `PhoneContainsDigitsPredicate` tests a person's phone number**
 
-**Alternative 1 (current choice)**: Use a regular expression to check if the phone number contains the specified numbers.
-Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
-Cons: Regular expressions can be difficult to understand and maintain.
+* **Alternative 1 (current choice)**: Use a regular expression to check if the phone number contains the specified numbers.
+  * Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
+  * Cons: Regular expressions can be difficult to understand and maintain.
 
-**Alternative 2**: Using Java's String.contains()
-Instead of using StringUtil.containsWordIgnoreCase(), we could use Java's built-in String.contains() method. 
-Pros: This method checks if the phone number string contains the specified number string.
-Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9.  Hence we want an exact match, which is not possible with this method.
+* **Alternative 2**: Instead of using `StringUtil.containsWordIgnoreCase()`, we could use Java's built-in `String.contains()` method. 
+  * Pros: This method checks if the phone number string contains the specified number string.
+  * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
 
 ### \[Proposed\] Undo/redo feature
 
