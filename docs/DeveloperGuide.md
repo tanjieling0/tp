@@ -373,7 +373,7 @@ Recalling that we also have a message box to inform the result of the actions ta
   * Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
   * Cons: Regular expressions can be difficult to understand and maintain.
 
-* **Alternative 2**: Instead of using `StringUtil.containsWordIgnoreCase()`, we could use Java's built-in `String.contains()` method. 
+* **Alternative 2**: Instead of using `StringUtil#containsWordIgnoreCase(...)`, we could use Java's built-in `String#contains(...)` method.
   * Pros: This method checks if the phone number string contains the specified number string.
   * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
 =======
