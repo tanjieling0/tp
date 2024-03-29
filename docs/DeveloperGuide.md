@@ -161,7 +161,7 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Save state feature
 
-The save state feature is implemented using the `StateStorage` component. The `StateStorage` component is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
+The save state feature is implemented using the `StateStorage`.`StateStorage` is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
 
 * `StateStorage#writeState(String state)` — Saves the current state of the command box into file.
 * `StateStorage#loadState()` — Reads the saved state of the command box from the file and returns the string.
