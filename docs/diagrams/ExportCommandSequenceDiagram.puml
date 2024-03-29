@@ -11,13 +11,13 @@ participant "m:Model" as Model MODEL_COLOR
 participant "exporter:CsvExporter" as CsvExporter LOGIC_COLOR
 
 
-
 LogicManager -> ExportCommand : execute(m)
 activate ExportCommand
 
 ExportCommand -> Model : exportCsv(filename)
 activate Model
 
+create CsvExporter
 Model --> CsvExporter : CsvExporter()
 activate CsvExporter
 
@@ -34,12 +34,17 @@ Model --> ExportCommand : IsSuccessful
 deactivate Model
 
 create CommandResult
+
 ExportCommand -> CommandResult
+
 activate CommandResult
 
 CommandResult --> ExportCommand
+
 deactivate CommandResult
 
 ExportCommand --> LogicManager : r
+
 deactivate ExportCommand
 @enduml
+
