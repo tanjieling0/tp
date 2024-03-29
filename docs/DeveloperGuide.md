@@ -142,7 +142,8 @@ The `Model` component,
 
 The `Storage` component,
 * can save both netconnect data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `NetConnectStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* it can also save the state of the command box in a file called `state.txt` in the data folder.
+* inherits from both `NetConnectStorage`, `UserPrefStorage` as well as `StateStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -240,6 +241,47 @@ The person can be categorized into three roles: `Client`, `Supplier`, and `Emplo
 * **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
 
 <puml src="diagrams/ModelClassDiagram.puml" alt="ModelClassDiagram" />
+
+### Save state feature
+
+The save state feature is implemented using the `StateStorage`.`StateStorage` is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
+
+* `StateStorage#writeState(String state)` — Saves the current state of the command box into file.
+* `StateStorage#loadState()` — Reads the saved state of the command box from the file and returns the string.
+* `StateStorage#clearState()` — Clears the file storing the states.
+* `StateStorage#isStateStorageExists()` — Checks if the file storing the states exists.
+* `StateStorage#deleteStateStorage()` — Deletes the file storing the states.
+* `StateStorage#getLastCommand()` — Returns the last string that is present in the command box before it was last closed. If the file is found, the text in the file is loaded into the command box, else a new file is created and empty string is returned.
+* `StateStorage#getFilePath()` — Returns the file path of the file storing the states.
+* `StateStorage#getFilePathString()` — Returns the file path of the file storing the states as a string.
+* `StateStorage#getDirectoryPath()` — Returns the directory path of the file storing the states.
+
+Given below is an example usage scenario and how the save state feature behaves at each step.
+
+Step 1. The user launches the application. During set up, the presence of the state storage file is checked. If absent, a new storage file is created. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file is retrieved via `StateStorage#loadState()` and loaded into the command box.
+
+**Note:** If the storage file is not found a new empty file is created.
+
+Step 2. The user changes the input in the command box. The `StateStorage#writeState(String state)` method is called to save the current state of the command box into the file.
+
+<puml src="diagrams/SaveStateActivityDiagram.puml" alt="SaveStateActivityDiagram" />
+
+
+#### Design considerations:
+
+**Aspect: How save state executes:**
+
+* **Alternative 1 (current choice):** Update the storage file at every change in input.
+  * Pros: Lower risk of data loss.
+  * Cons: Constantly updating the storage file with every change in input may introduce performance overhead.
+
+* **Alternative 2:** Update the storage file only when the application is closed.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: Does not save the state of the command box in case of a crash.
+
+* **Alternative 3:** Update the storage file when there is a pause in typing.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: May not save the state of the command box in case of a crash.
 
 ### Delete feature
 
