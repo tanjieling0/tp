@@ -154,6 +154,48 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+   
+### Export Feature
+
+#### Expected Behaviour
+
+The `export` command allows users to export contact data from NetConnect into a CSV file. Users have the option to specify a file name. If no file path is provided, the CSV file is saved as a default name. The command exhibits the following exceptional behaviors:
+
+* If the file name provided is invalid or inaccessible, an error message is displayed to the user.
+
+The successful execution of the `export` command results in the creation of a CSV file as the specified or default name at default location, containing all the contact data available in NetConnect.
+
+#### Current Implementation
+
+A `ExportCommand` instance is created in the `ExportCommandParser#parse(...)` method when the user issues the `export` command. The process involves the following steps:
+
+1. Parsing the command input to extract the file nqm3 if provided.
+2. If no filename is provided, setting the filename to a default value.
+3. Utilizing the `CsvExporter` component to write the data to the CSV file.
+
+The sequence diagram below illustrates the execution of a `ExportCommand`:
+
+<puml src="ExportCommandSequenceDiagram.puml" alt="ExportCommandSequenceDiagram" />
+
+The sequence diagram below illustrates the creation and execution of a `CsvExporter`:
+
+<puml src="ExportCommandSequenceDiagram.puml" alt="CsvExporterSequenceDiagram" />
+
+#### Design Considerations
+
+**Aspect: Handling of file paths in the `export` command:**
+
+* **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
+  * Pros:
+        1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
+    *Cons:
+        1. Reduces user flexibility in determining where the CSV file should be saved.
+* **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
+  * Pros:
+        1. Provides flexibility for users to save the CSV file wherever they prefer.
+    * Cons:
+        1. Additional error handling is required to manage invalid or inaccessible file paths.
+
 
 ### Delete feature
 
