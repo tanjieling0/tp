@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.utils.CsvExporter;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 
@@ -129,7 +130,9 @@ public class ModelManager implements Model {
     @Override
     public boolean exportCsv(String filename) {
         requireNonNull(filename);
-        return netConnect.exportCsv(filename);
+        CsvExporter exporter = new CsvExporter(filteredPersons, filename);
+        exporter.execute();
+        return exporter.getIsSuccessful();
     }
 
     // =========== Filtered Person List Accessors

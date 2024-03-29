@@ -6,11 +6,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Employee;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Supplier;
-import seedu.address.model.person.UniquePersonList;
 
 /**
  * A utility class for exporting data from an address book to a CSV file.
@@ -22,7 +22,7 @@ public class CsvExporter {
 
     private boolean isSuccessful = false;
 
-    private final UniquePersonList persons;
+    private final FilteredList<Person> persons;
 
     /**
      * Constructs a CSVExporter object with the specified list of persons and filename.
@@ -30,7 +30,7 @@ public class CsvExporter {
      * @param persons  The list of persons to be exported to CSV.
      * @param filename The filename for the CSV file to be created.
      */
-    public CsvExporter(UniquePersonList persons, String filename) {
+    public CsvExporter(FilteredList<Person> persons, String filename) {
         this.persons = persons;
         this.filename = filename;
     }
