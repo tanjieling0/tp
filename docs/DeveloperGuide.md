@@ -376,6 +376,7 @@ Recalling that we also have a message box to inform the result of the actions ta
 * **Alternative 2**: Instead of using `StringUtil.containsWordIgnoreCase()`, we could use Java's built-in `String.contains()` method. 
   * Pros: This method checks if the phone number string contains the specified number string.
   * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
+=======
 
 ### \[Proposed\] Undo/redo feature
 
