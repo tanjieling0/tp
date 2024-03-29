@@ -10,13 +10,9 @@
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
-
-[//]: # (## **Acknowledgements**)
-
-[//]: # ()
-[//]: # (_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_)
-[//]: # ()
-[//]: # (--------------------------------------------------------------------------------------------------------------------)
+## **Acknowledgements**
+_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
 
@@ -207,6 +203,21 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
   * Cons:
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
     1. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+### Unique `Id` of `Person`
+
+The unique id of `Person` is stored as a private field `Id` instance in `Person`. `Id` value is enforced to be unique between each `Person` by keeping the constructors of the `Id` class private, and by using a private static field `nextId`. The `Id` class provides 3 factory methods to instantiate `Id`:
+
+* `Id#generateNextId()` — instantiates an `Id` object with the next available value given by `nextId`.
+* `Id#generateId(int)` — instantiates an `Id` object with the given value, and updates nextId to be the given value + 1. This method is necessary to update `nextId` while keeping the `Id` value of each `Person` the same between different runs of the application.
+* `Id#generateTempId(int)` — instantiates an `Id` object with the given value, without changing the value of `nextId`. This method is used for non-`add` NetConnect commands that accepts id as an argument. This method is necessary as using `Id#generateId(int)` in non-`add` commands will cause `nextId` to be updated, even if there are no persons in the NetConnect using the previous `Id`. Example:
+  1. NetConnect has persons with `Id` 1 to 5.
+  1. User inputs `delete i/1000` command, where `Id#generateId(int)` is used.
+  1. `nextId` is updated to be 1001.
+  1. On the next `Id#generateNextId()`, `Id` value 1001 will be used although values 6 to 1000 are not used.
+
+<puml src="diagrams/IdClassDiagram.puml" alt="IdClassDiagram" />
+
+Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
 
 ### \[Proposed\] Undo/redo feature
 
