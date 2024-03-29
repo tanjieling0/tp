@@ -201,6 +201,8 @@ This feature update introduces three new person types into the existing Person m
 
 * **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
 
+<puml src="diagrams/ModelClassDiagram.puml" alt="ModelClassDiagram" />
+
 ### Delete feature
 
 #### Expected behaviour

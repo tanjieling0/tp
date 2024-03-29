@@ -18,7 +18,27 @@ Class Address
 Class Email
 Class Name
 Class Phone
+Class Remark
 Class Tag
+
+Class Client extends Person {
+  +Products: Products
+}
+Class Supplier extends Person {
+  +Products: Products
+  +TermsOfService: TermsOfService
+}
+Class Employee extends Person {
+  +Department: Department
+  +JobTitle: JobTitle
+  +Skills: Skills
+}
+
+Class Department
+Class JobTitle
+Class Products
+Class Skills
+Class TermsOfService
 
 Class I #FFFFFF
 }
@@ -51,4 +71,8 @@ Phone -[hidden]right-> Address
 Address -[hidden]right-> Email
 
 ModelManager --> "~* filtered" Person
+
+Person <|-- Client
+Person <|-- Supplier
+Person <|-- Employee
 @enduml
