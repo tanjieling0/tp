@@ -25,8 +25,10 @@ import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.JsonNetConnectStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.NetConnectStorage;
+import seedu.address.storage.StateStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
+import seedu.address.storage.TextStateStorage;
 import seedu.address.storage.UserPrefsStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
@@ -58,7 +60,8 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         NetConnectStorage netConnectStorage = new JsonNetConnectStorage(userPrefs.getNetConnectFilePath());
-        storage = new StorageManager(netConnectStorage, userPrefsStorage);
+        StateStorage stateStorage = new TextStateStorage();
+        storage = new StorageManager(netConnectStorage, userPrefsStorage, stateStorage);
 
         model = initModelManager(storage, userPrefs);
 
