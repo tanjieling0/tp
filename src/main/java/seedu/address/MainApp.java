@@ -25,10 +25,10 @@ import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.JsonNetConnectStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.NetConnectStorage;
+import seedu.address.storage.RelateStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
-import seedu.address.storage.RelateStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 

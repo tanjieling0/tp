@@ -26,7 +26,9 @@ public class StorageManager implements Storage {
      * Creates a {@code StorageManager} with the given {@code NetConnectStorage} and
      * {@code UserPrefStorage}.
      */
-    public StorageManager(NetConnectStorage netConnectStorage, UserPrefsStorage userPrefsStorage, RelateStorage relateStorage) {
+    public StorageManager(NetConnectStorage netConnectStorage,
+                          UserPrefsStorage userPrefsStorage,
+                          RelateStorage relateStorage) {
         this.netConnectStorage = netConnectStorage;
         this.userPrefsStorage = userPrefsStorage;
         this.relateStorage = relateStorage;

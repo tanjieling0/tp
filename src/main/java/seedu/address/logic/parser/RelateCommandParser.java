@@ -1,13 +1,13 @@
 package seedu.address.logic.parser;
 
-import seedu.address.logic.commands.RelateCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.IDContainsDigitsPredicate;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.model.person.Id.isValidId;
 
 import java.util.Arrays;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.model.person.Id.isValidId;
+import seedu.address.logic.commands.RelateCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.IdContainsDigitsPredicate;
 
 /**
  * Parses input arguments and creates a new FindNumCommand object
@@ -45,7 +45,7 @@ public class RelateCommandParser implements Parser<RelateCommand> {
         */
         Integer[] providedIDsAsInt = Arrays.stream(providedIDs).map(Integer::parseInt).toArray(Integer[]::new);
 
-        return new RelateCommand(new IDContainsDigitsPredicate(Arrays.asList(providedIDsAsInt)));
+        return new RelateCommand(new IdContainsDigitsPredicate(Arrays.asList(providedIDsAsInt)));
     }
 
 }

@@ -1,15 +1,14 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.IDContainsDigitsPredicate;
 import seedu.address.model.person.Id;
-import seedu.address.model.person.Person;
+import seedu.address.model.person.IdContainsDigitsPredicate;
 import seedu.address.model.util.IdTuple;
 import seedu.address.storage.RelateStorage;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Finds and lists all persons in address book whose ID contains any of the argument IDs.
@@ -24,12 +23,15 @@ public class RelateCommand extends Command {
             + "Parameters: [i/ID_1][n/NAME_1] [i/ID_2][n/NAME_2] ...\n"
             + "Example: " + COMMAND_WORD + " 4 12";
 
-    private final IDContainsDigitsPredicate predicate;
+    private final IdContainsDigitsPredicate predicate;
 
     private final Id firstPersonId;
     private final Id secondPersonId;
 
-    public RelateCommand(IDContainsDigitsPredicate predicate) {
+    /**
+     * Creates a RelateCommand to relate the two specified {@code IdContainsDigitsPredicate}
+     */
+    public RelateCommand(IdContainsDigitsPredicate predicate) {
         this.predicate = predicate;
         this.firstPersonId = Id.generateTempId(predicate.getFirstId());
         this.secondPersonId = Id.generateId(predicate.getSecondId());

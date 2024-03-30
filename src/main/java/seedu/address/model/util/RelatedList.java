@@ -1,10 +1,9 @@
 package seedu.address.model.util;
 
-
-import seedu.address.model.person.Id;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import seedu.address.model.person.Id;
 
 /**
  * Contains tuple methods for relate command storage.
@@ -20,6 +19,11 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
         return relatedPersons;
     }
 
+    /**
+     * Converts a `String` list of related persons to a RelatedList.
+     *
+     * @return The string representation of the list of related persons.
+     */
     public RelatedList toArrayList(String string) {
         if (string.equals("")) {
             return new RelatedList();
@@ -59,9 +63,9 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
     }
 
     @Override
-    public boolean add(IdTuple IdTuple) {
-        assert IdTuple != null : "PersonTuple should not be null";
-        relatedPersons.add(IdTuple);
+    public boolean add(IdTuple idTuple) {
+        assert idTuple != null : "PersonTuple should not be null";
+        relatedPersons.add(idTuple);
         return false;
     }
 

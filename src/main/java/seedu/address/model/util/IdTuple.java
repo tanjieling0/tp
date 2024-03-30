@@ -10,6 +10,12 @@ public class IdTuple {
     private final Id firstPersonId;
     private final Id secondPersonId;
 
+    /**
+     * Constructor for the IdTuple.
+     *
+     * @param firstPersonId The first person's id.
+     * @param secondPersonId The second person's id.
+     */
     public IdTuple(Id firstPersonId, Id secondPersonId) {
         this.firstPersonId = firstPersonId;
         this.secondPersonId = secondPersonId;
@@ -38,10 +44,11 @@ public class IdTuple {
 
         IdTuple otherTuple = (IdTuple) other;
 
-        // can consider in the future if it gets computationally inefficient to compare all person fields to compare by
-        // unique id instead, though compare by name, if chosen, must be done with care for duplicate names.
+        // can consider in the future if it gets computationally inefficient to compare all person fields to compare
+        // by unique id instead, though compare by name, if chosen, must be done with care for duplicate names.
 
-        if (firstPersonId.equals(otherTuple.getFirstPersonId()) && secondPersonId.equals(otherTuple.getSecondPersonId())) {
+        if (firstPersonId.equals(otherTuple.getFirstPersonId())
+                && secondPersonId.equals(otherTuple.getSecondPersonId())) {
             return true;
         }
 

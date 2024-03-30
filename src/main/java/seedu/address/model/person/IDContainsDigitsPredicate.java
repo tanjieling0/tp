@@ -1,17 +1,17 @@
 package seedu.address.model.person;
 
-import seedu.address.commons.util.ToStringBuilder;
-
 import java.util.List;
 import java.util.function.Predicate;
+
+import seedu.address.commons.util.ToStringBuilder;
 
 /**
  * Tests that a {@code Person}'s {@code ID} matches any of the IDs given.
  */
-public class IDContainsDigitsPredicate implements Predicate<Person> {
+public class IdContainsDigitsPredicate implements Predicate<Person> {
     private final List<Integer> ids;
 
-    public IDContainsDigitsPredicate(List<Integer> ids) {
+    public IdContainsDigitsPredicate(List<Integer> ids) {
         this.ids = ids;
     }
 
@@ -40,12 +40,12 @@ public class IDContainsDigitsPredicate implements Predicate<Person> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof IDContainsDigitsPredicate)) {
+        if (!(other instanceof IdContainsDigitsPredicate)) {
             return false;
         }
 
-        IDContainsDigitsPredicate otherIDContainsDigitsPredicate = (IDContainsDigitsPredicate) other;
-        return ids.equals(otherIDContainsDigitsPredicate.ids);
+        IdContainsDigitsPredicate otherIdContainsDigitsPredicate = (IdContainsDigitsPredicate) other;
+        return ids.equals(otherIdContainsDigitsPredicate.ids);
     }
 
     @Override
