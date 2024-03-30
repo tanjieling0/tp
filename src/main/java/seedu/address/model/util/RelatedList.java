@@ -5,12 +5,13 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Id;
 
 /**
  * Contains tuple methods for relate command storage.
  */
-public class RelatedList extends ArrayList<IdTuple> implements Serializable {
+public class RelatedList {
     private static ArrayList<IdTuple> relatedPersons = new ArrayList<>();
 
     public RelatedList() {
@@ -38,7 +39,7 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
             String[] ids = idTuple.split("relates");
             Id id1 = Id.generateTempId(Integer.parseInt(ids[0]));
             Id id2 = Id.generateTempId(Integer.parseInt(ids[1]));
-            relatedList.add(new IdTuple(id1, id2));
+            relatedPersons.add(new IdTuple(id1, id2));
         }
         return relatedList;
     }
@@ -59,36 +60,42 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
         return relatedPersons.equals(otherList.getRelatedIdList());
     }
 
-    @Override
     public IdTuple get(int index) {
         return relatedPersons.get(index);
     }
 
-    @Override
-    public boolean add(IdTuple idTuple) {
+
+    public boolean addIdTuple(IdTuple idTuple) throws CommandException {
         requireNonNull(idTuple);
+        if (relatedPersons.contains(idTuple)) {
+            throw new CommandException("This relation already exists.");
+        }
+        else if (idTuple.relatesItself()) {
+            throw new CommandException("A person cannot relate to themselves.");
+        }
         relatedPersons.add(idTuple);
+        return true;
+    }
+
+    public boolean contains(Object o) {
+        requireNonNull(o);
+        for (IdTuple idTuple : relatedPersons) {
+            if (idTuple.equals(o)) {
+                return true;
+            }
+        }
         return false;
     }
 
-    @Override
-    public boolean contains(Object o) {
-        requireNonNull(o);
-        return relatedPersons.contains(o);
-    }
-
-    @Override
     public boolean remove(Object o) {
         requireNonNull(o);
         return relatedPersons.remove(o);
     }
 
-    @Override
     public int size() {
         return relatedPersons.size();
     }
 
-    @Override
     public boolean isEmpty() {
         return relatedPersons.isEmpty();
     }

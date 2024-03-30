@@ -44,9 +44,6 @@ public class IdTuple {
 
         IdTuple otherTuple = (IdTuple) other;
 
-        // can consider in the future if it gets computationally inefficient to compare all person fields to compare
-        // by unique id instead, though compare by name, if chosen, must be done with care for duplicate names.
-
         if (firstPersonId.equals(otherTuple.getFirstPersonId())
                 && secondPersonId.equals(otherTuple.getSecondPersonId())) {
             return true;
@@ -54,6 +51,10 @@ public class IdTuple {
 
         return firstPersonId.equals(otherTuple.getSecondPersonId())
                 && secondPersonId.equals(otherTuple.getFirstPersonId());
+    }
+
+    public boolean relatesItself() {
+        return firstPersonId.equals(secondPersonId);
     }
 
     @Override

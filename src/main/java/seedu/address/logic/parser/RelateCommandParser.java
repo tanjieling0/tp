@@ -1,14 +1,11 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.model.person.Id.isValidId;
 
 import java.util.Arrays;
 
-import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Id;
 import seedu.address.model.person.IdContainsDigitsPredicate;
 
 /**
@@ -30,6 +27,11 @@ public class RelateCommandParser implements Parser<RelateCommand> {
         }
 
         String[] providedIds = trimmedArgs.split("\\s+");
+
+        if (providedIds.length != 2) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
+        }
 
         // Check if all IDs in input are valid
         for (String idInList : providedIds) {
