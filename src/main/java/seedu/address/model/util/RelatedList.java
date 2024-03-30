@@ -65,16 +65,9 @@ public class RelatedList {
     }
 
 
-    public boolean addIdTuple(IdTuple idTuple) throws CommandException {
+    public void add(IdTuple idTuple) {
         requireNonNull(idTuple);
-        if (relatedPersons.contains(idTuple)) {
-            throw new CommandException("This relation already exists.");
-        }
-        else if (idTuple.relatesItself()) {
-            throw new CommandException("A person cannot relate to themselves.");
-        }
         relatedPersons.add(idTuple);
-        return true;
     }
 
     public boolean contains(Object o) {
