@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.IdContainsDigitsPredicate;
@@ -17,11 +18,11 @@ public class RelateCommand extends Command {
 
     public static final String COMMAND_WORD = "relate";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": relates strictly two existing persons in NetConnect"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": relates strictly two existing persons in NetConnect "
             + "using either their unique id, OR, name.\n"
             + "The unique IDs or names provided must exist.\n"
             + "Parameters: [i/ID_1][n/NAME_1] [i/ID_2][n/NAME_2] ...\n"
-            + "Example: " + COMMAND_WORD + " 4 12";
+            + "Example: " + COMMAND_WORD + " i/4 i/12";
 
     private final IdContainsDigitsPredicate predicate;
 
@@ -34,29 +35,23 @@ public class RelateCommand extends Command {
     public RelateCommand(IdContainsDigitsPredicate predicate) {
         this.predicate = predicate;
         this.firstPersonId = Id.generateTempId(predicate.getFirstId());
-        this.secondPersonId = Id.generateId(predicate.getSecondId());
+        this.secondPersonId = Id.generateTempId(predicate.getSecondId());
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
         model.updateFilteredPersonList(predicate);
         // actual execution occurs here
-        // design decision here to use ID instead of Person in a tuple to avoid propagation complexities due to
-        // changes to fields within the Person class, where if not propagated, will lead to inconsistencies in the
-        // calling of Person1.equals(Person1) where a single field has been changed. This also avoids the need to
-        // recreate the Person object from storage, which is computationally expensive and verbose compared to just
-        // storing the ID.
         if (model.hasId(firstPersonId) && model.hasId(secondPersonId)) {
             IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
             RelateStorage.addRelatedIdTuple(tuple);
             // update storage
             RelateStorage.writeRelate();
         } else {
-            return new CommandResult(Messages.MESSAGE_INVALID_PERSON_ID);
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_ID);
         }
-
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }

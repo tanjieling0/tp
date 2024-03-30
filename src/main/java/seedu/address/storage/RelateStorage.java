@@ -18,9 +18,6 @@ import seedu.address.model.util.RelatedList;
 
 /**
  * Represents the database to store the previous relate of command before the application is closed.
- * Note design decision here to store relations separately from UniquePersonList or InternalList as this is a relation
- * and not an entity, and should not need to change the list of persons. This is to prevent unnecessary coupling.
- * However, deletions in persons from central person list must coalesce with deletions in relations.
  */
 public class RelateStorage {
     private static final String filePath = "./data/relate.txt";

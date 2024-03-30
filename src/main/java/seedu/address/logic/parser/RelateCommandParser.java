@@ -5,12 +5,14 @@ import static seedu.address.model.person.Id.isValidId;
 
 import java.util.Arrays;
 
+import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.IdContainsDigitsPredicate;
 
 /**
- * Parses input arguments and creates a new FindNumCommand object
+ * Parses input arguments and creates a new RelateCommand object
  */
 public class RelateCommandParser implements Parser<RelateCommand> {
 
@@ -27,25 +29,15 @@ public class RelateCommandParser implements Parser<RelateCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         }
 
-        String[] providedIDs = trimmedArgs.split("\\s+");
+        String[] providedIds = trimmedArgs.split("\\s+");
 
         // Check if all IDs in input are valid
-        for (String iDInList : providedIDs) {
-            if (!isValidId(Integer.parseInt(iDInList))) {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
-            }
+        for (String idInList : providedIds) {
+            ParserUtil.parseId(idInList);
         }
 
-        /*
-         A decision is made here to convert the String[] into an Integer[] since an array of IDs should not contain
-         Strings, and this assumption is heavily relied upon in the following IDContainsDigitsPredicate class.
-         This is a potential bug as the provided IDs is not checked for existence here before being converted to an
-         Integer array. It also should not present as an efficiency issue due to small size of the array.
-        */
-        Integer[] providedIDsAsInt = Arrays.stream(providedIDs).map(Integer::parseInt).toArray(Integer[]::new);
+        Integer[] providedIdsAsInt = Arrays.stream(providedIds).map(Integer::parseInt).toArray(Integer[]::new);
 
-        return new RelateCommand(new IdContainsDigitsPredicate(Arrays.asList(providedIDsAsInt)));
+        return new RelateCommand(new IdContainsDigitsPredicate(Arrays.asList(providedIdsAsInt)));
     }
-
 }

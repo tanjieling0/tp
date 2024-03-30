@@ -1,5 +1,7 @@
 package seedu.address.model.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -25,13 +27,13 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
      * @return The string representation of the list of related persons.
      */
     public RelatedList toArrayList(String string) {
-        if (string.equals("")) {
-            return new RelatedList();
-        }
-        string = string.replace("]", "");
-        string = string.replace("[", "");
         RelatedList relatedList = new RelatedList();
+        if (string.equals("")) {
+            return relatedList;
+        }
+        string = string.replace("]", "").replace("[", "");
         String[] idTuples = string.split(", ");
+
         for (String idTuple : idTuples) {
             String[] ids = idTuple.split("relates");
             Id id1 = Id.generateTempId(Integer.parseInt(ids[0]));
@@ -64,20 +66,20 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
 
     @Override
     public boolean add(IdTuple idTuple) {
-        assert idTuple != null : "PersonTuple should not be null";
+        requireNonNull(idTuple);
         relatedPersons.add(idTuple);
         return false;
     }
 
     @Override
     public boolean contains(Object o) {
-        assert o != null : "PersonTuple should not be null";
+        requireNonNull(o);
         return relatedPersons.contains(o);
     }
 
     @Override
     public boolean remove(Object o) {
-        assert o != null : "PersonTuple should not be null";
+        requireNonNull(o);
         return relatedPersons.remove(o);
     }
 

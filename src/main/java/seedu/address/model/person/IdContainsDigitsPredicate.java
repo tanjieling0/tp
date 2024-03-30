@@ -3,6 +3,8 @@ package seedu.address.model.person;
 import java.util.List;
 import java.util.function.Predicate;
 
+import seedu.address.commons.util.ToStringBuilder;
+
 /**
  * Tests that a {@code Person}'s {@code ID} matches any of the IDs given.
  */
@@ -46,9 +48,9 @@ public class IdContainsDigitsPredicate implements Predicate<Person> {
         return ids.equals(otherIdContainsDigitsPredicate.ids);
     }
 
-    // method not used, issues with converting uninstantiated List<Integer> to List<String> for use by ToStringBuilder.
-//    @Override
-//    public String toString() {
-//        return new ToStringBuilder(this).add("IDs", ids.stream().map(i -> Integer.toString(i))).toString();
-//    }
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("IDs", ids.stream().map(i -> Integer.toString(i))).toString();
+    }
 }
