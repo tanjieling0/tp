@@ -1,34 +1,36 @@
 package seedu.address.storage;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.logging.Logger;
-
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
+import seedu.address.model.person.Person;
+import seedu.address.model.util.PersonTuple;
+import seedu.address.model.util.RelatedList;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
- * Represents the database to store the previous state of command before the application is closed.
+ * Represents the database to store the previous relate of command before the application is closed.
  */
-public class StateStorage {
-    private static final String filePath = "./data/state.txt";
+public class RelateStorage {
+    private static final String filePath = "./data/relate.txt";
     private static final Path DIRECTORY_PATH = Paths.get("./data");
     private static final Path FILE_PATH = Paths.get(filePath);
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
+    private static RelatedList relatedPersons = new RelatedList();
+
     /**
      * Constructor for the storage.
      * <p>
-     * The constructor creates a new file and/or directory if the filepath for ./data/state.txt does not exist.
+     * The constructor creates a new file and/or directory if the filepath for ./data/relate.txt does not exist.
      */
-    public StateStorage() {
+    public RelateStorage() {
         assert !filePath.isBlank() : "the file path should not be blank";
 
         try {
@@ -39,65 +41,76 @@ public class StateStorage {
                 Files.createFile(FILE_PATH);
             }
         } catch (IOException e) {
-            logger.info("Error clearing creating state storage: " + e.getMessage());
+            logger.info("Error clearing creating relate storage: " + e.getMessage());
         }
     }
 
     /**
-     * Clears all the text in the state storage file.
+     * Adds a new related person tuple to the list of related persons.
+     *
+     * @param personTuple The person tuple to be added.
      */
-    public static void clearState() {
+    public static void addRelatedPersonsTuple(PersonTuple personTuple) {
+        assert personTuple != null : "PersonTuple should not be null";
+        relatedPersons.add(personTuple);
+    }
+
+
+    /**
+     * Clears all the text in the relate storage file.
+     */
+    public static void clearRelate() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("");
         } catch (IOException e) {
-            logger.info("Error clearing state text: " + e.getMessage());
+            logger.info("Error clearing relate text: " + e.getMessage());
             logger.info("Starting with a clean slate...");
-            deleteStateStorage();
-            StateStorage stateStorage = new StateStorage();
+            deleteRelateStorage();
+            RelateStorage relateStorage = new RelateStorage();
         }
     }
 
     /**
-     * Checks if the state storage file exists.
+     * Checks if the relate storage file exists.
      *
      * @return True if the file exists, else false.
      */
-    public static boolean isStateStorageExists() {
+    public static boolean isRelateStorageExists() {
         return Files.exists(FILE_PATH);
     }
 
     /**
-     * Deletes the entire state storage file.
+     * Deletes the entire relate storage file.
      */
-    public static void deleteStateStorage() {
+    public static void deleteRelateStorage() {
         try {
             Files.delete(FILE_PATH);
         } catch (IOException e) {
-            logger.info("Error deleting state file: " + e.getMessage());
+            logger.info("Error deleting relate file: " + e.getMessage());
         }
     }
 
     /**
-     * Saves the command to the state storage by writing to the file.
+     * Saves the command to the relate storage by writing to the file.
      *
      * @param input Updated command input (at every change) to be written to the storage file.
      */
-    public static void writeState(String input) {
+    public static void writeRelate(String input) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(input);
         } catch (IOException e) {
-            logger.info("Error saving state to file: " + e.getMessage());
+            logger.info("Error saving relate to file: " + e.getMessage());
         }
     }
 
     /**
-     * Retrieves the past state of the command box if found, else it will return an empty command.
+     * Retrieves the past relate of the command box if found, else it will return an empty command.
      *
      * @return The last input in the command box, or and empty string if not found.
      * @throws DataLoadingException If the file is not found or cannot be read.
      */
-    public static String loadState() throws DataLoadingException {
-        logger.info("Loading state from " + FILE_PATH + "...");
+    public static String loadRelate() throws DataLoadingException {
+        logger.info("Loading relate from " + FILE_PATH + "...");
 
         String lastCommand = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -114,40 +127,40 @@ public class StateStorage {
     }
 
     /**
-     * Instantiates a stateStorage file if it does not exist. If it already exists, it will return the last command.
+     * Instantiates a relateStorage file if it does not exist. If it already exists, it will return the last command.
      *
      * @return The last input in the command box, or and empty string new file created.
      * @throws DataLoadingException If the file is not found or cannot be read.
      */
     public static String getLastCommand() throws DataLoadingException {
-        StateStorage stateStorage = new StateStorage();
-        String lastCommand = loadState();
+        RelateStorage relateStorage = new RelateStorage();
+        String lastCommand = loadRelate();
 
         return lastCommand;
     }
 
     /**
-     * Returns the location of the state file.
+     * Returns the location of the relate file.
      *
-     * @return The path of the state file.
+     * @return The path of the relate file.
      */
     public static Path getFilePath() {
         return FILE_PATH;
     }
 
     /**
-     * Returns the location of the state file as a String.
+     * Returns the location of the relate file as a String.
      *
-     * @return The path of the state file as a String.
+     * @return The path of the relate file as a String.
      */
     public static String getFilePathString() {
         return filePath;
     }
 
     /**
-     * Returns the location of the state directory.
+     * Returns the location of the relate directory.
      *
-     * @return The path of the state directory.
+     * @return The path of the relate directory.
      */
     public static Path getDirectoryPath() {
         return DIRECTORY_PATH;
