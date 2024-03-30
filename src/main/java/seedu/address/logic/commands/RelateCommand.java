@@ -43,19 +43,28 @@ public class RelateCommand extends Command {
         requireNonNull(model);
         // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
         model.updateFilteredPersonList(predicate);
+        if (firstPersonId.equals(secondPersonId)) {
+            throw new CommandException(Messages.MESSAGE_CANNOT_RELATE_ITSELF);
+        }
         // actual execution occurs here
         if (!model.hasId(firstPersonId)) {
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, firstPersonId.value));
         } else if (!model.hasId(secondPersonId)) {
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, secondPersonId.value));
-        } else {
-            IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
-            RelateStorage.addRelatedIdTuple(tuple);
-            // update storage
-            RelateStorage.writeRelate();
         }
-        return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+
+        IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
+
+        if (model.hasRelatedIdTuple(tuple)) {
+            throw new CommandException(Messages.MESSAGE_RELATION_EXISTS);
+        } else {
+            model.addRelatedIdTuple(tuple);
+            // update storage
+            RelateStorage.writeRelate(model.getRelatedIdTuples());
+            return new CommandResult(
+                    String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+        }
+
     }
 
     @Override
