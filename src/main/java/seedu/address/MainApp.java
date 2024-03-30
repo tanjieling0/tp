@@ -28,6 +28,7 @@ import seedu.address.storage.NetConnectStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
+import seedu.address.storage.RelateStorage;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -58,7 +59,9 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         NetConnectStorage netConnectStorage = new JsonNetConnectStorage(userPrefs.getNetConnectFilePath());
-        storage = new StorageManager(netConnectStorage, userPrefsStorage);
+        RelateStorage relateStorage = new RelateStorage();
+        relateStorage.loadRelate();
+        storage = new StorageManager(netConnectStorage, userPrefsStorage, relateStorage);
 
         model = initModelManager(storage, userPrefs);
 

@@ -49,6 +49,8 @@ public class RelateCommand extends Command {
         if (model.hasId(firstPersonId) && model.hasId(secondPersonId)) {
             IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
             RelateStorage.addRelatedIdTuple(tuple);
+            // update storage
+            RelateStorage.writeRelate();
         } else {
             return new CommandResult(Messages.MESSAGE_INVALID_PERSON_ID);
         }

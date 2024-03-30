@@ -51,6 +51,6 @@ public class IdTuple {
 
     @Override
     public String toString() {
-        return "(" + firstPersonId + " " + secondPersonId + ")";
+        return firstPersonId + "relates" + secondPersonId;
     }
 }

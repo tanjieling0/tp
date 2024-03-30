@@ -21,10 +21,15 @@ public class RelatedList extends ArrayList<IdTuple> implements Serializable {
     }
 
     public RelatedList toArrayList(String string) {
+        if (string.equals("")) {
+            return new RelatedList();
+        }
+        string = string.replace("]", "");
+        string = string.replace("[", "");
         RelatedList relatedList = new RelatedList();
-        String[] idTuples = string.split(",");
+        String[] idTuples = string.split(", ");
         for (String idTuple : idTuples) {
-            String[] ids = idTuple.split(" ");
+            String[] ids = idTuple.split("relates");
             Id id1 = Id.generateTempId(Integer.parseInt(ids[0]));
             Id id2 = Id.generateTempId(Integer.parseInt(ids[1]));
             relatedList.add(new IdTuple(id1, id2));
