@@ -3,8 +3,7 @@ package seedu.address.storage;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.model.person.Person;
-import seedu.address.model.util.PersonTuple;
+import seedu.address.model.util.IdTuple;
 import seedu.address.model.util.RelatedList;
 
 import java.io.*;
@@ -16,6 +15,9 @@ import java.util.logging.Logger;
 
 /**
  * Represents the database to store the previous relate of command before the application is closed.
+ * Note design decision here to store relations separately from UniquePersonList or InternalList as this is a relation
+ * and not an entity, and should not need to change the list of persons. This is to prevent unnecessary coupling.
+ * However, deletions in persons from central person list must coalesce with deletions in relations.
  */
 public class RelateStorage {
     private static final String filePath = "./data/relate.txt";
@@ -23,7 +25,7 @@ public class RelateStorage {
     private static final Path FILE_PATH = Paths.get(filePath);
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
-    private static RelatedList relatedPersons = new RelatedList();
+    private static RelatedList relatedIdTuples;
 
     /**
      * Constructor for the storage.
@@ -32,6 +34,8 @@ public class RelateStorage {
      */
     public RelateStorage() {
         assert !filePath.isBlank() : "the file path should not be blank";
+
+        relatedIdTuples = new RelatedList();
 
         try {
             if (!Files.exists(DIRECTORY_PATH)) {
@@ -48,11 +52,21 @@ public class RelateStorage {
     /**
      * Adds a new related person tuple to the list of related persons.
      *
-     * @param personTuple The person tuple to be added.
+     * @param idTuple The id tuple to be added.
      */
-    public static void addRelatedPersonsTuple(PersonTuple personTuple) {
-        assert personTuple != null : "PersonTuple should not be null";
-        relatedPersons.add(personTuple);
+    public static void addRelatedIdTuple(IdTuple idTuple) {
+        assert idTuple != null : "idTuple should not be null";
+        relatedIdTuples.add(idTuple);
+    }
+
+    /**
+     * Removes a related person tuple from the list of related persons.
+     *
+     * @param idTuple The id tuple to be removed.
+     */
+    public static void removeRelatedIdTuple(IdTuple idTuple) {
+        assert idTuple != null : "idTuple should not be null";
+        relatedIdTuples.remove(idTuple);
     }
 
 
@@ -91,13 +105,12 @@ public class RelateStorage {
     }
 
     /**
-     * Saves the command to the relate storage by writing to the file.
+     * Saves the RelateList to the relate storage by writing to the file.
      *
-     * @param input Updated command input (at every change) to be written to the storage file.
      */
-    public static void writeRelate(String input) {
+    public static void writeRelate() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(input);
+            writer.write(relatedIdTuples.toString());
         } catch (IOException e) {
             logger.info("Error saving relate to file: " + e.getMessage());
         }
@@ -106,37 +119,25 @@ public class RelateStorage {
     /**
      * Retrieves the past relate of the command box if found, else it will return an empty command.
      *
-     * @return The last input in the command box, or and empty string if not found.
      * @throws DataLoadingException If the file is not found or cannot be read.
      */
-    public static String loadRelate() throws DataLoadingException {
+    public void loadRelate() throws DataLoadingException {
         logger.info("Loading relate from " + FILE_PATH + "...");
 
-        String lastCommand = "";
+        RelatedList relatedListTemp = new RelatedList();
+
+        String storedIdList = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String data = reader.readLine();
 
             while (data != null) {
-                lastCommand = lastCommand + data;
+                storedIdList = storedIdList + data;
                 data = reader.readLine();
             }
         } catch (IOException e) {
             throw new DataLoadingException(e);
         }
-        return lastCommand;
-    }
-
-    /**
-     * Instantiates a relateStorage file if it does not exist. If it already exists, it will return the last command.
-     *
-     * @return The last input in the command box, or and empty string new file created.
-     * @throws DataLoadingException If the file is not found or cannot be read.
-     */
-    public static String getLastCommand() throws DataLoadingException {
-        RelateStorage relateStorage = new RelateStorage();
-        String lastCommand = loadRelate();
-
-        return lastCommand;
+        relatedIdTuples = relatedListTemp.toArrayList(storedIdList);
     }
 
     /**

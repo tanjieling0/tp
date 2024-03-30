@@ -1,45 +1,90 @@
 package seedu.address.model.util;
 
 
-import seedu.address.model.person.Person;
+import seedu.address.model.person.Id;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Contains tuple methods for relate command storage.
  */
-public class RelatedList extends ArrayList<PersonTuple>{
-    private static ArrayList<PersonTuple> relatedPersons = new ArrayList<>();
+public class RelatedList extends ArrayList<IdTuple> implements Serializable {
+    private static ArrayList<IdTuple> relatedPersons = new ArrayList<>();
 
-    public static ArrayList<PersonTuple> getRelatedPersons() {
+    public RelatedList() {
+        relatedPersons = new ArrayList<>();
+    }
+
+    public ArrayList<IdTuple> getRelatedIdList() {
         return relatedPersons;
     }
 
-    public void addRelatedPersonsTuple(PersonTuple personTuple) {
-        assert personTuple != null : "PersonTuple should not be null";
-        relatedPersons.add(personTuple);
+    public RelatedList toArrayList(String string) {
+        RelatedList relatedList = new RelatedList();
+        String[] idTuples = string.split(",");
+        for (String idTuple : idTuples) {
+            String[] ids = idTuple.split(" ");
+            Id id1 = Id.generateTempId(Integer.parseInt(ids[0]));
+            Id id2 = Id.generateTempId(Integer.parseInt(ids[1]));
+            relatedList.add(new IdTuple(id1, id2));
+        }
+        return relatedList;
     }
 
-    public static boolean containsRelatedTuple(PersonTuple personTuple) {
-        assert personTuple != null : "PersonTuple should not be null";
-        return relatedPersons.contains(personTuple);
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof RelatedList)) {
+            return false;
+        }
+
+        RelatedList otherList = (RelatedList) other;
+
+        return relatedPersons.equals(otherList.getRelatedIdList());
     }
 
-    public static void clearRelatedPersons() {
-        relatedPersons.clear();
+    @Override
+    public IdTuple get(int index) {
+        return relatedPersons.get(index);
     }
 
-    public static void removeRelatedTuple(PersonTuple personTuple) {
-        assert personTuple != null : "PersonTuple should not be null";
-        relatedPersons.remove(personTuple);
+    @Override
+    public boolean add(IdTuple IdTuple) {
+        assert IdTuple != null : "PersonTuple should not be null";
+        relatedPersons.add(IdTuple);
+        return false;
     }
 
-    public static int getRelatedPersonsSize() {
+    @Override
+    public boolean contains(Object o) {
+        assert o != null : "PersonTuple should not be null";
+        return relatedPersons.contains(o);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        assert o != null : "PersonTuple should not be null";
+        return relatedPersons.remove(o);
+    }
+
+    @Override
+    public int size() {
         return relatedPersons.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return relatedPersons.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return relatedPersons.toString();
     }
 
 }

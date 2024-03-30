@@ -6,7 +6,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.IDContainsDigitsPredicate;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
-import seedu.address.model.util.PersonTuple;
+import seedu.address.model.util.IdTuple;
 import seedu.address.storage.RelateStorage;
 
 import static java.util.Objects.requireNonNull;
@@ -41,11 +41,14 @@ public class RelateCommand extends Command {
         // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
         model.updateFilteredPersonList(predicate);
         // actual execution occurs here
+        // design decision here to use ID instead of Person in a tuple to avoid propagation complexities due to
+        // changes to fields within the Person class, where if not propagated, will lead to inconsistencies in the
+        // calling of Person1.equals(Person1) where a single field has been changed. This also avoids the need to
+        // recreate the Person object from storage, which is computationally expensive and verbose compared to just
+        // storing the ID.
         if (model.hasId(firstPersonId) && model.hasId(secondPersonId)) {
-            Person person1 = model.getPersonById(firstPersonId);
-            Person person2 = model.getPersonById(secondPersonId);
-            PersonTuple tuple = new PersonTuple(person1, person2);
-            RelateStorage.addRelatedPersonsTuple(tuple);
+            IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
+            RelateStorage.addRelatedIdTuple(tuple);
         } else {
             return new CommandResult(Messages.MESSAGE_INVALID_PERSON_ID);
         }
