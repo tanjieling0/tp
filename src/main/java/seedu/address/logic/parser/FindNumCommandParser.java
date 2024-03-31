@@ -7,7 +7,7 @@ import java.util.Arrays;
 import seedu.address.logic.commands.FindNumCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.PhoneContainsDigitsPredicate;
+import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 
 /**
  * Parses input arguments and creates a new FindNumCommand object

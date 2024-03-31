@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.IdContainsDigitsPredicate;
+import seedu.address.model.person.filter.IdContainsDigitsPredicate;
 
 /**
  * Parses input arguments and creates a new RelateCommand object

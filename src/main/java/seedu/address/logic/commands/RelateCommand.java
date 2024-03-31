@@ -7,7 +7,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Id;
-import seedu.address.model.person.IdContainsDigitsPredicate;
+import seedu.address.model.person.filter.IdContainsDigitsPredicate;
 import seedu.address.model.util.IdTuple;
 
 /**
@@ -41,7 +41,7 @@ public class RelateCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.updateFilteredPersonList(predicate);
+        model.stackFilters(predicate);
         if (firstPersonId.equals(secondPersonId)) {
             throw new CommandException(Messages.MESSAGE_CANNOT_RELATE_ITSELF);
         }

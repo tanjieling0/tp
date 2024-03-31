@@ -12,7 +12,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.RoleContainsKeywordsPredicate;
+import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
 import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
@@ -69,21 +69,21 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_duplicateClient_throwsCommandException() {
-        model.updateFilteredPersonList(new RoleContainsKeywordsPredicate("client"));
+        model.stackFilters(new RoleContainsKeywordsPredicate("client"));
         Person clientInList = model.getFilteredPersonList().get(0);
         assertCommandFailure(new AddCommand(clientInList), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
     public void execute_duplicateEmployee_throwsCommandException() {
-        model.updateFilteredPersonList(new RoleContainsKeywordsPredicate("employee"));
+        model.stackFilters(new RoleContainsKeywordsPredicate("employee"));
         Person employeeInList = model.getFilteredPersonList().get(0);
         assertCommandFailure(new AddCommand(employeeInList), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
     public void execute_duplicateSupplier_throwsCommandException() {
-        model.updateFilteredPersonList(new RoleContainsKeywordsPredicate("supplier"));
+        model.stackFilters(new RoleContainsKeywordsPredicate("supplier"));
         Person supplierInList = model.getFilteredPersonList().get(0);
         assertCommandFailure(new AddCommand(supplierInList), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }

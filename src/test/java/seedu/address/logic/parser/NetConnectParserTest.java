@@ -30,10 +30,11 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.ShowRelatedCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PhoneContainsDigitsPredicate;
 import seedu.address.model.person.Remark;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
+import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -58,7 +59,7 @@ public class NetConnectParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(PersonUtil.getDeleteCommand(ALICE));
-        assertEquals(new DeleteCommand(ALICE.getId()), command);
+        assertEquals(DeleteCommand.byId(ALICE.getId()), command);
     }
 
     @Test
@@ -80,7 +81,8 @@ public class NetConnectParserTest {
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+                FindCommand.COMMAND_WORD + " " + keywords.stream()
+                        .map(s -> "n/" + s).collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
     }
 

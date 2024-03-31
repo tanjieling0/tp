@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -12,7 +11,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.Filter;
+import seedu.address.model.person.filter.NetConnectPredicate;
 import seedu.address.model.util.IdTuple;
 import seedu.address.model.util.RelatedList;
 
@@ -25,6 +27,7 @@ public class ModelManager implements Model {
     private final NetConnect netConnect;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private Filter filter = Filter.noFilter();
 
     private final RelatedList relatedIdList;
 
@@ -118,6 +121,18 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public int countPersonsWithName(Name name) {
+        requireNonNull(name);
+        return netConnect.countPersonsWithName(name);
+    }
+
+    @Override
+    public Person getPersonByName(Name name) {
+        requireNonNull(name);
+        return netConnect.getPersonByName(name);
+    }
+
+    @Override
     public void deletePerson(Person target) {
         netConnect.removePerson(target);
     }
@@ -125,7 +140,7 @@ public class ModelManager implements Model {
     @Override
     public void addPerson(Person person) {
         netConnect.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        clearFilter();
     }
 
     @Override
@@ -174,9 +189,22 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Person> predicate) {
+    public void clearFilter() {
+        filter = Filter.noFilter();
+        filteredPersons.setPredicate(filter);
+    }
+
+    @Override
+    public void stackFilters(NetConnectPredicate<Person> predicate) {
         requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
+
+        filter = filter.add(predicate);
+        filteredPersons.setPredicate(filter);
+    }
+
+    @Override
+    public String printFilters() {
+        return filter.formatFilter();
     }
 
     @Override
