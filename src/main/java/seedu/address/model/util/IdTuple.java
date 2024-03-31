@@ -24,7 +24,7 @@ public class IdTuple {
     // needs a checker for if id is valid, construct the person tuple, and have an overloaded constructor
 
     public Id getFirstPersonId() {
-        return secondPersonId;
+        return firstPersonId;
     }
 
     public Id getSecondPersonId() {
