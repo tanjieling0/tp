@@ -105,6 +105,30 @@ public class UniquePersonListTest {
     }
 
     @Test
+    public void countPersonsWithName_nullName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniquePersonList.countPersonsWithName(null));
+    }
+
+    @Test
+    public void countPersonsWithName_emptyList_returnsZero() {
+        assertEquals(0, uniquePersonList.countPersonsWithName(ALICE.getName()));
+    }
+
+    @Test
+    public void countPersonsWithName_oneNameInList_returnsOne() {
+        uniquePersonList.add(ALICE);
+        assertEquals(1, uniquePersonList.countPersonsWithName(ALICE.getName()));
+    }
+
+    @Test
+    public void countPersonsWithName_mixedCase_returnsTwo() {
+        Person editedAlice = new ClientBuilder(ALICE).withId(2).withName("alicE pauLiNe").build();
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(editedAlice);
+        assertEquals(2, uniquePersonList.countPersonsWithName(ALICE.getName()));
+    }
+
+    @Test
     public void getPersonByName_nullName_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> uniquePersonList.getPersonByName(null));
     }
@@ -115,9 +139,22 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void getPersonByName_oneNameInList_returnsPerson() {
+    public void getPersonByName_partialMatch_throwsPersonNotFoundException() {
+        uniquePersonList.add(ALICE);
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonByName(new Name("Alice")));
+    }
+
+    @Test
+    public void getPersonByName_oneNameInListExactCaseMatch_returnsPerson() {
         uniquePersonList.add(ALICE);
         assertEquals(ALICE, uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_oneNameInListMixedCase_returnsPerson() {
+        Person editedAlice = new ClientBuilder(ALICE).withName("alicE pauLiNe").build();
+        uniquePersonList.add(editedAlice);
+        assertEquals(editedAlice, uniquePersonList.getPersonByName(ALICE.getName()));
     }
 
     @Test
