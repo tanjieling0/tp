@@ -24,7 +24,7 @@ public class DeleteCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person with the specified id or name\n"
             + "Either only id or name must be provided\n"
-            + "Name has to be an exact match, and is case sensitive\n"
+            + "Name has to be an exact match, but is case-insensitive\n"
             + "Parameters: "
             + PREFIX_ID + "[ID] "
             + PREFIX_NAME + "[NAME]\n"
