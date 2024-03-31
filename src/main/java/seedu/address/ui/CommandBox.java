@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.storage.TextStateStorage.getFilePath;
-
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -41,7 +39,7 @@ public class CommandBox extends UiPart<Region> {
             commandTextField.setText(stateStorage.readState());
             commandTextField.end();
         } catch (DataLoadingException e) {
-            logger.warning("State file at " + getFilePath() + " could not be loaded."
+            logger.warning("State file at " + stateStorage.getStateStorageFilePath() + " could not be loaded."
                     + " Starting with an empty command box.");
         }
 

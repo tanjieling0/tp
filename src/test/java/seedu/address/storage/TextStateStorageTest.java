@@ -24,7 +24,7 @@ public class TextStateStorageTest {
         this.textStateStorage = new TextStateStorage();
     }
     @AfterAll
-    public static void tearDown() {
+    public static void tearDown() throws IOException {
         clearState();
     }
 
@@ -36,8 +36,8 @@ public class TextStateStorageTest {
 
     @Test
     public void getFilePath_successfullyReturned() {
-        assertNotNull(TextStateStorage.getFilePath());
-        assertEquals(Paths.get("./data/state.txt"), TextStateStorage.getFilePath());
+        assertNotNull(textStateStorage.getStateStorageFilePath());
+        assertEquals(Paths.get("./data/state.txt"), textStateStorage.getStateStorageFilePath());
 
     }
 
@@ -53,7 +53,7 @@ public class TextStateStorageTest {
 
 
     @Test
-    public void loadState_emptyFile_successfullyLoaded() throws DataLoadingException {
+    public void loadState_emptyFile_successfullyLoaded() throws DataLoadingException, IOException {
         clearState();
         String expected = "";
         String actual = textStateStorage.readState();
@@ -61,7 +61,7 @@ public class TextStateStorageTest {
     }
 
     @Test
-    public void getLastCommand_emptyFile_successfullyLoaded() throws DataLoadingException {
+    public void getLastCommand_emptyFile_successfullyLoaded() throws DataLoadingException, IOException {
         clearState();
         String expected = "";
         String actual = textStateStorage.readState();
@@ -90,13 +90,13 @@ public class TextStateStorageTest {
     }
 
     @Test
-    public void loadFromFile_fileDoesNotExist_handlesDataLoadingException() {
+    public void loadFromFile_fileDoesNotExist_handlesDataLoadingException() throws IOException {
         deleteStateStorage();
         assertThrows(DataLoadingException.class, () -> textStateStorage.readState());
     }
 
     @Test
-    public void isStateStorageExists_fileDoesNotExist_returnsFalse() {
+    public void isStateStorageExists_fileDoesNotExist_returnsFalse() throws IOException {
         deleteStateStorage();
         assertEquals(false, TextStateStorage.isStateStorageExists());
     }

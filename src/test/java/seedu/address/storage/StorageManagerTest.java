@@ -51,6 +51,11 @@ public class StorageManagerTest {
     }
 
     @Test
+    public void getUserPrefsFilePath() {
+        assertNotNull(storageManager.getUserPrefsFilePath());
+    }
+
+    @Test
     public void netConnectReadSave() throws Exception {
         /*
          * Note: This is an integration test that verifies the StorageManager is
@@ -70,4 +75,23 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getNetConnectFilePath());
     }
 
+    @Test
+    public void stateReadSave() throws Exception {
+        /*
+         * Note: This is an integration test that verifies the StorageManager is
+         * properly wired to the
+         * {@link TextStateStorage} class.
+         * More extensive testing of state saving/reading is done in {@link
+         * TextStateStorageTest} class.
+         */
+        String original = "dummy state";
+        storageManager.saveState(original);
+        String retrieved = storageManager.readState();
+        assertEquals(original, retrieved);
+    }
+
+    @Test
+    public void getStateStorageFilePath() {
+        assertNotNull(storageManager.getStateStorageFilePath());
+    }
 }

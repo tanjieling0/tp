@@ -46,15 +46,10 @@ public class TextStateStorage implements StateStorage {
     /**
      * Clears all the text in the state storage file.
      */
-    public static void clearState() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH_STRING))) {
-            writer.write("");
-        } catch (IOException e) {
-            logger.info("Error clearing state text: " + e.getMessage());
-            logger.info("Starting with a clean slate...");
-            deleteStateStorage();
-            TextStateStorage textStateStorage = new TextStateStorage();
-        }
+    public static void clearState() throws IOException {
+        Path filePath = Paths.get(FILE_PATH_STRING);
+        Files.delete(filePath);
+        Files.createFile(filePath);
     }
 
     /**
@@ -69,12 +64,8 @@ public class TextStateStorage implements StateStorage {
     /**
      * Deletes the entire state storage file.
      */
-    public static void deleteStateStorage() {
-        try {
-            Files.delete(FILE_PATH);
-        } catch (IOException e) {
-            logger.info("Error deleting state file: " + e.getMessage());
-        }
+    public static void deleteStateStorage() throws IOException {
+        Files.delete(FILE_PATH);
     }
 
     /**
@@ -109,18 +100,12 @@ public class TextStateStorage implements StateStorage {
         return lastCommand;
     }
 
-
-    public Path getStateStorageFilePath() {
-        return FILE_PATH;
-    }
-
-
     /**
      * Returns the location of the state file.
      *
      * @return The path of the state file.
      */
-    public static Path getFilePath() {
+    public Path getStateStorageFilePath() {
         return FILE_PATH;
     }
 
