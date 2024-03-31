@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -14,6 +15,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
 import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
@@ -31,7 +33,8 @@ public class FindCommandParser implements Parser<FindCommand> {
      */
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG, PREFIX_ROLE);
+        ArgumentMultimap argMultimap = ArgumentTokenizer
+                .tokenize(args, PREFIX_NAME, PREFIX_TAG, PREFIX_ROLE, PREFIX_REMARK);
         argMultimap.verifyOnlyOnePrefix();
 
         return new FindCommand(createPredicate(argMultimap));
@@ -63,6 +66,9 @@ public class FindCommandParser implements Parser<FindCommand> {
                 throw new ParseException("Role can only be employee, client, or supplier");
             }
             return new RoleContainsKeywordsPredicate(roles);
+        } else if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
+            List<String> remarks = argMultimap.getAllValues(PREFIX_REMARK);
+            return new RemarkContainsKeywordsPredicate(remarks);
         } else {
             // no field provided
             throw new ParseException(
