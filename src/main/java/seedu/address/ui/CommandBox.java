@@ -38,7 +38,7 @@ public class CommandBox extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
 
         try {
-            commandTextField.setText(stateStorage.readState().orElse(""));
+            commandTextField.setText(stateStorage.readState());
             commandTextField.end();
         } catch (DataLoadingException e) {
             logger.warning("State file at " + getFilePath() + " could not be loaded."

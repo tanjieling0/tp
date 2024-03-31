@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import seedu.address.MainApp;
@@ -95,9 +94,7 @@ public class TextStateStorage implements StateStorage {
      * @return The last input in the command box, or and empty string if not found.
      * @throws DataLoadingException If the file is not found or cannot be read.
      */
-    public Optional<String> readState() throws DataLoadingException {
-        logger.info("Loading state from " + FILE_PATH + "...");
-
+    public String readState() throws DataLoadingException {
         String lastCommand = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH_STRING))) {
             String data = reader.readLine();
@@ -109,7 +106,7 @@ public class TextStateStorage implements StateStorage {
         } catch (IOException e) {
             throw new DataLoadingException(e);
         }
-        return Optional.of(lastCommand);
+        return lastCommand;
     }
 
 

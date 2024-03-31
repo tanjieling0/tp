@@ -30,7 +30,7 @@ public interface Storage extends NetConnectStorage, UserPrefsStorage, StateStora
     void saveNetConnect(ReadOnlyNetConnect netConnect) throws IOException;
 
     @Override
-    Optional<String> readState() throws DataLoadingException;
+    String readState() throws DataLoadingException;
 
     @Override
     void saveState(String input) throws IOException;

@@ -2,7 +2,6 @@ package seedu.address.storage;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataLoadingException;
 
@@ -21,7 +20,7 @@ public interface StateStorage {
      *
      * @throws DataLoadingException if the loading of data from preference file failed.
      */
-    Optional<String> readState() throws DataLoadingException;
+    String readState() throws DataLoadingException;
 
     /**
      * Saves the given string retrieved from the command box to the state storage.
