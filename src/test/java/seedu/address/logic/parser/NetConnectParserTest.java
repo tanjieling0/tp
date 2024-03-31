@@ -8,7 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
 import java.util.Arrays;
@@ -66,7 +65,7 @@ public class NetConnectParserTest {
         Person person = new ClientBuilder().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + PREFIX_ID + "1" + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+                + PREFIX_ID + "1 " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
         assertEquals(new EditCommand(ID_FIRST_PERSON, descriptor), command);
     }
 
@@ -108,8 +107,8 @@ public class NetConnectParserTest {
     public void parseCommand_remark() throws Exception {
         final Remark remark = new Remark("Some remark.");
         RemarkCommand command = (RemarkCommand) parser.parseCommand(RemarkCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_REMARK + remark.value);
-        assertEquals(new RemarkCommand(INDEX_FIRST_PERSON, remark), command);
+                + PREFIX_ID + "1 " + PREFIX_REMARK + remark.value);
+        assertEquals(new RemarkCommand(ID_FIRST_PERSON, remark), command);
     }
 
     @Test

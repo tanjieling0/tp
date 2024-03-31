@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.getErrorMessageForDuplicatePrefixes;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
@@ -9,6 +11,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.model.person.Id;
 
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
@@ -38,7 +41,29 @@ public class DeleteCommandParserTest {
     }
 
     @Test
+    public void parse_invalidId_throwsParseException() {
+        // zero id
+        assertParseFailure(parser, " i/0", Id.MESSAGE_CONSTRAINTS);
+
+        // negative id
+        assertParseFailure(parser, " i/-5", Id.MESSAGE_CONSTRAINTS);
+
+        // non numerical id
+        assertParseFailure(parser, " i/one", Id.MESSAGE_CONSTRAINTS);
+
+        // empty id
+        assertParseFailure(parser, " i/", Id.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_duplicatePrefix_throwsParseException() {
+        // zero id
+        assertParseFailure(parser, " i/1 i/2", String.format(getErrorMessageForDuplicatePrefixes(PREFIX_ID)));
+    }
+
+    @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, " a",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 }

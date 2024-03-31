@@ -28,7 +28,8 @@ public class DeleteCommand extends Command {
             + "Parameters: "
             + PREFIX_ID + "[ID] "
             + PREFIX_NAME + "[NAME]\n"
-            + "Example: " + COMMAND_WORD + " i/1 "
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_ID + "1 "
             + "or " + COMMAND_WORD + " n/John";
     public static final String MESSAGE_DUPLICATE_NAME_USAGE = "%1d %2$s found!\n"
             + "Use id to delete instead\n"
