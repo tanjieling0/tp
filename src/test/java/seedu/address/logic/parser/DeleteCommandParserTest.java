@@ -44,7 +44,7 @@ public class DeleteCommandParserTest {
     }
 
     @Test
-    public void parse_repeatedId_throwsParseException() {
+    public void parse_duplicatePrefix_throwsParseException() {
         // zero id
         assertParseFailure(parser, " i/1 i/2", String.format(getErrorMessageForDuplicatePrefixes(PREFIX_ID)));
     }
