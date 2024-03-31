@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 
 import java.util.List;
 
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -41,5 +42,26 @@ public class ShowRelatedCommand extends Command {
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof ShowRelatedCommand)) {
+            return false;
+        }
+
+        ShowRelatedCommand otherCommand = (ShowRelatedCommand) other;
+        return id.equals(otherCommand.id);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("id", id)
+                .toString();
     }
 }

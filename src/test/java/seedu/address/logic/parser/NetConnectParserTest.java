@@ -28,6 +28,7 @@ import seedu.address.logic.commands.FindNumCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RemarkCommand;
+import seedu.address.logic.commands.ShowRelatedCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
@@ -109,6 +110,12 @@ public class NetConnectParserTest {
         RemarkCommand command = (RemarkCommand) parser.parseCommand(RemarkCommand.COMMAND_WORD + " "
                 + PREFIX_ID + "1 " + PREFIX_REMARK + remark.value);
         assertEquals(new RemarkCommand(ID_FIRST_PERSON, remark), command);
+    }
+
+    @Test
+    public void parseCommand_showRelated() throws Exception {
+        assertTrue(
+                parser.parseCommand(ShowRelatedCommand.COMMAND_WORD + " i/3") instanceof ShowRelatedCommand);
     }
 
     @Test

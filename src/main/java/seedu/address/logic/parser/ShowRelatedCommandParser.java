@@ -20,15 +20,21 @@ public class ShowRelatedCommandParser implements Parser<ShowRelatedCommand> {
      */
     public ShowRelatedCommand parse(String args) throws ParseException {
         requireNonNull(args);
+
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ID);
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_ID);
 
         if (argMultimap.getValue(PREFIX_ID).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ShowRelatedCommand.MESSAGE_USAGE));
         }
-        Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
 
-        return new ShowRelatedCommand(id);
+        try {
+            Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
+            return new ShowRelatedCommand(id);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, ShowRelatedCommand.MESSAGE_USAGE), pe);
+        }
     }
 }
 
