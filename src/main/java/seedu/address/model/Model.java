@@ -10,8 +10,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.util.IdTuple;
 import seedu.address.model.util.RelatedList;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * The API of the Model component.
  */
@@ -121,5 +119,5 @@ public interface Model {
 
     void addRelatedIdTuple(IdTuple idTuple);
 
-    public RelatedList getRelatedIdTuples();
+    RelatedList getRelatedIdTuples();
 }

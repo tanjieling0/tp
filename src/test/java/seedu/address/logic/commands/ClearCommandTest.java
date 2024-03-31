@@ -9,6 +9,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.NetConnect;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.util.RelatedList;
 
 public class ClearCommandTest {
 
@@ -22,8 +23,8 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyNetConnect_success() {
-        Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
-        Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+        Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.setNetConnect(new NetConnect());
 
         assertCommandSuccess(new ClearCommand(), model, ClearCommand.MESSAGE_SUCCESS, expectedModel);

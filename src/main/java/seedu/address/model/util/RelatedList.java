@@ -2,10 +2,8 @@ package seedu.address.model.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Id;
 
 /**
@@ -64,7 +62,12 @@ public class RelatedList {
         return relatedPersons.get(index);
     }
 
-
+    /**
+     * Adds a related person to the list.
+     *
+     * @param idTuple The related person to be added.
+     * @return True if the related person is added, false otherwise.
+     */
     public boolean allowAddIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
         for (IdTuple oneIdTuple : relatedPersons) {
@@ -76,6 +79,12 @@ public class RelatedList {
         return false;
     }
 
+    /**
+     * Checks if the list contains the related person.
+     *
+     * @param idTuple The related person to be checked.
+     * @return True if the related person is in the list, false otherwise.
+     */
     public boolean hasId(IdTuple idTuple) {
         requireNonNull(idTuple);
         for (IdTuple oneIdTuple : relatedPersons) {
@@ -86,6 +95,12 @@ public class RelatedList {
         return false;
     }
 
+    /**
+     * Adds a related person to the list.
+     *
+     * @param idTuple The related person to be added.
+     * @return True if the related person is added, false otherwise.
+     */
     public boolean remove(IdTuple idTuple) {
         requireNonNull(idTuple);
         return relatedPersons.remove(idTuple);

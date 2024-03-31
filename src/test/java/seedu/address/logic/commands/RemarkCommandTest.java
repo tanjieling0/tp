@@ -23,6 +23,7 @@ import seedu.address.model.person.Client;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 
 /**
@@ -30,7 +31,8 @@ import seedu.address.testutil.ClientBuilder;
  */
 public class RemarkCommandTest {
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private static final String REMARK_STUB = "Some remark";
 
     @Test
     public void execute_addRemarkUnfilteredList_success() {
@@ -41,7 +43,9 @@ public class RemarkCommandTest {
 
         String expectedMessage = String.format(RemarkCommand.MESSAGE_ADD_REMARK_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(remarkCommand, model, expectedMessage, expectedModel);
@@ -57,7 +61,9 @@ public class RemarkCommandTest {
         String expectedMessage = String.format(
                 RemarkCommand.MESSAGE_DELETE_REMARK_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(remarkCommand, model, expectedMessage, expectedModel);
@@ -74,7 +80,9 @@ public class RemarkCommandTest {
 
         String expectedMessage = String.format(RemarkCommand.MESSAGE_ADD_REMARK_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(remarkCommand, model, expectedMessage, expectedModel);
@@ -91,7 +99,9 @@ public class RemarkCommandTest {
 
         String expectedMessage = String.format(RemarkCommand.MESSAGE_ADD_REMARK_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(firstPerson, editedPerson);
         showAllPersons(expectedModel);
 
@@ -114,7 +124,9 @@ public class RemarkCommandTest {
         Id outOfBoundId = Id.generateNextId();
         RemarkCommand remarkCommand = new RemarkCommand(outOfBoundId, new Remark(VALID_REMARK_AMY));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         showAllPersons(expectedModel);
 
         assertCommandFailure(remarkCommand, model,
@@ -156,7 +168,9 @@ public class RemarkCommandTest {
 
         String expectedMessage = String.format(RemarkCommand.MESSAGE_ADD_REMARK_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(remarkCommand, model, expectedMessage, expectedModel);

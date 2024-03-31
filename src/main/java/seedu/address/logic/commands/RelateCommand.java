@@ -9,7 +9,6 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.IdContainsDigitsPredicate;
 import seedu.address.model.util.IdTuple;
-import seedu.address.storage.RelateStorage;
 
 /**
  * Finds and lists all persons in address book whose ID contains any of the argument IDs.

@@ -27,7 +27,6 @@ public class RelateStorage {
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
     private static RelatedList relatedIdTuples;
-    
     /**
      * Constructor for the storage.
      * <p>

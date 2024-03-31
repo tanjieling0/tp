@@ -151,7 +151,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void addRelatedIdTuple(IdTuple idTuple)  {
+    public void addRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
         relatedIdList.allowAddIdTuple(idTuple);
     }

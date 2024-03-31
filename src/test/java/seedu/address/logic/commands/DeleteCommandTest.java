@@ -20,6 +20,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -27,7 +28,7 @@ import seedu.address.model.person.Person;
  */
 public class DeleteCommandTest {
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
 
     @Test
     public void execute_validIdUnfilteredList_success() {
@@ -37,7 +38,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -62,7 +63,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
         showNoPerson(expectedModel);
 
@@ -79,7 +80,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
         showAllPersons(expectedModel);
 

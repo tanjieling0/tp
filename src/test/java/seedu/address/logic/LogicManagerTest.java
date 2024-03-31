@@ -21,6 +21,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.util.RelatedList;
 import seedu.address.storage.JsonNetConnectStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.RelateStorage;
@@ -117,7 +118,7 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(
             String inputCommand, Class<? extends Throwable> expectedException, String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
