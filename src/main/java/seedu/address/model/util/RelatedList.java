@@ -3,6 +3,7 @@ package seedu.address.model.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import seedu.address.model.person.Id;
 
@@ -104,6 +105,36 @@ public class RelatedList {
     public boolean remove(IdTuple idTuple) {
         requireNonNull(idTuple);
         return relatedPersons.remove(idTuple);
+    }
+
+
+    /**
+     * Retrieves all related IDs from the RelatedList.
+     *
+     * @param relatedList The list of related persons.
+     * @param id The ID to be checked.
+     * @return The list of related IDs.
+     */
+    public List<Integer> getAllRelatedIds(RelatedList relatedList, Id id) {
+        List<Integer> relatedIds = new ArrayList<>();
+
+        // Iterate through all IdTuple objects in the RelatedList
+        for (int i = 0; i < relatedList.size(); i++) {
+            assert i >= 0 && i < relatedList.size();
+            System.out.println(i);
+
+            IdTuple idTuple = relatedList.get(i);
+            System.out.println(idTuple);
+
+            // Check if the provided ID matches either the first or the second ID in the tuple
+            if (idTuple.getFirstPersonId().equals(id)) {
+                relatedIds.add(idTuple.getSecondPersonId().value);
+            } else if (idTuple.getSecondPersonId().equals(id)) {
+                relatedIds.add(idTuple.getFirstPersonId().value);
+            }
+        }
+        System.out.println(relatedIds);
+        return relatedIds;
     }
 
     public int size() {
