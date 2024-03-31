@@ -21,6 +21,7 @@ import seedu.address.model.NetConnect;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.util.RelatedList;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.JsonNetConnectStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -60,10 +61,11 @@ public class MainApp extends Application {
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         NetConnectStorage netConnectStorage = new JsonNetConnectStorage(userPrefs.getNetConnectFilePath());
         RelateStorage relateStorage = new RelateStorage();
-        relateStorage.loadRelate();
+        RelatedList relatedList = initRelations(relateStorage);
+
         storage = new StorageManager(netConnectStorage, userPrefsStorage, relateStorage);
 
-        model = initModelManager(storage, userPrefs);
+        model = initModelManager(storage, userPrefs, relatedList);
 
         logic = new LogicManager(model, storage);
 
@@ -78,7 +80,7 @@ public class MainApp extends Application {
      * or an empty address book will be used instead if errors occur when reading
      * {@code storage}'s address book.
      */
-    private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
+    private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs, RelatedList relatedList) {
         logger.info("Using data file : " + storage.getNetConnectFilePath());
 
         Optional<ReadOnlyNetConnect> netConnectOptional;
@@ -96,7 +98,7 @@ public class MainApp extends Application {
             initialData = new NetConnect();
         }
 
-        return new ModelManager(initialData, userPrefs);
+        return new ModelManager(initialData, userPrefs, relatedList);
     }
 
     private void initLogging(Config config) {
@@ -141,6 +143,23 @@ public class MainApp extends Application {
             logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
         }
         return initializedConfig;
+    }
+
+    /**
+     * Returns a {@code RelatedList} using the file at {@code storage}'s related list
+     * file path,
+     * or a new {@code RelatedList} with default configuration if errors occur when
+     * reading from the file.
+     */
+    protected RelatedList initRelations(RelateStorage storage) {
+        RelatedList initializedRelations;
+        try {
+            initializedRelations = storage.loadRelate();
+        } catch (DataLoadingException e) {
+            logger.warning("Relations file could not be loaded. Using default relations.");
+            initializedRelations = new RelatedList();
+        }
+        return initializedRelations;
     }
 
     /**

@@ -33,12 +33,21 @@ public class RelateCommandParser implements Parser<RelateCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         }
 
-        // Check if all IDs in input are valid
-        for (String idInList : providedIds) {
-            ParserUtil.parseId(idInList);
+        String[] pureIds = new String[2];
+
+        for (int i = 0; i < providedIds.length; i++) {
+            String[] flagAndId = providedIds[i].split("/");
+            // find and validate flag
+            if (flagAndId[0].equals("i")) {
+                ParserUtil.parseId(flagAndId[1]);
+                pureIds[i] = flagAndId[1];
+            } else {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
+            }
         }
 
-        Integer[] providedIdsAsInt = Arrays.stream(providedIds).map(Integer::parseInt).toArray(Integer[]::new);
+        Integer[] providedIdsAsInt = Arrays.stream(pureIds).map(Integer::parseInt).toArray(Integer[]::new);
 
         return new RelateCommand(new IdContainsDigitsPredicate(Arrays.asList(providedIdsAsInt)));
     }

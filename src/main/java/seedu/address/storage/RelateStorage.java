@@ -1,5 +1,7 @@
 package seedu.address.storage;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -13,7 +15,6 @@ import java.util.logging.Logger;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
-import seedu.address.model.util.IdTuple;
 import seedu.address.model.util.RelatedList;
 
 /**
@@ -26,15 +27,13 @@ public class RelateStorage {
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
     private static RelatedList relatedIdTuples;
-
+    
     /**
      * Constructor for the storage.
      * <p>
      * The constructor creates a new file and/or directory if the filepath for ./data/relate.txt does not exist.
      */
     public RelateStorage() {
-        assert !filePath.isBlank() : "the file path should not be blank";
-
         relatedIdTuples = new RelatedList();
 
         try {
@@ -44,63 +43,11 @@ public class RelateStorage {
             if (!Files.exists(FILE_PATH)) {
                 Files.createFile(FILE_PATH);
             }
+            relatedIdTuples = loadRelate();
         } catch (IOException e) {
             logger.info("Error clearing creating relate storage: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Adds a new related person tuple to the list of related persons.
-     *
-     * @param idTuple The id tuple to be added.
-     */
-    public static void addRelatedIdTuple(IdTuple idTuple) {
-        assert idTuple != null : "idTuple should not be null";
-        relatedIdTuples.add(idTuple);
-    }
-
-    /**
-     * Removes a related person tuple from the list of related persons.
-     *
-     * @param idTuple The id tuple to be removed.
-     */
-    public static void removeRelatedIdTuple(IdTuple idTuple) {
-        assert idTuple != null : "idTuple should not be null";
-        relatedIdTuples.remove(idTuple);
-    }
-
-
-    /**
-     * Clears all the text in the relate storage file.
-     */
-    public static void clearRelate() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write("");
-        } catch (IOException e) {
-            logger.info("Error clearing relate text: " + e.getMessage());
-            logger.info("Starting with a clean slate...");
-            deleteRelateStorage();
-            RelateStorage relateStorage = new RelateStorage();
-        }
-    }
-
-    /**
-     * Checks if the relate storage file exists.
-     *
-     * @return True if the file exists, else false.
-     */
-    public static boolean isRelateStorageExists() {
-        return Files.exists(FILE_PATH);
-    }
-
-    /**
-     * Deletes the entire relate storage file.
-     */
-    public static void deleteRelateStorage() {
-        try {
-            Files.delete(FILE_PATH);
-        } catch (IOException e) {
-            logger.info("Error deleting relate file: " + e.getMessage());
+        } catch (DataLoadingException e) {
+            logger.info("Error loading relate storage: " + e.getMessage());
         }
     }
 
@@ -108,7 +55,8 @@ public class RelateStorage {
      * Saves the RelateList to the relate storage by writing to the file.
      *
      */
-    public static void writeRelate() {
+    public void writeRelate(RelatedList relatedIdTuples) {
+        requireNonNull(relatedIdTuples);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(relatedIdTuples.toString());
         } catch (IOException e) {
@@ -117,11 +65,11 @@ public class RelateStorage {
     }
 
     /**
-     * Retrieves the past relate of the command box if found, else it will return an empty command.
+     * Retrieves the past related from FILE_PATH if found, else it will return an empty RelatedList.
      *
      * @throws DataLoadingException If the file is not found or cannot be read.
      */
-    public void loadRelate() throws DataLoadingException {
+    public RelatedList loadRelate() throws DataLoadingException {
         logger.info("Loading relate from " + FILE_PATH + "...");
 
         RelatedList relatedListTemp = new RelatedList();
@@ -138,32 +86,7 @@ public class RelateStorage {
             throw new DataLoadingException(e);
         }
         relatedIdTuples = relatedListTemp.toArrayList(storedIdList);
-    }
 
-    /**
-     * Returns the location of the relate file.
-     *
-     * @return The path of the relate file.
-     */
-    public static Path getFilePath() {
-        return FILE_PATH;
-    }
-
-    /**
-     * Returns the location of the relate file as a String.
-     *
-     * @return The path of the relate file as a String.
-     */
-    public static String getFilePathString() {
-        return filePath;
-    }
-
-    /**
-     * Returns the location of the relate directory.
-     *
-     * @return The path of the relate directory.
-     */
-    public static Path getDirectoryPath() {
-        return DIRECTORY_PATH;
+        return relatedIdTuples;
     }
 }

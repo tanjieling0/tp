@@ -60,7 +60,7 @@ public class RelateCommand extends Command {
         } else {
             model.addRelatedIdTuple(tuple);
             // update storage
-            RelateStorage.writeRelate(model.getRelatedIdTuples());
+            // relateStorage.writeRelate(model.getRelatedIdTuples());
             return new CommandResult(
                     String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
         }

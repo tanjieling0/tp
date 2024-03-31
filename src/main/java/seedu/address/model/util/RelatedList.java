@@ -18,8 +18,8 @@ public class RelatedList {
         relatedPersons = new ArrayList<>();
     }
 
-    public ArrayList<IdTuple> getRelatedIdList() {
-        return relatedPersons;
+    public RelatedList getRelatedIdList() {
+        return this;
     }
 
     /**
@@ -29,7 +29,7 @@ public class RelatedList {
      */
     public RelatedList toArrayList(String string) {
         RelatedList relatedList = new RelatedList();
-        if (string.equals("")) {
+        if (string.equals("") || string.equals("[]")) {
             return relatedList;
         }
         string = string.replace("]", "").replace("[", "");
@@ -65,24 +65,30 @@ public class RelatedList {
     }
 
 
-    public void add(IdTuple idTuple) {
+    public boolean allowAddIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
+        for (IdTuple oneIdTuple : relatedPersons) {
+            if (oneIdTuple.equals(idTuple)) {
+                return true;
+            }
+        }
         relatedPersons.add(idTuple);
+        return false;
     }
 
-    public boolean contains(Object o) {
-        requireNonNull(o);
-        for (IdTuple idTuple : relatedPersons) {
-            if (idTuple.equals(o)) {
+    public boolean hasId(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        for (IdTuple oneIdTuple : relatedPersons) {
+            if (oneIdTuple.equals(idTuple)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean remove(Object o) {
-        requireNonNull(o);
-        return relatedPersons.remove(o);
+    public boolean remove(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return relatedPersons.remove(idTuple);
     }
 
     public int size() {
@@ -93,7 +99,6 @@ public class RelatedList {
         return relatedPersons.isEmpty();
     }
 
-    @Override
     public String toString() {
         return relatedPersons.toString();
     }
