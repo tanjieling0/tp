@@ -33,6 +33,7 @@ public class DeleteCommand extends Command {
             + "or " + COMMAND_WORD + " n/John";
     public static final String MESSAGE_DUPLICATE_NAME_USAGE = "%1d %2$s found!\n"
             + "Use id to delete instead\n"
+            + COMMAND_WORD + ": Deletes the person with the specified id\n"
             + "Parameters: "
             + PREFIX_ID + "[ID]\n"
             + "Example: " + COMMAND_WORD + " i/1";
@@ -74,26 +75,7 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
         assert targetId != null ^ targetName != null;
 
-        Person personToDelete;
-
-        if (targetId != null) {
-            if (!model.hasId(targetId)) {
-                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
-                throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
-            }
-            personToDelete = model.getPersonById(targetId);
-        } else {
-            int count = model.countPersonsWithName(targetName);
-            if (count < 1) {
-                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
-                throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_NAME, targetName.fullName));
-            }
-            if (count > 1) {
-                model.updateFilteredPersonList(p -> p.getName().equals(targetName));
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_NAME_USAGE, count, targetName.fullName));
-            }
-            personToDelete = model.getPersonByName(targetName);
-        }
+        Person personToDelete = getPersonToDelete(model);
 
         boolean showList = !model.getFilteredPersonList().contains(personToDelete);
         model.deletePerson(personToDelete);
@@ -101,6 +83,30 @@ public class DeleteCommand extends Command {
             model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
         }
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
+    }
+
+    private Person getPersonToDelete(Model model) throws CommandException {
+        assert targetId != null ^ targetName != null;
+
+        if (targetId != null) {
+            if (!model.hasId(targetId)) {
+                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
+            }
+            return model.getPersonById(targetId);
+        } else {
+            int count = model.countPersonsWithName(targetName);
+            if (count < 1) {
+                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_NAME, targetName.fullName));
+            }
+            if (count > 1) {
+                model.updateFilteredPersonList(
+                        p -> p.getName().fullName.equalsIgnoreCase(targetName.fullName));
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_NAME_USAGE, count, targetName.fullName));
+            }
+            return model.getPersonByName(targetName);
+        }
     }
 
     @Override

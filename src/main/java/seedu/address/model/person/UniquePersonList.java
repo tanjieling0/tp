@@ -58,15 +58,17 @@ public class UniquePersonList implements Iterable<Person> {
 
     /**
      * Returns true if the list has exactly one {@code Person}
-     * with the specified name.
+     * with the specified name. The check is case-insensitive.
      */
     public int countPersonsWithName(Name toCheck) {
         requireNonNull(toCheck);
-        return (int) internalList.stream().filter(p -> p.getName().equals(toCheck)).count();
+        return (int) internalList.stream()
+                .filter(p -> p.getName().fullName.equalsIgnoreCase(toCheck.fullName)).count();
     }
 
     /**
      * Returns the first Person in the list with the same name as in the given argument.
+     * The match is case-insensitive.
      *
      * @throws PersonNotFoundException if no Person in the list has the {@code name}
      */
@@ -75,7 +77,8 @@ public class UniquePersonList implements Iterable<Person> {
         if (countPersonsWithName(name) != 1) {
             throw new PersonNotFoundException();
         }
-        return internalList.stream().filter(p -> p.getName().equals(name))
+        return internalList.stream()
+                .filter(p -> p.getName().fullName.equalsIgnoreCase(name.fullName))
                 .findFirst().orElseThrow(PersonNotFoundException::new);
     }
 
