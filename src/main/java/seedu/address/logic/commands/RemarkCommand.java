@@ -54,7 +54,7 @@ public class RemarkCommand extends Command {
         requireNonNull(model);
 
         if (!model.hasId(id)) {
-            model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+            model.clearFilter();
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, id.value));
         }
 

@@ -13,6 +13,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NetConnectPredicate;
 
 /**
  * Deletes a person identified using it's displayed index from the address book.
@@ -90,19 +91,19 @@ public class DeleteCommand extends Command {
 
         if (targetId != null) {
             if (!model.hasId(targetId)) {
-                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+                model.clearFilter();
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
             }
             return model.getPersonById(targetId);
         } else {
             int count = model.countPersonsWithName(targetName);
             if (count < 1) {
-                model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+                model.clearFilter();
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_NAME, targetName.fullName));
             }
             if (count > 1) {
-                model.updateFilteredPersonList(
-                        p -> p.getName().fullName.equalsIgnoreCase(targetName.fullName));
+                model.stackFilters(NetConnectPredicate.box(
+                        p -> p.getName().fullName.equalsIgnoreCase(targetName.fullName)));
                 throw new CommandException(String.format(MESSAGE_DUPLICATE_NAME_USAGE, count, targetName.fullName));
             }
             return model.getPersonByName(targetName);
