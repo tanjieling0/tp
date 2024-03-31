@@ -24,6 +24,7 @@ import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NetConnectPredicate;
 import seedu.address.testutil.EmployeeBuilder;
 
 /**
@@ -171,7 +172,7 @@ public class DeleteCommandTest {
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
         expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
-        expectedModel.updateFilteredPersonList(p -> p.getName().equals(ALICE.getName()));
+        expectedModel.stackFilters(NetConnectPredicate.box(p -> p.getName().equals(ALICE.getName())));
 
         assertCommandFailure(deleteCommand, model,
                 String.format(DeleteCommand.MESSAGE_DUPLICATE_NAME_USAGE,
@@ -199,7 +200,7 @@ public class DeleteCommandTest {
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
         expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
-        expectedModel.updateFilteredPersonList(p -> p.getName().equals(ALICE.getName()));
+        expectedModel.stackFilters(NetConnectPredicate.box(p -> p.getName().equals(ALICE.getName())));
 
         assertCommandFailure(deleteCommand, model,
                 String.format(DeleteCommand.MESSAGE_DUPLICATE_NAME_USAGE,
@@ -271,7 +272,7 @@ public class DeleteCommandTest {
      * Updates {@code model}'s filtered list to show no one.
      */
     private void showNoPerson(Model model) {
-        model.updateFilteredPersonList(p -> false);
+        model.stackFilters(NetConnectPredicate.box(p -> false));
 
         assertTrue(model.getFilteredPersonList().isEmpty());
     }

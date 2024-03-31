@@ -80,7 +80,7 @@ public class DeleteCommand extends Command {
         boolean showList = !model.getFilteredPersonList().contains(personToDelete);
         model.deletePerson(personToDelete);
         if (showList) {
-            model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
+            model.clearFilter();
         }
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
     }

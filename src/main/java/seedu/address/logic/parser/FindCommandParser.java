@@ -1,12 +1,20 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.Arrays;
+import java.util.List;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
+import seedu.address.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -20,15 +28,37 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
+        requireNonNull(args);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_TAG);
+        argMultimap.verifyOnlyOnePrefix();
+
+        return new FindCommand(createPredicate(argMultimap));
+    }
+
+    /**
+     * Creates the matching NetConnectPredicate based on the provided values in
+     * the given {@code argMultimap}.
+     *
+     * @throws ParseException if the given values are not valid
+     */
+    private static NetConnectPredicate<Person> createPredicate(
+            ArgumentMultimap argMultimap) throws ParseException {
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
+            List<String> names = argMultimap.getAllValues(PREFIX_NAME);
+            if (!names.stream().allMatch(Name::isValidName)) {
+                throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+            }
+            return new NameContainsKeywordsPredicate(names);
+        } else if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
+            List<String> tags = argMultimap.getAllValues(PREFIX_TAG);
+            if (!tags.stream().allMatch(Tag::isValidTagName)) {
+                throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+            }
+            return new TagsContainsKeywordsPredicate(tags);
+        } else {
+            // no field provided
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
-
-        String[] nameKeywords = trimmedArgs.split("\\s+");
-
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
     }
-
 }
