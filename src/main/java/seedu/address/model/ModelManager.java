@@ -15,6 +15,8 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.Filter;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -27,21 +29,28 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private Filter filter = Filter.noFilter();
 
+    private final RelatedList relatedIdList;
+
     /**
      * Initializes a ModelManager with the given netConnect and userPrefs.
      */
-    public ModelManager(ReadOnlyNetConnect netConnect, ReadOnlyUserPrefs userPrefs) {
-        requireAllNonNull(netConnect, userPrefs);
+    public ModelManager(ReadOnlyNetConnect netConnect, ReadOnlyUserPrefs userPrefs, RelatedList relatedIdList) {
+        requireAllNonNull(netConnect, userPrefs, relatedIdList);
 
-        logger.fine("Initializing with address book: " + netConnect + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: "
+                + netConnect + " , user prefs "
+                + userPrefs + " and relation list "
+                + relatedIdList);
 
         this.netConnect = new NetConnect(netConnect);
         this.userPrefs = new UserPrefs(userPrefs);
+        // not ReadOnly as relatedIdList is mutable and recorded in .txt format
+        this.relatedIdList = relatedIdList;
         filteredPersons = new FilteredList<>(this.netConnect.getPersonList());
     }
 
     public ModelManager() {
-        this(new NetConnect(), new UserPrefs());
+        this(new NetConnect(), new UserPrefs(), new RelatedList());
     }
 
     // =========== UserPrefs
@@ -145,6 +154,26 @@ public class ModelManager implements Model {
     public boolean exportCsv(String filename) {
         requireNonNull(filename);
         return netConnect.exportCsv(filename);
+    }
+
+    // =========== Related List Accessors
+    // =============================================================
+
+    @Override
+    public boolean hasRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return relatedIdList.hasId(idTuple);
+    }
+
+    @Override
+    public void addRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        relatedIdList.allowAddIdTuple(idTuple);
+    }
+
+    @Override
+    public RelatedList getRelatedIdTuples() {
+        return this.relatedIdList;
     }
 
     // =========== Filtered Person List Accessors

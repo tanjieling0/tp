@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.NetConnectBuilder;
 
 public class ModelManagerTest {
@@ -131,10 +132,11 @@ public class ModelManagerTest {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         NetConnect differentNetConnect = new NetConnect();
         UserPrefs userPrefs = new UserPrefs();
+        RelatedList relatedList = new RelatedList();
 
         // same values -> returns true
-        modelManager = new ModelManager(netConnect, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
+        modelManager = new ModelManager(netConnect, userPrefs, relatedList);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs, relatedList);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -147,12 +149,13 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different netConnect -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs, relatedList)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
+
         modelManager.stackFilters(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs, relatedList)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.clearFilter();
@@ -160,6 +163,6 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setNetConnectFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs, relatedList)));
     }
 }
