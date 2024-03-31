@@ -30,9 +30,8 @@ import seedu.address.testutil.ClientBuilder;
  * Contains integration tests (interaction with the Model) and unit tests for RemarkCommand.
  */
 public class RemarkCommandTest {
-
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
     private static final String REMARK_STUB = "Some remark";
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
 
     @Test
     public void execute_addRemarkUnfilteredList_success() {
