@@ -25,6 +25,7 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.EmployeeBuilder;
 
 /**
@@ -33,7 +34,7 @@ import seedu.address.testutil.EmployeeBuilder;
  */
 public class DeleteCommandTest {
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
 
     @Test
     public void execute_validIdUnfilteredList_success() {
@@ -43,7 +44,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -59,7 +60,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
         showNoPerson(expectedModel);
 
@@ -76,7 +77,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
         showAllPersons(expectedModel);
 
@@ -88,7 +89,7 @@ public class DeleteCommandTest {
         Id outOfBoundId = Id.generateNextId();
         DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
 
         assertCommandFailure(deleteCommand, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value), expectedModel);
@@ -101,7 +102,7 @@ public class DeleteCommandTest {
         Id outOfBoundId = Id.generateNextId();
         DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         showAllPersons(expectedModel);
 
         assertCommandFailure(deleteCommand, model,
@@ -116,7 +117,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -132,7 +133,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
         showNoPerson(expectedModel);
 
@@ -149,7 +150,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.deletePerson(personToDelete);
         showAllPersons(expectedModel);
 
@@ -162,7 +163,9 @@ public class DeleteCommandTest {
         Name invalidName = HOON.getName();
         DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
 
-        ModelManager expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
 
         assertCommandFailure(deleteCommand, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName), expectedModel);
@@ -171,7 +174,9 @@ public class DeleteCommandTest {
         model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
-        expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.stackFilters(NetConnectPredicate.box(p -> p.getName().equals(ALICE.getName())));
 
         assertCommandFailure(deleteCommand, model,
@@ -187,7 +192,7 @@ public class DeleteCommandTest {
         Name invalidName = HOON.getName();
         DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         showAllPersons(expectedModel);
 
         assertCommandFailure(deleteCommand, model,
@@ -199,7 +204,7 @@ public class DeleteCommandTest {
         model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
-        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
+        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
         expectedModel.stackFilters(NetConnectPredicate.box(p -> p.getName().equals(ALICE.getName())));
 
         assertCommandFailure(deleteCommand, model,

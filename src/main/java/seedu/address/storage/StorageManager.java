@@ -10,6 +10,7 @@ import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Manages storage of NetConnect data in local storage.
@@ -19,14 +20,18 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private final NetConnectStorage netConnectStorage;
     private final UserPrefsStorage userPrefsStorage;
+    private final RelateStorage relateStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code NetConnectStorage} and
      * {@code UserPrefStorage}.
      */
-    public StorageManager(NetConnectStorage netConnectStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(NetConnectStorage netConnectStorage,
+                          UserPrefsStorage userPrefsStorage,
+                          RelateStorage relateStorage) {
         this.netConnectStorage = netConnectStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.relateStorage = relateStorage;
     }
 
     // ================ UserPrefs methods ==============================
@@ -73,6 +78,17 @@ public class StorageManager implements Storage {
     public void saveNetConnect(ReadOnlyNetConnect netConnect, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         netConnectStorage.saveNetConnect(netConnect, filePath);
+    }
+
+    // ================ Relate methods ==============================
+    @Override
+    public void saveRelate(RelatedList relatedList) {
+        relateStorage.writeRelate(relatedList);
+    }
+
+    @Override
+    public RelatedList readRelate() throws DataLoadingException {
+        return relateStorage.loadRelate();
     }
 
 }

@@ -8,6 +8,7 @@ import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.util.RelatedList;
 
 /**
  * API of the Storage component
@@ -28,5 +29,9 @@ public interface Storage extends NetConnectStorage, UserPrefsStorage {
 
     @Override
     void saveNetConnect(ReadOnlyNetConnect netConnect) throws IOException;
+
+    void saveRelate(RelatedList relatedList);
+
+    RelatedList readRelate() throws DataLoadingException;
 
 }

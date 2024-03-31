@@ -20,14 +20,15 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Contains integration tests (interaction with the Model) for
  * {@code FindNumCommand}.
  */
 public class FindNumCommandTest {
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
-    private final Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private final Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
 
     @Test
     public void equals() {

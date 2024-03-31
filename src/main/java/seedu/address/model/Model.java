@@ -8,6 +8,8 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * The API of the Model component.
@@ -130,4 +132,10 @@ public interface Model {
      * Returns {@code true} if the export operation is successful, {@code false} otherwise.
      */
     boolean exportCsv(String filename);
+
+    boolean hasRelatedIdTuple(IdTuple idTuple);
+
+    void addRelatedIdTuple(IdTuple idTuple);
+
+    RelatedList getRelatedIdTuples();
 }
