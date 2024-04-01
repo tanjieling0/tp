@@ -28,12 +28,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
-        try {
-            Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
-            return new DeleteCommand(id);
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
-        }
+        Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
+        return new DeleteCommand(id);
     }
 
 }

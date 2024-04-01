@@ -4,18 +4,15 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# NetConnect Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
-
 ## **Acknowledgements**
-
 _{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
-
---------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
 
@@ -50,7 +47,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete i/1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -90,7 +87,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete i/1")` API call as an example.
 
 <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
@@ -145,7 +142,8 @@ The `Model` component,
 
 The `Storage` component,
 * can save both netconnect data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `NetConnectStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* it can also save the state of the command box in a file called `state.txt` in the data folder.
+* inherits from both `NetConnectStorage`, `UserPrefStorage` as well as `StateStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -157,6 +155,228 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+   
+### Export Feature
+
+#### Expected Behaviour
+
+The `export` command allows users to export contact data from NetConnect into a CSV file. Users have the option to specify a file name. If no file path is provided, the CSV file is saved as a default name. The command exhibits the following exceptional behaviors:
+
+* If the file name provided is invalid or inaccessible, an error message is displayed to the user.
+
+The successful execution of the `export` command results in the creation of a CSV file as the specified or default name at default location, containing all the contact data available in NetConnect.
+
+#### Current Implementation
+
+A `ExportCommand` instance is created in the `ExportCommandParser#parse(...)` method when the user issues the `export` command. The process involves the following steps:
+
+1. Parsing the command input to extract the file nqm3 if provided.
+2. If no filename is provided, setting the filename to a default value.
+3. Utilizing the `CsvExporter` component to write the data to the CSV file.
+
+The sequence diagram below illustrates the execution of a `ExportCommand`:
+
+<puml src="ExportCommandSequenceDiagram.puml" alt="ExportCommandSequenceDiagram" />
+
+The sequence diagram below illustrates the creation and execution of a `CsvExporter`:
+
+<puml src="ExportCommandSequenceDiagram.puml" alt="CsvExporterSequenceDiagram" />
+
+#### Design Considerations
+
+**Aspect: Handling of file paths in the `export` command:**
+
+* **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
+  * Pros:
+        1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
+    *Cons:
+        1. Reduces user flexibility in determining where the CSV file should be saved.
+* **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
+  * Pros:
+        1. Provides flexibility for users to save the CSV file wherever they prefer.
+    * Cons:
+        1. Additional error handling is required to manage invalid or inaccessible file paths.
+
+
+### Person Roles (Employee, Client, and Supplier)
+
+The person can be categorized into three roles: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
+
+#### Overview
+
+* **Client**: Represents a customer, associated with products and preferences.
+* **Supplier**: Represents a vendor, associated with products and terms of service.
+* **Employee**: Represents an employee, associated with a department, job title, and skills.
+
+#### Implementation
+
+##### Class Additions
+
+* `Client`, `Supplier`, and `Employee` classes have been added, extending the `Person` class to include role-specific fields.
+* New classes `Department`, `JobTitle`, `Products`, `Skills`, and `TermsOfService` are introduced to encapsulate relevant attributes.
+
+##### Data Storage
+
+* The `JsonAdaptedPerson` class has been implemented to support the conversion to and from the new role-based classes, ensuring compatibility with the enhanced JSON schema.
+
+##### User Interface Enhancements
+
+* The UI has been enhanced to dynamically display optional fields based on the person's role, offering a tailored user experience.
+
+##### Command and Parser Modifications
+
+* Commands and parsers have been updated to recognize and process additional arguments related to the new person types.
+* Modified commands handle logic specific to each role, ensuring correct operation based on person type.
+
+#### Usage Scenario
+
+1. An administrator decides to add a new `Employee` to the system.
+2. The administrator inputs the employee's details, including department, job title, and skills.
+3. The system processes the input, updates the data storage, and the UI reflects the new employee's information, displaying department and job title.
+
+#### Design Considerations
+
+* **Flexible Data Handling**: Fields not applicable to all roles are made optional within the `Person` class to enable a scalable and adaptable system architecture.
+
+* **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
+
+<puml src="diagrams/ModelClassDiagram.puml" alt="ModelClassDiagram" />
+
+### Save state feature
+
+The save state feature is implemented using the `StateStorage`.`StateStorage` is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
+
+* `StateStorage#writeState(String state)` — Saves the current state of the command box into file.
+* `StateStorage#loadState()` — Reads the saved state of the command box from the file and returns the string.
+* `StateStorage#clearState()` — Clears the file storing the states.
+* `StateStorage#isStateStorageExists()` — Checks if the file storing the states exists.
+* `StateStorage#deleteStateStorage()` — Deletes the file storing the states.
+* `StateStorage#getLastCommand()` — Returns the last string that is present in the command box before it was last closed. If the file is found, the text in the file is loaded into the command box, else a new file is created and empty string is returned.
+* `StateStorage#getFilePath()` — Returns the file path of the file storing the states.
+* `StateStorage#getFilePathString()` — Returns the file path of the file storing the states as a string.
+* `StateStorage#getDirectoryPath()` — Returns the directory path of the file storing the states.
+
+Given below is an example usage scenario and how the save state feature behaves at each step.
+
+Step 1. The user launches the application. During set up, the presence of the state storage file is checked. If absent, a new storage file is created. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file is retrieved via `StateStorage#loadState()` and loaded into the command box.
+
+**Note:** If the storage file is not found a new empty file is created.
+
+Step 2. The user changes the input in the command box. The `StateStorage#writeState(String state)` method is called to save the current state of the command box into the file.
+
+<puml src="diagrams/SaveStateActivityDiagram.puml" alt="SaveStateActivityDiagram" />
+
+
+#### Design considerations:
+
+**Aspect: How save state executes:**
+
+* **Alternative 1 (current choice):** Update the storage file at every change in input.
+  * Pros: Lower risk of data loss.
+  * Cons: Constantly updating the storage file with every change in input may introduce performance overhead.
+
+* **Alternative 2:** Update the storage file only when the application is closed.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: Does not save the state of the command box in case of a crash.
+
+* **Alternative 3:** Update the storage file when there is a pause in typing.
+  * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
+  * Cons: May not save the state of the command box in case of a crash.
+
+### Delete feature
+
+#### Expected behaviour
+
+The `delete` command allows users to delete `Person` from NetConnect using either the target `Person`'s `Id` or `Name`. `Id` allows users to directly and accurately delete the `Person` if the `Id` is known, while `Name` provides the flexibility to delete using name if `Id` is not known. Exceptional behaviour:
+* If both `Id` and `Name` is provided, an error message is shown.
+* If there are no `Person`s with the given `Name` or `Id`, the display is updated to show all `Person`s, and an error message is shown.
+
+<puml src="diagrams/DeleteActivityDiagram.puml" alt="DeleteActivityDiagram" />
+
+* If `Name` is provided but there are more than one `Person` with the specified `Name` in NetConnect, all `Person`s with the matching `Name` will be displayed, and user will be prompted to re-input the `delete` command using `Id` instead.
+
+<puml src="diagrams/DeleteNameActivityDiagram.puml" alt="DeleteNameActivityDiagram" />
+
+`delete` can be done regardless of whether the target `Person` is in the current displayed list. If the `Person` is in the current displayed list, the display view does not change upon successful delete. If the `Person` is in not in the current displayed list, the display view is changed to display all `Person`s upon successful delete.
+
+<puml src="diagrams/DeleteDisplayActivityDiagram.puml" alt="DeleteDisplayActivityDiagram" />
+
+#### Current implementation
+
+A `DeleteCommand` instance is instantiated in `DeleteCommandParser#parse(...)` by the factory methods `DeleteCommand#byId(Id)` or `DeleteComamnd#byName(Name)`. The sequence diagram below shows the creation of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+<puml src="diagrams/DeleteParseSequenceDiagram.puml" alt="DeleteParseSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)` or `Model#getPersonByName(Name)`, and `Model#deletePerson(Person))`. The sequence diagram below shows the execution of a `DeleteCommand` with `Id`. The process is similar for `DeleteCommand` with `Name`.
+
+<puml src="diagrams/DeleteExecuteSequenceDiagram.puml" alt="DeleteExecuteSequenceDiagram" />
+
+#### Design considerations
+
+**Aspect: How delete command executes:**
+
+* **Alternative 1 (current choice):** A single `Model#deletePerson(Person)` method.
+  * Pros:
+    1. Implementation of `Model#getPersonById(Id)` and `Model#getPersonByName(Name)` can be reused for other purposes.
+    1. Simple implementation of `Model#deletePerson(Person)`.
+  * Cons: Need to ensure `Person` with matching `Id` or `Name` exists in the list before `Model#getPersonById(Id)`, `Model#getPersonByName(Name)` and `Model#deletePerson(Person)` are called.
+
+* **Alternative 2:** Separate methods of `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
+  * Pros: Simple implementation of `DeleteCommand#execute(...)`.
+  * Cons:
+    1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
+    1. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+
+### Unique `Id` of `Person`
+
+The unique id of `Person` is stored as a private field `Id` instance in `Person`. `Id` value is enforced to be unique between each `Person` by keeping the constructors of the `Id` class private, and by using a private static field `nextId`. The `Id` class provides 3 factory methods to instantiate `Id`:
+
+* `Id#generateNextId()` — instantiates an `Id` object with the next available value given by `nextId`.
+* `Id#generateId(int)` — instantiates an `Id` object with the given value, and updates nextId to be the given value + 1. This method is necessary to update `nextId` while keeping the `Id` value of each `Person` the same between different runs of the application.
+* `Id#generateTempId(int)` — instantiates an `Id` object with the given value, without changing the value of `nextId`. This method is used for non-`add` NetConnect commands that accepts id as an argument. This method is necessary as using `Id#generateId(int)` in non-`add` commands will cause `nextId` to be updated, even if there are no persons in the NetConnect using the previous `Id`. Example:
+  1. NetConnect has persons with `Id` 1 to 5.
+  1. User inputs `delete i/1000` command, where `Id#generateId(int)` is used.
+  1. `nextId` is updated to be 1001.
+  1. On the next `Id#generateNextId()`, `Id` value 1001 will be used although values 6 to 1000 are not used.
+
+<puml src="diagrams/IdClassDiagram.puml" alt="IdClassDiagram" />
+
+Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
+
+### `Findnum` feature
+
+#### Expected behaviour
+The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers
+Exceptional behaviour:
+* If any of the phone numbers provided is invalid, an error message is shown.
+* If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
+
+<puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
+
+#### Current implementation
+Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object. 
+
+The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number. 
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed. 
+
+#### Design considerations
+
+**Aspect: How `PhoneContainsDigitsPredicate` tests a person's phone number**
+
+* **Alternative 1 (current choice)**: Use a regular expression to check if the phone number contains the specified numbers.
+  * Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
+  * Cons: Regular expressions can be difficult to understand and maintain.
+
+* **Alternative 2**: Instead of using `StringUtil#containsWordIgnoreCase(...)`, we could use Java's built-in `String#contains(...)` method.
+  * Pros: This method checks if the phone number string contains the specified number string.
+  * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
+=======
 
 ### \[Proposed\] Undo/redo feature
 
@@ -236,25 +456,24 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 <puml src="diagrams/CommitActivityDiagram.puml" width="250" />
 
-#### Design considerations:
+#### Design considerations
 
 **Aspect: How undo & redo executes:**
 
 * **Alternative 1 (current choice):** Saves the entire netconnect.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+    * Pros: Easy to implement.
+    * Cons: May have performance issues in terms of memory usage.
 
 * **Alternative 2:** Individual command knows how to undo/redo by
   itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+    * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
+    * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
 
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -292,19 +511,22 @@ easily, and to keep track of past interactions.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​          | I want to …​                               | So that I can…​                                                      |
-|----------|------------------|--------------------------------------------|----------------------------------------------------------------------|
-| `* * *`  | occasional user  | add a new person                           |                                                                      |
-| `* * *`  | occasional user  | delete a person                            | remove entries that I no longer need                                 |
-| `* * *`  | occasional user  | find a person by name                      | quickly access their contact details                                 |
-| `* * *`  | occasional user  | find a person by contact number            | see who contacted me                                                 |
-| `* * *`  | occasional user  | tag members with custom tag                | see distinctions and manage using tags                               |
-| `* *`    | occasional user  | go back to the state from where i left off | avoid going back to the same page/state when I close the application |
-| `* *`    | occasional user  | edit person information                    | refer to accurate personal information in the future                 |
-| `* *`    | experienced user | export contact lists to a CSV file         | create backups or use the data in other applications                 |
-| `* *`    | new user         | see usage instructions                     | refer to instructions when I forget how to use the App               |
-
-*{More to be added}*
+| Priority | As a …​          | I want to …​                                 | So that I can…​                                                      |
+|----------|------------------|----------------------------------------------|----------------------------------------------------------------------|
+| `* * *`  | occasional user  | add a new person                             |                                                                      |
+| `* * *`  | occasional user  | delete a person                              | remove entries that I no longer need                                 |
+| `* * *`  | occasional user  | find a person by name                        | quickly access their contact details                                 |
+| `* * *`  | occasional user  | find a person by contact number              | see who contacted me                                                 |
+| `* * *`  | occasional user  | find a person by remark                      | view all people with a particular remark                             |
+| `* * *`  | occasional user  | find a person by role                        | view all roles separately                                            |
+| `* * *`  | occasional user  | tag roles to members                         | see distinctions and manage using roles                              |
+| `* *`    | occasional user  | go back to the state from where i left off   | avoid going back to the same page/state when I close the application |
+| `* *`    | occasional user  | edit person information                      | refer to accurate personal information in the future                 |
+| `* *`    | experienced user | export contact lists to a CSV file           | create backups or use the data in other applications                 |
+| `* *`    | experienced user | relate two profiles together                 | connect two contacts together                                        |
+| `* *`    | experienced user | view which contacts are related to a profile | assign tasks to my employees                                         |
+| `* *`    | new user         | see usage instructions                       | refer to instructions when I forget how to use the App               |
+| `* *`    | new user         | clear all existing contacts                  | populate with my actual contacts                                     |
 
 ### Use cases
 
@@ -355,7 +577,37 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: UC04 - Add a New Person**
+**Use case: UC04 - Find a Specific Person by Role**
+
+**MSS**
+
+1. User requests for the person with the matching role.
+2. NetConnect shows the person with matching role.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. There is no person with a matching role.
+
+  Use case ends.
+
+**Use case: UC05 - Find a Specific Person by Remark**
+
+**MSS**
+
+1. User requests for the person with the matching remark.
+2. NetConnect shows the person with matching remark.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. There is no person with a matching number.
+
+  Use case ends.
+
+**Use case: UC06 - Add a New Person**
 
 **MSS**
 
@@ -372,7 +624,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC05 - Delete a Person by UID**
+**Use case: UC07 - Delete a Person by UID**
 
 **MSS**
 
@@ -389,7 +641,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC06 - Delete a Person by Name**
+**Use case: UC08 - Delete a Person by Name**
 
 **MSS**
 
@@ -414,7 +666,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests for the list of persons matching a name.
 2. NetConnect shows a list of persons with matching name.
 
-**Use case: UC07 - Tag a Person by UID with Custom Tag**
+**Use case: UC09 - Tag a Person by UID with Custom Tag**
 
 **MSS**
 
@@ -431,7 +683,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC08 - Tag a Person by Name with Custom Tag**
+**Use case: UC10 - Tag a Person by Name with Custom Tag**
 
 **MSS**
 
@@ -455,7 +707,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-**Use case: UC09 - Edit Person Information by UID**
+**Use case: UC11 - Edit Person Information by UID**
 
 **MSS**
 
@@ -478,7 +730,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC10 - Export Contact List to CSV File**
+**Use case: UC12 - Export Contact List to CSV File**
 
 **MSS**
 
@@ -500,6 +752,75 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1b1. NetConnect shows an error message.
 
       Use case ends.
+
+**Use case: UC13 - Relate two contacts together**
+
+**MSS**
+
+1. User requests to relate Contact A with Contact B.
+2. NetConnect adds a relation between the two contacts.
+
+**Extensions**
+
+* 1a. The given ID or name does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1c. There is an ambiguous command.
+
+    * 1c1. NetConnect shows an error message requesting to fix ambiguity.
+
+      Use case ends.
+
+* 1c. User relates contact to the same contact.
+
+    * 1c1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC14 - View all contacts related to a single contact**
+
+**MSS**
+
+1. User requests to see all contacts related to Contact A.
+2. NetConnect shows the list of related contacts.
+
+**Extensions**
+
+* 1a. The given ID or name does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC15 - Clear all contact list**
+
+**MSS**
+
+1. User requests to clear all contacts.
+2. NetConnect requests confirmation from user.
+3. User confirms the request.
+4. NetConnect deletes the entire contact list.
+
+   Use case ends.
 
 ### Non-Functional Requirements
 
@@ -548,29 +869,43 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete i/1`<br>
+      Expected: Contact with id 1 is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `delete 1`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   1. Other incorrect delete commands to try: `delete`, `delete i/x`, `...` (where no persons have id x)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+   1. Guarantees: Person with the specified id will be deleted from NetConnect and removed from the displayed list.
+
+1. Deleting a person while displayed list is filtered
+
+   1. Prerequisites: Filter displayed list using `find` command or one of its variants. Partial contact list displayed.
+
+   1. Test case: `delete i/x` (where x is the id of person displayed in the list)<br>
+      Expected: Contact with id x is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
+   1. Test case: `delete i/y` (where y is the id of a person **not** displayed in the list)<br>
+      Expected: Contact with id x is deleted from NetConnect, and displayed list displays the full list of persons in NetConnect (without the person with id y. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
+   1. Test case: `delete 1`<br>
+      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+   1. Other incorrect delete commands to try: `delete`, `delete i/z`, `...` (where no persons have id z)<br>
+      Expected: Similar to previous.
+
+   1. Guarantees: Person with the specified id will be deleted from NetConnect and removed from the displayed list. Full unfiltered list of persons will be displayed (similar to when `list` command is entered).
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
