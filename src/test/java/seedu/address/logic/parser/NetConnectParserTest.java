@@ -8,7 +8,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
 import java.util.Arrays;
@@ -26,6 +25,8 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindNumCommand;
+import seedu.address.logic.commands.FindRemCommand;
+import seedu.address.logic.commands.FindRoleCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RemarkCommand;
@@ -34,6 +35,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
+import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
+import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -66,7 +69,7 @@ public class NetConnectParserTest {
         Person person = new ClientBuilder().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + PREFIX_ID + "1" + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
+                + PREFIX_ID + "1 " + PersonUtil.getEditPersonDescriptorDetails(descriptor));
         assertEquals(new EditCommand(ID_FIRST_PERSON, descriptor), command);
     }
 
@@ -94,6 +97,22 @@ public class NetConnectParserTest {
     }
 
     @Test
+    public void parseCommand_findRem() throws Exception {
+        List<String> keywords = Arrays.asList("foo", "bar", "baz");
+        FindRemCommand command = (FindRemCommand) parser.parseCommand(
+                FindRemCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindRemCommand(new RemarkContainsKeywordsPredicate(keywords)), command);
+    }
+
+    @Test
+    public void parseCommand_findRole() throws Exception {
+        List<String> roles = Arrays.asList("supplier", "employee");
+        FindRoleCommand command = (FindRoleCommand) parser.parseCommand(
+                FindRoleCommand.COMMAND_WORD + " " + roles.stream().collect(Collectors.joining(" ")));
+        assertEquals(new FindRoleCommand(new RoleContainsKeywordsPredicate(roles)), command);
+    }
+
+    @Test
     public void parseCommand_help() throws Exception {
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD + " 3") instanceof HelpCommand);
@@ -109,8 +128,8 @@ public class NetConnectParserTest {
     public void parseCommand_remark() throws Exception {
         final Remark remark = new Remark("Some remark.");
         RemarkCommand command = (RemarkCommand) parser.parseCommand(RemarkCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_REMARK + remark.value);
-        assertEquals(new RemarkCommand(INDEX_FIRST_PERSON, remark), command);
+                + PREFIX_ID + "1 " + PREFIX_REMARK + remark.value);
+        assertEquals(new RemarkCommand(ID_FIRST_PERSON, remark), command);
     }
 
     @Test

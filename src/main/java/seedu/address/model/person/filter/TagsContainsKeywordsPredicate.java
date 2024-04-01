@@ -67,6 +67,6 @@ public class TagsContainsKeywordsPredicate extends NetConnectPredicate<Person> {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).add("tags", keywords).toString();
+        return new ToStringBuilder(this).add("keywords", keywords).toString();
     }
 }

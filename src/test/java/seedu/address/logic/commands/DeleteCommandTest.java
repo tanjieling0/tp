@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.showAllPersons;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtId;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
@@ -124,12 +125,5 @@ public class DeleteCommandTest {
         model.stackFilters(NetConnectPredicate.box(p -> false));
 
         assertTrue(model.getFilteredPersonList().isEmpty());
-    }
-
-    /**
-     * Updates {@code model}'s filtered list to show all persons.
-     */
-    private void showAllPersons(Model model) {
-        model.clearFilter();
     }
 }

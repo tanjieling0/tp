@@ -21,7 +21,8 @@ public class DeleteCommand extends Command {
             + ": Deletes the person with the specified ID.\n"
             + "Parameters: "
             + PREFIX_ID + "ID\n"
-            + "Example: " + COMMAND_WORD + " i/1";
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_ID + "1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
 
