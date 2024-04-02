@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.filter.Filter;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 
 /**
@@ -62,7 +61,7 @@ public class FindCommandTest {
         FindCommand command = new FindCommand(predicate);
         expectedModel.stackFilters(predicate);
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0)
-                + "\n" + String.format(Filter.MESSAGE_FILTERS_APPLIED, expectedModel.printFilters());
+                + "\n" + expectedModel.printFilters();
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
     }
@@ -73,7 +72,7 @@ public class FindCommandTest {
         FindCommand command = new FindCommand(predicate);
         expectedModel.stackFilters(predicate);
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2)
-                + "\n" + String.format(Filter.MESSAGE_FILTERS_APPLIED, expectedModel.printFilters());
+                + "\n" + expectedModel.printFilters();
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(ELLE, FIONA), model.getFilteredPersonList());
     }

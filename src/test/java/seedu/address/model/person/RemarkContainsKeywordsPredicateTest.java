@@ -15,6 +15,21 @@ import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
 
 public class RemarkContainsKeywordsPredicateTest {
+
+    @Test
+    public void formatFilter() {
+        List<String> firstPredicateKeywordList = Collections.singletonList("first");
+        List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
+
+        RemarkContainsKeywordsPredicate firstPredicate =
+                new RemarkContainsKeywordsPredicate(firstPredicateKeywordList);
+        RemarkContainsKeywordsPredicate secondPredicate =
+                new RemarkContainsKeywordsPredicate(secondPredicateKeywordList);
+
+        assertEquals("r/first", firstPredicate.formatFilter());
+        assertEquals("r/first r/second", secondPredicate.formatFilter());
+    }
+
     @Test
     public void equals() {
         // same object -> returns true

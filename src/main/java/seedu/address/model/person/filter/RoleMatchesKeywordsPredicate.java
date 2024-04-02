@@ -10,10 +10,10 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Person;
 
 /**
- * Represents a predicate that checks if a person's role contains any of the specified keywords.
+ * Represents a predicate that checks if a person's role matches any of the specified keywords.
  * This predicate is used to filter a list of persons based on their roles.
  */
-public class RoleContainsKeywordsPredicate extends NetConnectPredicate<Person> {
+public class RoleMatchesKeywordsPredicate extends NetConnectPredicate<Person> {
     private final List<String> keywords;
 
     /**
@@ -21,7 +21,7 @@ public class RoleContainsKeywordsPredicate extends NetConnectPredicate<Person> {
      *
      * @param keywords The list of keywords to match against the person's role.
      */
-    public RoleContainsKeywordsPredicate(List<String> keywords) {
+    public RoleMatchesKeywordsPredicate(List<String> keywords) {
         this.keywords = Collections.unmodifiableList(keywords);
     }
 
@@ -30,12 +30,6 @@ public class RoleContainsKeywordsPredicate extends NetConnectPredicate<Person> {
         return keywords.stream().map(s -> PREFIX_ROLE + s).collect(Collectors.joining(" "));
     }
 
-    /**
-     * Tests if the given person's role contains any of the keywords.
-     *
-     * @param person The person to test.
-     * @return {@code true} if the person's role contains any of the keywords, {@code false} otherwise.
-     */
     @Override
     public boolean test(Person person) {
         return keywords.stream().anyMatch(person.getRole()::equalsIgnoreCase);
@@ -52,10 +46,10 @@ public class RoleContainsKeywordsPredicate extends NetConnectPredicate<Person> {
         if (this == other) {
             return true;
         }
-        if (!(other instanceof RoleContainsKeywordsPredicate)) {
+        if (!(other instanceof RoleMatchesKeywordsPredicate)) {
             return false;
         }
-        RoleContainsKeywordsPredicate otherPredicate = (RoleContainsKeywordsPredicate) other;
+        RoleMatchesKeywordsPredicate otherPredicate = (RoleMatchesKeywordsPredicate) other;
         return keywords.equals(otherPredicate.keywords);
     }
 

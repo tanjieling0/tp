@@ -26,7 +26,6 @@ import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindNumCommand;
 import seedu.address.logic.commands.FindRemCommand;
-import seedu.address.logic.commands.FindRoleCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RemarkCommand;
@@ -36,7 +35,6 @@ import seedu.address.model.person.Remark;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
-import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -102,14 +100,6 @@ public class NetConnectParserTest {
         FindRemCommand command = (FindRemCommand) parser.parseCommand(
                 FindRemCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindRemCommand(new RemarkContainsKeywordsPredicate(keywords)), command);
-    }
-
-    @Test
-    public void parseCommand_findRole() throws Exception {
-        List<String> roles = Arrays.asList("supplier", "employee");
-        FindRoleCommand command = (FindRoleCommand) parser.parseCommand(
-                FindRoleCommand.COMMAND_WORD + " " + roles.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindRoleCommand(new RoleContainsKeywordsPredicate(roles)), command);
     }
 
     @Test

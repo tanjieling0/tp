@@ -162,7 +162,7 @@ public class ModelManager implements Model {
 
     @Override
     public String printFilters() {
-        return filter.formatFilter();
+        return String.format(Filter.MESSAGE_FILTERS_APPLIED, filter.size(), filter.formatFilter());
     }
 
     @Override

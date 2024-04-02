@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
 
@@ -47,6 +49,18 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_validRoles_returnsFindCommand() {
+        // no leading and trailing whitespaces
+        FindCommand expectedFindCommand = new FindCommand(new RoleMatchesKeywordsPredicate(
+                Arrays.asList("client", "employee", "supplier")));
+        assertParseSuccess(parser, " role/client role/employee role/supplier", expectedFindCommand);
+
+        // multiple whitespaces between keywords
+        assertParseSuccess(parser,
+                " \n role/client \n   \t role/employee  \t \n role/supplier", expectedFindCommand);
+    }
+
+    @Test
     public void parse_invalidNames_throwsParseException() {
         // empty name
         assertParseFailure(parser, " n/", String.format(Name.MESSAGE_CONSTRAINTS));
@@ -71,17 +85,40 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_invalidRoles_throwsParseException() {
+        // empty tag
+        assertParseFailure(parser, " role/", String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
+        assertParseFailure(parser, " role/ role/ role/", String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
+
+        // invalid tag format
+        assertParseFailure(parser, " role/clie",
+                String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
+        assertParseFailure(parser, " role/clie role/employees",
+                String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
+        assertParseFailure(parser, " role/client role/employ",
+                String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
+    }
+
+    @Test
     public void parse_multipleFields_throwsParseException() {
+        // with possible invalid inputs
         assertParseFailure(parser, " n/ t/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/ t/ role/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
         assertParseFailure(parser, " n/Alice t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
         assertParseFailure(parser, " n/Ali@ce t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
         assertParseFailure(parser, " n/Alice t/fri@ends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " role/clie t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Alice t/friends role/clie",
+                String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
 
-        // repeated fields
+        // multiple repeated fields with possible invalid inputs
         assertParseFailure(parser, " n/ n/ t/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
         assertParseFailure(parser, " n/ t/ t/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
-        assertParseFailure(parser, " n/Alice n/Bob t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Alice n/Bob t/friends",
+                String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
         assertParseFailure(parser, " n/Ali@ce t/friends t/colleagues",
+                String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " role/clie role/employ t/friends t/colleagues",
                 String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
     }
 }

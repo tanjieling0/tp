@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Test;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.SupplierBuilder;
 
-class RoleContainsKeywordsPredicateTest {
+class RoleMatchesKeywordsPredicateTest {
 
     @Test
     public void formatFilter() {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 
-        RoleContainsKeywordsPredicate firstPredicate = new RoleContainsKeywordsPredicate(firstPredicateKeywordList);
-        RoleContainsKeywordsPredicate secondPredicate = new RoleContainsKeywordsPredicate(secondPredicateKeywordList);
+        RoleMatchesKeywordsPredicate firstPredicate = new RoleMatchesKeywordsPredicate(firstPredicateKeywordList);
+        RoleMatchesKeywordsPredicate secondPredicate = new RoleMatchesKeywordsPredicate(secondPredicateKeywordList);
 
         assertEquals("role/first", firstPredicate.formatFilter());
         assertEquals("role/first role/second", secondPredicate.formatFilter());
@@ -32,15 +32,15 @@ class RoleContainsKeywordsPredicateTest {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 
-        RoleContainsKeywordsPredicate firstPredicate = new RoleContainsKeywordsPredicate(firstPredicateKeywordList);
-        RoleContainsKeywordsPredicate secondPredicate = new RoleContainsKeywordsPredicate(secondPredicateKeywordList);
+        RoleMatchesKeywordsPredicate firstPredicate = new RoleMatchesKeywordsPredicate(firstPredicateKeywordList);
+        RoleMatchesKeywordsPredicate secondPredicate = new RoleMatchesKeywordsPredicate(secondPredicateKeywordList);
 
         // same object -> returns true
         assertTrue(firstPredicate.equals(firstPredicate));
 
         // same values -> returns true
-        RoleContainsKeywordsPredicate firstPredicateCopy =
-                new RoleContainsKeywordsPredicate(firstPredicateKeywordList);
+        RoleMatchesKeywordsPredicate firstPredicateCopy =
+                new RoleMatchesKeywordsPredicate(firstPredicateKeywordList);
         assertTrue(firstPredicate.equals(firstPredicateCopy));
 
         // different types -> returns false
@@ -56,22 +56,22 @@ class RoleContainsKeywordsPredicateTest {
     @Test
     public void test_roleContainsKeywords_returnsTrue() {
         // One keyword
-        RoleContainsKeywordsPredicate predicate =
-                new RoleContainsKeywordsPredicate(Collections.singletonList("client"));
+        RoleMatchesKeywordsPredicate predicate =
+                new RoleMatchesKeywordsPredicate(Collections.singletonList("client"));
         assertTrue(predicate.test(new ClientBuilder().build()));
 
         // Multiple keywords
-        predicate = new RoleContainsKeywordsPredicate(List.of("client", "supplier"));
+        predicate = new RoleMatchesKeywordsPredicate(List.of("client", "supplier"));
         assertTrue(predicate.test(new ClientBuilder().build()));
         assertTrue(predicate.test(new SupplierBuilder().build()));
 
         // Only one matching keyword
-        predicate = new RoleContainsKeywordsPredicate(List.of("client", "supplier"));
+        predicate = new RoleMatchesKeywordsPredicate(List.of("client", "supplier"));
         assertTrue(predicate.test(new SupplierBuilder().build()));
         assertTrue(predicate.test(new SupplierBuilder().build()));
 
         // Mixed-case keywords
-        predicate = new RoleContainsKeywordsPredicate(List.of("cLiEnT", "sUpPlIeR"));
+        predicate = new RoleMatchesKeywordsPredicate(List.of("cLiEnT", "sUpPlIeR"));
         assertTrue(predicate.test(new SupplierBuilder().build()));
         assertTrue(predicate.test(new SupplierBuilder().build()));
     }
@@ -79,12 +79,12 @@ class RoleContainsKeywordsPredicateTest {
     @Test
     public void test_roleDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
-        RoleContainsKeywordsPredicate predicate = new RoleContainsKeywordsPredicate(List.of());
+        RoleMatchesKeywordsPredicate predicate = new RoleMatchesKeywordsPredicate(List.of());
         assertFalse(predicate.test(new ClientBuilder().build()));
         assertFalse(predicate.test(new SupplierBuilder().build()));
 
         // Non-matching keyword
-        predicate = new RoleContainsKeywordsPredicate(List.of("employee"));
+        predicate = new RoleMatchesKeywordsPredicate(List.of("employee"));
         assertFalse(predicate.test(new ClientBuilder().build()));
         assertFalse(predicate.test(new SupplierBuilder().build()));
     }
@@ -92,9 +92,9 @@ class RoleContainsKeywordsPredicateTest {
     @Test
     public void toStringMethod() {
         List<String> roles = List.of("client", "supplier");
-        RoleContainsKeywordsPredicate predicate = new RoleContainsKeywordsPredicate(roles);
+        RoleMatchesKeywordsPredicate predicate = new RoleMatchesKeywordsPredicate(roles);
 
-        String expected = RoleContainsKeywordsPredicate.class.getCanonicalName() + "{keywords=" + roles + "}";
+        String expected = RoleMatchesKeywordsPredicate.class.getCanonicalName() + "{keywords=" + roles + "}";
         assertEquals(expected, predicate.toString());
     }
 }

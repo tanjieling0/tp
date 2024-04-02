@@ -16,6 +16,9 @@ import seedu.address.model.tag.Tag;
  */
 public abstract class Person {
 
+    public static final String MESSAGE_ROLE_CONSTRAINTS = "Invalid role specified. "
+            + "Must be one of: client, employee, supplier.";
+
     // Unique id
     protected final Id id;
 
@@ -98,7 +101,9 @@ public abstract class Person {
      * @return {@code true} if the role is valid, {@code false} otherwise.
      */
     public static boolean isValidRole(String role) {
-        return role.equals("employee") || role.equals("client") || role.equals("supplier");
+        return role.equalsIgnoreCase("employee")
+                || role.equalsIgnoreCase("client")
+                || role.equalsIgnoreCase("supplier");
     }
 
     /**

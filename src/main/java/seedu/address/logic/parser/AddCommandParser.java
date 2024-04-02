@@ -103,7 +103,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             person = new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
             break;
         default:
-            throw new ParseException("Invalid role specified. Must be one of: client, employee, supplier.");
+            throw new ParseException(Person.MESSAGE_ROLE_CONSTRAINTS);
         }
         return new AddCommand(person);
     }

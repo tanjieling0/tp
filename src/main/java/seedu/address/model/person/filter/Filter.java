@@ -16,7 +16,7 @@ import seedu.address.model.person.Person;
  */
 public class Filter extends NetConnectPredicate<Person> {
 
-    public static final String MESSAGE_FILTERS_APPLIED = "Current filters applied:\n%1$s";
+    public static final String MESSAGE_FILTERS_APPLIED = "%1$d filter(s) applied:\n%2$s";
 
     /** Cached empty filter object */
     private static final Filter EMPTY_FILTER = new Filter(List.of());
@@ -58,6 +58,13 @@ public class Filter extends NetConnectPredicate<Person> {
         ArrayList<NetConnectPredicate<Person>> newFilters = new ArrayList<>(filters);
         newFilters.add(p);
         return new Filter(Collections.unmodifiableList(newFilters));
+    }
+
+    /**
+     * Returns the count of predicates in the {@code Filter}.
+     */
+    public int size() {
+        return filters.size();
     }
 
     /**
