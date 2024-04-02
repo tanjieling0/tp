@@ -30,6 +30,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DEPARTMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_JOBTITLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PREFERENCES;
@@ -86,17 +87,24 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_invalidId_failure() {
-        // negative id
-        assertParseFailure(parser, "i/-5" + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
-
         // zero id
-        assertParseFailure(parser, "i/0" + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, " i/0" + NAME_DESC_AMY, Id.MESSAGE_CONSTRAINTS);
 
-        // invalid arguments being parsed as preamble
-        assertParseFailure(parser, "i/1 some random string", MESSAGE_INVALID_FORMAT);
+        // negative id
+        assertParseFailure(parser, " i/-5" + NAME_DESC_AMY, Id.MESSAGE_CONSTRAINTS);
 
-        // invalid prefix being parsed as preamble
-        assertParseFailure(parser, "i/1 k/ string", MESSAGE_INVALID_FORMAT);
+        // non numerical id
+        assertParseFailure(parser, " i/one", Id.MESSAGE_CONSTRAINTS);
+
+        // empty id
+        assertParseFailure(parser, " i/", Id.MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_repeatedId_throwsParseException() {
+        // zero id
+        assertParseFailure(parser, " i/1 i/2" + NAME_DESC_AMY,
+                String.format(Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ID)));
     }
 
     @Test
@@ -207,7 +215,7 @@ public class EditCommandParserTest {
 
         assertParseFailure(parser, userInput, Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
 
-        // mulltiple valid fields repeated
+        // multiple valid fields repeated
         userInput = targetId + PHONE_DESC_AMY + ADDRESS_DESC_AMY + EMAIL_DESC_AMY
                 + TAG_DESC_FRIEND + PHONE_DESC_AMY + ADDRESS_DESC_AMY + EMAIL_DESC_AMY + TAG_DESC_FRIEND
                 + PHONE_DESC_BOB + ADDRESS_DESC_BOB + EMAIL_DESC_BOB + TAG_DESC_HUSBAND;
