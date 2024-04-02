@@ -59,21 +59,6 @@ public class Client extends Person {
     }
 
     /**
-     * Checks if this client is the same as another person.
-     * Two clients are considered the same if they have the same attributes.
-     *
-     * @param otherPerson The person to compare with.
-     * @return True if the clients are the same, false otherwise.
-     */
-    @Override
-    public boolean isSamePerson(Person otherPerson) {
-        if (!super.isSamePerson(otherPerson)) {
-            return false;
-        }
-        return otherPerson instanceof Client;
-    }
-
-    /**
      * Checks if this client is the same as another client.
      * Two clients are considered the same if they have the same attributes.
      *

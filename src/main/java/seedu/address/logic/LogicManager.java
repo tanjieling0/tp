@@ -53,6 +53,7 @@ public class LogicManager implements Logic {
 
         try {
             storage.saveNetConnect(model.getNetConnect());
+            storage.saveRelate(model.getRelatedIdTuples());
         } catch (AccessDeniedException e) {
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {

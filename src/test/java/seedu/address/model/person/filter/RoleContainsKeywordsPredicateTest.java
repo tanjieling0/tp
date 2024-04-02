@@ -1,4 +1,4 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,17 +11,34 @@ import org.junit.jupiter.api.Test;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.SupplierBuilder;
 
-public class RoleContainsKeywordsPredicateTest {
+class RoleContainsKeywordsPredicateTest {
+
+    @Test
+    public void formatFilter() {
+        String firstKeyword = "client";
+        String secondKeyword = "supplier";
+
+        RoleContainsKeywordsPredicate firstPredicate = new RoleContainsKeywordsPredicate(firstKeyword);
+        RoleContainsKeywordsPredicate secondPredicate = new RoleContainsKeywordsPredicate(secondKeyword);
+
+        assertEquals("role/client", firstPredicate.formatFilter());
+        assertEquals("role/supplier", secondPredicate.formatFilter());
+    }
 
     @Test
     public void equals() {
+        String firstPredicateKeyword = "first";
+        String secondPredicateKeyword = "second";
+
+        RoleContainsKeywordsPredicate firstPredicate = new RoleContainsKeywordsPredicate(firstPredicateKeyword);
+        RoleContainsKeywordsPredicate secondPredicate = new RoleContainsKeywordsPredicate(secondPredicateKeyword);
+
         // same object -> returns true
-        RoleContainsKeywordsPredicate firstPredicate = new RoleContainsKeywordsPredicate("client");
-        RoleContainsKeywordsPredicate secondPredicate = new RoleContainsKeywordsPredicate("client");
         assertTrue(firstPredicate.equals(firstPredicate));
 
         // same values -> returns true
-        assertTrue(firstPredicate.equals(secondPredicate));
+        RoleContainsKeywordsPredicate firstPredicateCopy = new RoleContainsKeywordsPredicate(firstPredicateKeyword);
+        assertTrue(firstPredicate.equals(firstPredicateCopy));
 
         // different types -> returns false
         assertFalse(firstPredicate.equals(1));
@@ -30,8 +47,7 @@ public class RoleContainsKeywordsPredicateTest {
         assertFalse(firstPredicate.equals(null));
 
         // different person -> returns false
-        RoleContainsKeywordsPredicate fifthPredicate = new RoleContainsKeywordsPredicate("supplier");
-        assertFalse(firstPredicate.equals(fifthPredicate));
+        assertFalse(firstPredicate.equals(secondPredicate));
     }
 
     @Test
@@ -77,6 +93,4 @@ public class RoleContainsKeywordsPredicateTest {
         String expected = RoleContainsKeywordsPredicate.class.getCanonicalName() + "{roles=" + roles + "}";
         assertEquals(expected, predicate.toString());
     }
-
-
 }
