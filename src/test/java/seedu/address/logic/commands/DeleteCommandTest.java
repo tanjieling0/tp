@@ -13,7 +13,6 @@ import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -110,7 +109,6 @@ public class DeleteCommandTest {
 
     @Test
     public void toStringMethod() {
-        Index targetIndex = Index.fromOneBased(1);
         Id targetId = ID_FIRST_PERSON;
         DeleteCommand deleteCommand = new DeleteCommand(targetId);
         String expected = DeleteCommand.class.getCanonicalName() + "{targetId=" + targetId + "}";
