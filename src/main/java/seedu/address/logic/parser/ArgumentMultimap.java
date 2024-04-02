@@ -83,7 +83,7 @@ public class ArgumentMultimap {
      */
     public void verifyOnlyOnePrefix() throws ParseException {
         // check more than 2 since preamble is added into the multimap
-        if (argMultimap.values().stream().filter(v -> v.size() > 0).count() > 2) {
+        if (argMultimap.values().size() > 2) {
             throw new ParseException(Messages.MESSAGE_NON_UNIQUE_FIELDS);
         }
     }

@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
 import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
@@ -58,6 +60,30 @@ public class FindCommandParserTest {
         // multiple whitespaces between keywords
         assertParseSuccess(parser,
                 " \n role/client \n   \t role/employee  \t \n role/supplier", expectedFindCommand);
+    }
+
+    @Test
+    public void parse_validRemarks_returnsFindCommand() {
+        // empty remark
+        FindCommand expectedFindCommand = new FindCommand(
+                new RemarkContainsKeywordsPredicate(Collections.singletonList("")));
+        assertParseSuccess(parser, " r/", expectedFindCommand);
+        assertParseSuccess(parser, " r/ \t \n", expectedFindCommand);
+
+        // non-empty + empty remarks
+        expectedFindCommand = new FindCommand(
+                new RemarkContainsKeywordsPredicate(Arrays.asList("", "first")));
+        assertParseSuccess(parser, " r/ r/first", expectedFindCommand);
+        assertParseSuccess(parser, " r/first \n   \t   r/ \t \n", expectedFindCommand);
+
+        // no leading and trailing whitespaces
+        expectedFindCommand = new FindCommand(new RemarkContainsKeywordsPredicate(
+                Arrays.asList("first", "second")));
+        assertParseSuccess(parser, " r/first r/second", expectedFindCommand);
+
+        // multiple whitespaces between keywords
+        assertParseSuccess(parser,
+                " \n r/first \n   \t r/second  \t", expectedFindCommand);
     }
 
     @Test

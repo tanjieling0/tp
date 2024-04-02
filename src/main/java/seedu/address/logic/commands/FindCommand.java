@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
@@ -14,7 +15,7 @@ import seedu.address.model.person.filter.NetConnectPredicate;
 /**
  * Finds and lists all persons in NetConnect whose information matches any of the given arguments.
  * Keyword matching is case-insensitive.
- * Find command supports finding by: name, tag, and role.
+ * Find command supports finding by: name, tag, role, and remark.
  */
 public class FindCommand extends Command {
 
@@ -23,14 +24,18 @@ public class FindCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Finds all persons whose information matches any of the given arguments.\n"
             + "Only one type of argument can be given per " + COMMAND_WORD + " command.\n"
+            + "Name, tag and role cannot be empty. "
+            + "Remark can be empty to find persons with no remarks.\n"
             + "Parameters: "
             + "[" + PREFIX_NAME + "NAME]... "
             + "[" + PREFIX_TAG + "TAG]... "
-            + "[" + PREFIX_ROLE + "ROLE]... \n"
+            + "[" + PREFIX_ROLE + "ROLE]... "
+            + "[" + PREFIX_REMARK + "REMARK]... \n"
             + "Examples: \n"
             + COMMAND_WORD + " n/alice n/bob n/charlie\n"
             + COMMAND_WORD + " t/friends t/colleagues\n"
-            + COMMAND_WORD + " role/client";
+            + COMMAND_WORD + " role/client\n"
+            + COMMAND_WORD + " r/owes money r/quarterly report";
 
     private final NetConnectPredicate<Person> predicate;
 
