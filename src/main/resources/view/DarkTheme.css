@@ -340,11 +340,11 @@
 
 #tags .label {
     -fx-text-fill: white;
-    -fx-background-color: #3e7b91;
-    -fx-padding: 1 3 1 3;
-    -fx-border-radius: 2;
+    -fx-background-color: #366041;
+    -fx-padding: 1 6 1 6;
+    -fx-border-radius: 5;
     -fx-background-radius: 2;
-    -fx-font-size: 11;
+    -fx-font-size: 15;
 }
 
 #role {
@@ -354,9 +354,8 @@
 
 #role .label {
     -fx-text-fill: white;
-    -fx-background-color: #ab9360;
-    -fx-padding: 1 3 1 3;
-    -fx-border-radius: 2;
+    -fx-padding: 1 6 1 6;
+    -fx-border-radius: 3;
     -fx-background-radius: 2;
-    -fx-font-size: 11;
+    -fx-font-size: 15;
 }
