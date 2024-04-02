@@ -34,8 +34,6 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
-import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
-import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -94,7 +92,7 @@ public class NetConnectParserTest {
                 FindNumCommand.COMMAND_WORD + " " + phones.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindNumCommand(new PhoneContainsDigitsPredicate(phones)), command);
     }
-    
+
     @Test
     public void parseCommand_help() throws Exception {
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD) instanceof HelpCommand);
