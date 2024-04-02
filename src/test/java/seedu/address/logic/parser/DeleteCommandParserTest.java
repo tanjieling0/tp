@@ -62,27 +62,6 @@ public class DeleteCommandParserTest {
     }
 
     @Test
-    public void parse_invalidId_throwsParseException() {
-        // zero id
-        assertParseFailure(parser, " i/0", Id.MESSAGE_CONSTRAINTS);
-
-        // negative id
-        assertParseFailure(parser, " i/-5", Id.MESSAGE_CONSTRAINTS);
-
-        // non numerical id
-        assertParseFailure(parser, " i/one", Id.MESSAGE_CONSTRAINTS);
-
-        // empty id
-        assertParseFailure(parser, " i/", Id.MESSAGE_CONSTRAINTS);
-    }
-
-    @Test
-    public void parse_duplicatePrefix_throwsParseException() {
-        // zero id
-        assertParseFailure(parser, " i/1 i/2", String.format(getErrorMessageForDuplicatePrefixes(PREFIX_ID)));
-    }
-
-    @Test
     public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, " a",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));

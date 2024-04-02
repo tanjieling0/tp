@@ -26,7 +26,7 @@ public class ShowRelatedCommandTest {
 
     @Test
     public void execute_showRelatedFilteredList_success() throws CommandException {
-        model.updateFilteredPersonList(x -> true);
+        model.getFilteredPersonList();
         CommandResult commandResult = new ShowRelatedCommand(ID_FIRST_PERSON).execute(model);
         assertEquals(String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 commandResult.getFeedbackToUser());

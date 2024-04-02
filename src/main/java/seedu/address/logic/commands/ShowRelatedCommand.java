@@ -10,7 +10,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Id;
-import seedu.address.model.person.IdContainsDigitsPredicate;
+import seedu.address.model.person.filter.IdContainsDigitsPredicate;
 import seedu.address.model.util.RelatedList;
 
 /**
@@ -39,7 +39,7 @@ public class ShowRelatedCommand extends Command {
         List<Integer> relatedIds = relatedList.getAllRelatedIds(relatedList, id);
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(relatedIds);
 
-        model.updateFilteredPersonList(predicate);
+        model.stackFilters(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }
