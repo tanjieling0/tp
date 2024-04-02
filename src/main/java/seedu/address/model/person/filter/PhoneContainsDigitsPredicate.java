@@ -1,19 +1,25 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
 
 /**
  * Tests that a {@code Person}'s {@code Phone} matches any of the keywords given.
  */
-public class PhoneContainsDigitsPredicate implements Predicate<Person> {
+public class PhoneContainsDigitsPredicate extends NetConnectPredicate<Person> {
     private final List<String> phones;
 
     public PhoneContainsDigitsPredicate(List<String> phones) {
         this.phones = phones;
+    }
+
+    @Override
+    public String formatFilter() {
+        return phones.stream().map(keyword -> "p/" + keyword).collect(Collectors.joining(" "));
     }
 
     @Override

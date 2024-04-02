@@ -1,15 +1,16 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
 
 /**
  * Tests that a {@code Person}'s {@code Name} matches any of the keywords given.
  */
-public class NameContainsKeywordsPredicate implements Predicate<Person> {
+public class NameContainsKeywordsPredicate extends NetConnectPredicate<Person> {
     private final List<String> keywords;
 
     public NameContainsKeywordsPredicate(List<String> keywords) {
@@ -17,9 +18,15 @@ public class NameContainsKeywordsPredicate implements Predicate<Person> {
     }
 
     @Override
+    public String formatFilter() {
+        return keywords.stream()
+                .map(keyword -> "n/" + keyword).collect(Collectors.joining(" "));
+    }
+
+    @Override
     public boolean test(Person person) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword));
+                .anyMatch(keyword -> StringUtil.hasPartialMatchIgnoreCase(keyword, person.getName().fullName));
     }
 
     @Override

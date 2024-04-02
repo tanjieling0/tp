@@ -59,21 +59,6 @@ public class Supplier extends Person {
     }
 
     /**
-     * Checks if this supplier is the same as another person.
-     * Two suppliers are considered the same if they have the same attributes.
-     *
-     * @param otherPerson The person to compare with.
-     * @return True if the suppliers are the same, false otherwise.
-     */
-    @Override
-    public boolean isSamePerson(Person otherPerson) {
-        if (!super.isSamePerson(otherPerson)) {
-            return false;
-        }
-        return otherPerson instanceof Supplier;
-    }
-
-    /**
      * Checks if this supplier is equal to another object.
      * Two suppliers are considered equal if they have the same attributes.
      *

@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.PhoneContainsDigitsPredicate;
+import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 import seedu.address.model.util.RelatedList;
 
 /**
@@ -65,7 +65,7 @@ public class FindNumCommandTest {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         PhoneContainsDigitsPredicate predicate = preparePredicate(" ");
         FindNumCommand command = new FindNumCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
+        expectedModel.stackFilters(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
     }
@@ -75,7 +75,7 @@ public class FindNumCommandTest {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         PhoneContainsDigitsPredicate predicate = preparePredicate("94351253 9482224 9482442");
         FindNumCommand command = new FindNumCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
+        expectedModel.stackFilters(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(ALICE, ELLE, GEORGE), model.getFilteredPersonList());
     }

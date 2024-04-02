@@ -1,27 +1,18 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
 
 /**
  * Represents a predicate that checks if a person's role contains any of the specified keywords.
  * This predicate is used to filter a list of persons based on their roles.
  */
-public class RoleContainsKeywordsPredicate implements Predicate<Person> {
+public class RoleContainsKeywordsPredicate extends NetConnectPredicate<Person> {
     private final List<String> keywords;
-
-    /**
-     * Constructs a {@code RoleContainsKeywordsPredicate} with a single keyword.
-     *
-     * @param keyword The keyword to match against the person's role.
-     */
-    public RoleContainsKeywordsPredicate(String keyword) {
-        this.keywords = new ArrayList<>();
-        this.keywords.add(keyword.toLowerCase());
-    }
 
     /**
      * Constructs a {@code RoleContainsKeywordsPredicate} with a list of keywords.
@@ -33,6 +24,21 @@ public class RoleContainsKeywordsPredicate implements Predicate<Person> {
         for (String keyword : keywords) {
             this.keywords.add(keyword.toLowerCase());
         }
+    }
+
+    /**
+     * Constructs a {@code RoleContainsKeywordsPredicate} with a single keyword.
+     *
+     * @param keyword The keyword to match against the person's role.
+     */
+    public RoleContainsKeywordsPredicate(String keyword) {
+        this.keywords = new ArrayList<>();
+        this.keywords.add(keyword.toLowerCase());
+    }
+
+    @Override
+    public String formatFilter() {
+        return keywords.stream().map(s -> "role/" + s).collect(Collectors.joining(" "));
     }
 
     /**

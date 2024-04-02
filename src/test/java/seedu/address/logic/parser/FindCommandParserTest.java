@@ -8,8 +8,12 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
+import seedu.address.model.tag.Tag;
 
 public class FindCommandParserTest {
 
@@ -21,14 +25,63 @@ public class FindCommandParserTest {
     }
 
     @Test
-    public void parse_validArgs_returnsFindCommand() {
+    public void parse_validNames_returnsFindCommand() {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
                 new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList("Alice", "Bob")));
-        assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
+        assertParseSuccess(parser, " n/Alice n/Bob", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+        assertParseSuccess(parser, " \n n/Alice \n \t n/Bob  \t", expectedFindCommand);
     }
 
+    @Test
+    public void parse_validTags_returnsFindCommand() {
+        // no leading and trailing whitespaces
+        FindCommand expectedFindCommand =
+                new FindCommand(new TagsContainsKeywordsPredicate(Arrays.asList("friends", "colleagues")));
+        assertParseSuccess(parser, " t/friends t/colleagues", expectedFindCommand);
+
+        // multiple whitespaces between keywords
+        assertParseSuccess(parser, " \n t/friends \n   \t t/colleagues  \t", expectedFindCommand);
+    }
+
+    @Test
+    public void parse_invalidNames_throwsParseException() {
+        // empty name
+        assertParseFailure(parser, " n/", String.format(Name.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " n/ n/ n/", String.format(Name.MESSAGE_CONSTRAINTS));
+
+        // invalid name format
+        assertParseFailure(parser, " n/@lice", String.format(Name.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " n/Ali@ce n/Bob", String.format(Name.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " n/Bob n/Ali@ce", String.format(Name.MESSAGE_CONSTRAINTS));
+    }
+
+    @Test
+    public void parse_invalidTags_throwsParseException() {
+        // empty tag
+        assertParseFailure(parser, " t/", String.format(Tag.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " t/ t/ t/", String.format(Tag.MESSAGE_CONSTRAINTS));
+
+        // invalid tag format
+        assertParseFailure(parser, " t/fri@ends", String.format(Tag.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " t/fri@ends t/colleagues", String.format(Tag.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " t/colleagues t/fri@ends", String.format(Tag.MESSAGE_CONSTRAINTS));
+    }
+
+    @Test
+    public void parse_multipleFields_throwsParseException() {
+        assertParseFailure(parser, " n/ t/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Alice t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Ali@ce t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Alice t/fri@ends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+
+        // repeated fields
+        assertParseFailure(parser, " n/ n/ t/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/ t/ t/", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Alice n/Bob t/friends", String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+        assertParseFailure(parser, " n/Ali@ce t/friends t/colleagues",
+                String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+    }
 }

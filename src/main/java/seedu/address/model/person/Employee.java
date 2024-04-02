@@ -71,21 +71,6 @@ public class Employee extends Person {
     }
 
     /**
-     * Checks if this employee is the same as another person.
-     * Two employees are considered the same if they have the same attributes.
-     *
-     * @param otherPerson The person to compare with.
-     * @return True if the employees are the same, false otherwise.
-     */
-    @Override
-    public boolean isSamePerson(Person otherPerson) {
-        if (!super.isSamePerson(otherPerson)) {
-            return false;
-        }
-        return otherPerson instanceof Employee;
-    }
-
-    /**
      * Checks if this employee is equal to another object.
      * Two employees are considered equal if they have the same attributes.
      *

@@ -1,14 +1,15 @@
-package seedu.address.model.person;
+package seedu.address.model.person.filter;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
 
 /**
  * Tests that a {@code Person}'s {@code ID} matches any of the IDs given.
  */
-public class IdContainsDigitsPredicate implements Predicate<Person> {
+public class IdContainsDigitsPredicate extends NetConnectPredicate<Person> {
     private final List<Integer> ids;
 
     public IdContainsDigitsPredicate(List<Integer> ids) {
@@ -25,6 +26,12 @@ public class IdContainsDigitsPredicate implements Predicate<Person> {
 
     public int getSecondId() {
         return ids.get(1);
+    }
+
+    @Override
+    public String formatFilter() {
+        return ids.stream()
+                .map(id -> "i/" + id).collect(Collectors.joining(" "));
     }
 
     @Override
