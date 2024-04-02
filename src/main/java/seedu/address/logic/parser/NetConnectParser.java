@@ -77,6 +77,7 @@ public class NetConnectParser {
         case FindNumCommand.COMMAND_WORD:
             return new FindNumCommandParser().parse(arguments);
 
+
         case RelateCommand.COMMAND_WORD:
             return new RelateCommandParser().parse(arguments);
 
