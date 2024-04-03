@@ -26,7 +26,6 @@ public class StorageManagerTest {
     public void setUp() {
         JsonNetConnectStorage netConnectStorage = new JsonNetConnectStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        RelateStorage relateStorage = new RelateStorage();
         storageManager = new StorageManager(netConnectStorage, userPrefsStorage);
     }
 

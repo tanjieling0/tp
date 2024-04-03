@@ -185,7 +185,7 @@ public class NetConnectTest {
         }
 
         @Override
-        public List<IdTuple> getRelatedList() {
+        public List<IdTuple> getListIdTuple() {
             return relatedList;
         }
     }

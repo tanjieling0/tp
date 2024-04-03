@@ -58,8 +58,7 @@ public class RelateCommand extends Command {
             throw new CommandException(Messages.MESSAGE_RELATION_EXISTS);
         } else {
             model.addRelatedIdTuple(tuple);
-            // update storage
-            // relateStorage.writeRelate(model.getRelatedIdTuples());
+            
             return new CommandResult(
                     String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
         }

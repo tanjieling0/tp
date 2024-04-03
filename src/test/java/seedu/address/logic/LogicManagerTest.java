@@ -21,10 +21,8 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.util.RelatedList;
 import seedu.address.storage.JsonNetConnectStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
-import seedu.address.storage.RelateStorage;
 import seedu.address.storage.StorageManager;
 
 public class LogicManagerTest {
@@ -42,7 +40,6 @@ public class LogicManagerTest {
         JsonNetConnectStorage netConnectStorage = new JsonNetConnectStorage(
                 temporaryFolder.resolve("netConnect.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        RelateStorage relateStorage = new RelateStorage();
         StorageManager storage = new StorageManager(netConnectStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
     }
@@ -169,7 +166,6 @@ public class LogicManagerTest {
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(
                 temporaryFolder.resolve("ExceptionUserPrefs.json"));
 
-        RelateStorage relateStorage = new RelateStorage();
         StorageManager storage = new StorageManager(netConnectStorage, userPrefsStorage);
 
         logic = new LogicManager(model, storage);

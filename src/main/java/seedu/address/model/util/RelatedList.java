@@ -4,22 +4,20 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.model.person.Id;
 
 /**
  * Contains tuple methods for relate command storage.
  */
-public class RelatedList {
-    private static ArrayList<IdTuple> relatedPersons = new ArrayList<>();
-
-    public RelatedList() {
-        relatedPersons = new ArrayList<>();
-    }
-
-    public RelatedList(List<IdTuple> relatedList) {
-        relatedPersons = new ArrayList<>(relatedList);
-    }
+public class RelatedList implements Iterable<IdTuple> {
+    
+    private final ObservableList<IdTuple> relatedPersons = FXCollections.observableArrayList();
+    private final ObservableList<IdTuple> relatedPersonsUnmodifiableList =
+            FXCollections.unmodifiableObservableList(relatedPersons);
 
     public RelatedList getRelatedList() {
         return this;
@@ -69,6 +67,10 @@ public class RelatedList {
 
     public IdTuple get(int index) {
         return relatedPersons.get(index);
+    }
+
+    public void setRelatedList(List<IdTuple> idTuples) {
+        relatedPersons.addAll(idTuples);
     }
 
     /**
@@ -128,10 +130,8 @@ public class RelatedList {
         // Iterate through all IdTuple objects in the RelatedList
         for (int i = 0; i < relatedList.size(); i++) {
             assert i >= 0 && i < relatedList.size();
-            System.out.println(i);
 
             IdTuple idTuple = relatedList.get(i);
-            System.out.println(idTuple);
 
             // Check if the provided ID matches either the first or the second ID in the
             // tuple
@@ -141,13 +141,18 @@ public class RelatedList {
                 relatedIds.add(idTuple.getFirstPersonId().value);
             }
         }
-        System.out.println(relatedIds);
         return relatedIds;
     }
 
-    public void setRelatedList(List<IdTuple> relatedList) {
-        relatedPersons = new ArrayList<>(relatedList);
+    public ObservableList<IdTuple> asUnmodifiableObservableList() {
+        return relatedPersonsUnmodifiableList;
     }
+
+    @Override
+    public Iterator<IdTuple> iterator() {
+        return relatedPersons.iterator();
+    }
+
 
     public int size() {
         return relatedPersons.size();

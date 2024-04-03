@@ -22,5 +22,5 @@ public interface ReadOnlyNetConnect {
      * Returns an unmodifiable view of the related list.
      * This list will not contain any duplicate related persons.
      */
-    List<IdTuple> getRelatedList();
+    List<IdTuple> getListIdTuple();
 }

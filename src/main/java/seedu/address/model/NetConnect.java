@@ -71,7 +71,7 @@ public class NetConnect implements ReadOnlyNetConnect {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
-        setRelatedList(newData.getRelatedList());
+        setRelatedList(newData.getListIdTuple());
 
     }
 
@@ -163,6 +163,17 @@ public class NetConnect implements ReadOnlyNetConnect {
         return exporter.getIsSuccessful();
     }
 
+    //// related list operations
+    public boolean hasRelatedId(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return relatedList.hasId(idTuple);
+    }
+
+    public void allowAddIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        relatedList.allowAddIdTuple(idTuple);
+    }
+
     //// util methods
 
     @Override
@@ -178,8 +189,12 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     @Override
-    public List<IdTuple> getRelatedList() {
+    public List<IdTuple> getListIdTuple() {
         return relatedList.getListIdTuple();
+    }
+
+    public RelatedList getRelatedList() {
+        return relatedList;
     }
 
     @Override

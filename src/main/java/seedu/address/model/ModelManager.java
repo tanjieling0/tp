@@ -28,7 +28,6 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
     private Filter filter = Filter.noFilter();
-    private final RelatedList relatedIdList;
 
     /**
      * Initializes a ModelManager with the given netConnect and userPrefs.
@@ -43,7 +42,6 @@ public class ModelManager implements Model {
         this.netConnect = new NetConnect(netConnect);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.netConnect.getPersonList());
-        relatedIdList = new RelatedList(netConnect.getRelatedList());
     }
 
     public ModelManager() {
@@ -159,18 +157,18 @@ public class ModelManager implements Model {
     @Override
     public boolean hasRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
-        return relatedIdList.hasId(idTuple);
+        return netConnect.hasRelatedId(idTuple);
     }
 
     @Override
     public void addRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
-        relatedIdList.allowAddIdTuple(idTuple);
+        netConnect.allowAddIdTuple(idTuple);
     }
 
     @Override
     public RelatedList getRelatedIdTuples() {
-        return this.relatedIdList;
+        return netConnect.getRelatedList();
     }
 
     // =========== Filtered Person List Accessors
