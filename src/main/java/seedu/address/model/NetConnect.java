@@ -180,6 +180,17 @@ public class NetConnect implements ReadOnlyNetConnect {
         relatedList.allowAddIdTuple(idTuple);
     }
 
+    /**
+     * Removes the specified IdTuple from the relatedList.
+     *
+     * @param idTuple The IdTuple to be removed.
+     * @return true if the IdTuple is removed, false otherwise.
+     */
+    public boolean removeRelatedId(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return relatedList.remove(idTuple);
+    }
+
     //// util methods
 
     @Override

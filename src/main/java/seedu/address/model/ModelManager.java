@@ -167,6 +167,12 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public boolean removeRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return netConnect.removeRelatedId(idTuple);
+    }
+
+    @Override
     public RelatedList getRelatedIdTuples() {
         return netConnect.getRelatedList();
     }

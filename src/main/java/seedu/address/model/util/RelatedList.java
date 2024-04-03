@@ -114,7 +114,11 @@ public class RelatedList implements Iterable<IdTuple> {
      */
     public boolean remove(IdTuple idTuple) {
         requireNonNull(idTuple);
-        return relatedPersons.remove(idTuple);
+        if (relatedPersons.contains(idTuple)) {
+            relatedPersons.remove(idTuple);
+            return true;
+        }
+        return relatedPersons.remove(idTuple.getReversedTuple());
     }
 
     /**

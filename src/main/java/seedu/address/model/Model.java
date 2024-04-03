@@ -137,5 +137,7 @@ public interface Model {
 
     void addRelatedIdTuple(IdTuple idTuple);
 
+    boolean removeRelatedIdTuple(IdTuple idTuple);
+
     RelatedList getRelatedIdTuples();
 }
