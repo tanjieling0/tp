@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BOB;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
 import java.util.ArrayList;
@@ -164,6 +165,47 @@ public class NetConnectTest {
                 .withDepartment("Engineering")
                 .build();
         assertTrue(netConnect.hasPerson(aliceEmployee));
+    }
+
+    @Test
+    public void hasRelatedId_nullId_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> netConnect.hasRelatedId(null));
+    }
+
+    @Test
+    public void hasRelatedId_idNotInNetConnect_returnsFalse() {
+        assertFalse(netConnect.hasRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
+    @Test
+    public void hasRelatedId_idInNetConnect_returnsTrue() {
+        netConnect.addPerson(ALICE);
+        netConnect.addPerson(BOB);
+        netConnect.allowAddIdTuple(new IdTuple(ALICE.getId(), BOB.getId()));
+        assertTrue(netConnect.hasRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
+    @Test
+    public void allowAddIdTuple_nullId_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> netConnect.allowAddIdTuple(null));
+    }
+
+    @Test
+    public void removeRelatedId_nullId_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> netConnect.removeRelatedId(null));
+    }
+
+    @Test
+    public void removeRelatedId_idNotInNetConnect_returnsFalse() {
+        assertFalse(netConnect.removeRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
+    @Test
+    public void removeRelatedId_idInNetConnect_returnsTrue() {
+        netConnect.addPerson(ALICE);
+        netConnect.addPerson(BOB);
+        netConnect.allowAddIdTuple(new IdTuple(ALICE.getId(), BOB.getId()));
+        assertTrue(netConnect.removeRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
     }
 
     /**
