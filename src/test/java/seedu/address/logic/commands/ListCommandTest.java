@@ -24,8 +24,8 @@ public class ListCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
-        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
     }
 
     @Test

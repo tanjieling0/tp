@@ -46,7 +46,7 @@ import seedu.address.testutil.SupplierBuilder;
  */
 public class EditCommandTest {
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -57,8 +57,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
-                new UserPrefs(),
-                new RelatedList());
+                new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -79,8 +78,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
-                new UserPrefs(),
-                new RelatedList());
+                new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -94,8 +92,7 @@ public class EditCommandTest {
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
-                new UserPrefs(),
-                new RelatedList());
+                new UserPrefs());
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -113,8 +110,7 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(
                 new NetConnect(model.getNetConnect()),
-                new UserPrefs(),
-                new RelatedList());
+                new UserPrefs());
         expectedModel.setPerson(model.getPersonById(ID_FIRST_PERSON), editedClient);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);

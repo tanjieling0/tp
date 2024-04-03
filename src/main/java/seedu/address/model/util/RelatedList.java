@@ -17,8 +17,16 @@ public class RelatedList {
         relatedPersons = new ArrayList<>();
     }
 
-    public RelatedList getRelatedIdList() {
+    public RelatedList(List<IdTuple> relatedList) {
+        relatedPersons = new ArrayList<>(relatedList);
+    }
+
+    public RelatedList getRelatedList() {
         return this;
+    }
+
+    public List<IdTuple> getListIdTuple() {
+        return relatedPersons;
     }
 
     /**
@@ -56,7 +64,7 @@ public class RelatedList {
 
         RelatedList otherList = (RelatedList) other;
 
-        return relatedPersons.equals(otherList.getRelatedIdList());
+        return relatedPersons.equals(otherList.getRelatedList());
     }
 
     public IdTuple get(int index) {
@@ -107,12 +115,11 @@ public class RelatedList {
         return relatedPersons.remove(idTuple);
     }
 
-
     /**
      * Retrieves all related IDs from the RelatedList.
      *
      * @param relatedList The list of related persons.
-     * @param id The ID to be checked.
+     * @param id          The ID to be checked.
      * @return The list of related IDs.
      */
     public List<Integer> getAllRelatedIds(RelatedList relatedList, Id id) {
@@ -126,7 +133,8 @@ public class RelatedList {
             IdTuple idTuple = relatedList.get(i);
             System.out.println(idTuple);
 
-            // Check if the provided ID matches either the first or the second ID in the tuple
+            // Check if the provided ID matches either the first or the second ID in the
+            // tuple
             if (idTuple.getFirstPersonId().equals(id)) {
                 relatedIds.add(idTuple.getSecondPersonId().value);
             } else if (idTuple.getSecondPersonId().equals(id)) {
@@ -135,6 +143,10 @@ public class RelatedList {
         }
         System.out.println(relatedIds);
         return relatedIds;
+    }
+
+    public void setRelatedList(List<IdTuple> relatedList) {
+        relatedPersons = new ArrayList<>(relatedList);
     }
 
     public int size() {

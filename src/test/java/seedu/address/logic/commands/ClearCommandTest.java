@@ -23,8 +23,8 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyNetConnect_success() {
-        Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
-        Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+        Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+        Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs());
         expectedModel.setNetConnect(new NetConnect());
 
         assertCommandSuccess(new ClearCommand(), model, ClearCommand.MESSAGE_SUCCESS, expectedModel);

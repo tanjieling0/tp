@@ -30,8 +30,4 @@ public interface Storage extends NetConnectStorage, UserPrefsStorage {
     @Override
     void saveNetConnect(ReadOnlyNetConnect netConnect) throws IOException;
 
-    void saveRelate(RelatedList relatedList);
-
-    RelatedList readRelate() throws DataLoadingException;
-
 }

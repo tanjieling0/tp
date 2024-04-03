@@ -27,8 +27,8 @@ import seedu.address.model.util.RelatedList;
  * {@code FindCommand}.
  */
 public class FindCommandTest {
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
-    private final Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs());
 
     @Test
     public void equals() {

@@ -7,6 +7,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +23,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Supplier;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -170,6 +173,7 @@ public class NetConnectTest {
      */
     private static class NetConnectStub implements ReadOnlyNetConnect {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final List<IdTuple> relatedList = new ArrayList<>();
 
         NetConnectStub(Collection<Person> persons) {
             this.persons.setAll(persons);
@@ -178,6 +182,11 @@ public class NetConnectTest {
         @Override
         public ObservableList<Person> getPersonList() {
             return persons;
+        }
+
+        @Override
+        public List<IdTuple> getRelatedList() {
+            return relatedList;
         }
     }
 }

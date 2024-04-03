@@ -132,11 +132,10 @@ public class ModelManagerTest {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         NetConnect differentNetConnect = new NetConnect();
         UserPrefs userPrefs = new UserPrefs();
-        RelatedList relatedList = new RelatedList();
 
         // same values -> returns true
-        modelManager = new ModelManager(netConnect, userPrefs, relatedList);
-        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs, relatedList);
+        modelManager = new ModelManager(netConnect, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -149,13 +148,13 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different netConnect -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs, relatedList)));
+        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
 
         modelManager.stackFilters(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs, relatedList)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.clearFilter();
@@ -163,6 +162,6 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setNetConnectFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs, relatedList)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs)));
     }
 }

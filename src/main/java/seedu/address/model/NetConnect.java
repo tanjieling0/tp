@@ -11,6 +11,8 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Wraps all data at the address-book level
@@ -19,6 +21,7 @@ import seedu.address.model.person.UniquePersonList;
 public class NetConnect implements ReadOnlyNetConnect {
 
     private final UniquePersonList persons;
+    private final RelatedList relatedList;
 
     /*
      * The 'unusual' code block below is a non-static initialization block,
@@ -32,6 +35,7 @@ public class NetConnect implements ReadOnlyNetConnect {
      */
     public NetConnect() {
         persons = new UniquePersonList();
+        relatedList = new RelatedList();
     }
 
     /**
@@ -53,12 +57,22 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
+     * Replaces the contents of the related list with {@code relatedList}.
+     * {@code relatedList} must not contain duplicate related persons.
+     */
+    public void setRelatedList(List<IdTuple> relatedList) {
+        this.relatedList.setRelatedList(relatedList);
+    }
+
+    /**
      * Resets the existing data of this {@code NetConnect} with {@code newData}.
      */
     public void resetData(ReadOnlyNetConnect newData) {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
+        setRelatedList(newData.getRelatedList());
+
     }
 
     //// person-level operations
@@ -134,12 +148,14 @@ public class NetConnect implements ReadOnlyNetConnect {
         persons.remove(key);
     }
 
-
     /**
-     * Exports the data from the address book as a CSV file with the specified filename.
-     * Returns {@code true} if the export operation is successful, {@code false} otherwise.
+     * Exports the data from the address book as a CSV file with the specified
+     * filename.
+     * Returns {@code true} if the export operation is successful, {@code false}
+     * otherwise.
      *
-     * @return {@code true} if the export operation is successful, {@code false} otherwise.
+     * @return {@code true} if the export operation is successful, {@code false}
+     *         otherwise.
      */
     public boolean exportCsv(String filename) {
         CsvExporter exporter = new CsvExporter(persons, filename);
@@ -159,6 +175,11 @@ public class NetConnect implements ReadOnlyNetConnect {
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();
+    }
+
+    @Override
+    public List<IdTuple> getRelatedList() {
+        return relatedList.getListIdTuple();
     }
 
     @Override

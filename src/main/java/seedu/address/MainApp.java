@@ -60,12 +60,10 @@ public class MainApp extends Application {
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
         NetConnectStorage netConnectStorage = new JsonNetConnectStorage(userPrefs.getNetConnectFilePath());
-        RelateStorage relateStorage = new RelateStorage();
-        RelatedList relatedList = initRelations(relateStorage);
 
-        storage = new StorageManager(netConnectStorage, userPrefsStorage, relateStorage);
+        storage = new StorageManager(netConnectStorage, userPrefsStorage);
 
-        model = initModelManager(storage, userPrefs, relatedList);
+        model = initModelManager(storage, userPrefs);
 
         logic = new LogicManager(model, storage);
 
@@ -80,7 +78,7 @@ public class MainApp extends Application {
      * or an empty address book will be used instead if errors occur when reading
      * {@code storage}'s address book.
      */
-    private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs, RelatedList relatedList) {
+    private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getNetConnectFilePath());
 
         Optional<ReadOnlyNetConnect> netConnectOptional;
@@ -98,7 +96,7 @@ public class MainApp extends Application {
             initialData = new NetConnect();
         }
 
-        return new ModelManager(initialData, userPrefs, relatedList);
+        return new ModelManager(initialData, userPrefs);
     }
 
     private void initLogging(Config config) {
