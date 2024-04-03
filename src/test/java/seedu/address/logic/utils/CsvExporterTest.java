@@ -8,16 +8,15 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.TypicalPersons;
-
 
 public class CsvExporterTest {
 
