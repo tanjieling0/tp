@@ -13,7 +13,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.util.RelatedList;
 
 public class ShowRelatedCommandTest {
     private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());

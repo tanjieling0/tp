@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.NetConnect;
 import seedu.address.model.ReadOnlyNetConnect;
-import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.util.IdTuple;
 

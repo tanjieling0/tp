@@ -53,11 +53,11 @@ public class PersonTest {
 
         // different single field of name/phone/email, all other attributes same -> returns false
         Person diffName = new ClientBuilder(ALICE).withName(VALID_NAME_BOB).build();
-        assertFalse(ALICE.isSamePerson(sameName));
+        assertFalse(ALICE.isSamePerson(diffName));
         Person diffPhone = new ClientBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
-        assertFalse(ALICE.isSamePerson(samePhone));
+        assertFalse(ALICE.isSamePerson(diffPhone));
         Person diffEmail = new ClientBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
-        assertFalse(ALICE.isSamePerson(sameEmail));
+        assertFalse(ALICE.isSamePerson(diffEmail));
 
         // name differs in case, all other attributes same -> returns false
         Person editedBob = new EmployeeBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();

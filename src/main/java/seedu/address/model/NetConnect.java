@@ -23,15 +23,9 @@ public class NetConnect implements ReadOnlyNetConnect {
     private final UniquePersonList persons;
     private final RelatedList relatedList;
 
-    /*
-     * The 'unusual' code block below is a non-static initialization block,
-     * sometimes used to avoid duplication
-     * between constructors. See
-     * https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     *
-     * Note that non-static init blocks are not recommended to use. There are other
-     * ways to avoid duplication
-     * among constructors.
+    /**
+     * Represents the main class for the NetConnect application.
+     * It contains the constructor for initializing the application.
      */
     public NetConnect() {
         persons = new UniquePersonList();
@@ -164,11 +158,23 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     //// related list operations
+    /**
+     * Returns true if the specified IdTuple is present in the relatedList, false otherwise.
+     *
+     * @param idTuple The IdTuple to check for presence in the relatedList. Must not be null.
+     * @return true if the specified IdTuple is present in the relatedList, false otherwise.
+     */
     public boolean hasRelatedId(IdTuple idTuple) {
         requireNonNull(idTuple);
         return relatedList.hasId(idTuple);
     }
 
+    /**
+     * Allows the addition of an IdTuple to the NetConnect model.
+     *
+     * @param idTuple The IdTuple to be added.
+     * @throws NullPointerException if idTuple is null.
+     */
     public void allowAddIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
         relatedList.allowAddIdTuple(idTuple);

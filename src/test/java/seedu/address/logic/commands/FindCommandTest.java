@@ -20,7 +20,6 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.filter.Filter;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
-import seedu.address.model.util.RelatedList;
 
 /**
  * Contains integration tests (interaction with the Model) for

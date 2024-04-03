@@ -23,7 +23,6 @@ import seedu.address.model.person.Client;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
-import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 
 /**
@@ -31,7 +30,6 @@ import seedu.address.testutil.ClientBuilder;
  * RemarkCommand.
  */
 public class RemarkCommandTest {
-    private static final String REMARK_STUB = "Some remark";
     private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
 
     @Test

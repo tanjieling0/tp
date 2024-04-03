@@ -3,8 +3,8 @@ package seedu.address.model.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +14,7 @@ import seedu.address.model.person.Id;
  * Contains tuple methods for relate command storage.
  */
 public class RelatedList implements Iterable<IdTuple> {
-    
+
     private final ObservableList<IdTuple> relatedPersons = FXCollections.observableArrayList();
     private final ObservableList<IdTuple> relatedPersonsUnmodifiableList =
             FXCollections.unmodifiableObservableList(relatedPersons);
