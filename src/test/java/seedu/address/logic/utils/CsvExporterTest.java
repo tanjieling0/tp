@@ -6,12 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.Client;
-import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.person.Person;
 import seedu.address.testutil.TypicalPersons;
 
 
@@ -20,16 +24,22 @@ public class CsvExporterTest {
     private static final String TEST_FILENAME = "test_export.csv";
 
     private CsvExporter csvExporter;
-    private UniquePersonList persons;
+    private FilteredList<Person> persons;
 
     @BeforeEach
     public void setUp() {
-        UniquePersonList persons = new UniquePersonList();
-        persons.setPersons(Arrays.asList(
+        ObservableList<Person> sourceList = FXCollections.observableArrayList();
+
+        FilteredList<Person> persons = new FilteredList<>(sourceList);
+
+        // Adding typical persons to the filtered list
+        List<Person> personList = Arrays.asList(
                 TypicalPersons.ALICE, TypicalPersons.BENSON,
-                TypicalPersons.DANIEL, TypicalPersons.ELLE, TypicalPersons.FIONA
-        ));
-        this.persons = persons;
+                TypicalPersons.DANIEL, TypicalPersons.ELLE, TypicalPersons.FIONA);
+
+        // Adding persons directly to the filtered list
+        persons.addAll(personList);
+
         csvExporter = new CsvExporter(persons, TEST_FILENAME);
     }
 
