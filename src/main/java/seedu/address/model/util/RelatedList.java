@@ -83,11 +83,11 @@ public class RelatedList implements Iterable<IdTuple> {
         requireNonNull(idTuple);
         for (IdTuple oneIdTuple : relatedPersons) {
             if (oneIdTuple.equals(idTuple)) {
-                return true;
+                return false;
             }
         }
         relatedPersons.add(idTuple);
-        return false;
+        return true;
     }
 
     /**

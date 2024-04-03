@@ -200,16 +200,30 @@ public class NetConnect implements ReadOnlyNetConnect {
                 .toString();
     }
 
+    /**
+     * Returns an unmodifiable view of the person list.
+     * This list will not contain any duplicate persons.
+     *
+     * @return An unmodifiable {@link ObservableList} of {@link Person}.
+     */
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();
     }
 
+    /**
+     * Returns a list of IdTuple objects.
+     *
+     * @return A list of IdTuple objects.
+     */
     @Override
     public List<IdTuple> getListIdTuple() {
         return relatedList.getListIdTuple();
     }
 
+    /**
+     * Represents a list of related items.
+     */
     public RelatedList getRelatedList() {
         return relatedList;
     }
