@@ -34,6 +34,7 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Supplier;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.EmployeeBuilder;
@@ -45,7 +46,7 @@ import seedu.address.testutil.SupplierBuilder;
  */
 public class EditCommandTest {
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -55,7 +56,9 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -75,7 +78,9 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(lastPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -88,7 +93,9 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -104,7 +111,10 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedClient));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(
+                new NetConnect(model.getNetConnect()),
+                new UserPrefs(),
+                new RelatedList());
         expectedModel.setPerson(model.getPersonById(ID_FIRST_PERSON), editedClient);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -237,7 +247,8 @@ public class EditCommandTest {
         assertEquals("updated@example.com", editedPerson.getEmail().toString());
         assertEquals("Updated Address", editedPerson.getAddress().toString());
         assertEquals("Updated Remark", editedPerson.getRemark().toString());
-        assertEquals(new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2"))), editedPerson.getTags());
+        assertEquals(new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2"))),
+                editedPerson.getTags());
         assertTrue(editedPerson instanceof Employee);
         Employee editedEmployee = (Employee) editedPerson;
         assertEquals("Updated Department", editedEmployee.getDepartment().toString());

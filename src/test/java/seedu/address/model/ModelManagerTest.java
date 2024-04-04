@@ -15,8 +15,9 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
-import seedu.address.model.person.exceptions.IdNotFoundException;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.NetConnectBuilder;
 
 public class ModelManagerTest {
@@ -111,8 +112,8 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void getPersonById_idNotInNetConnect_throwsIdNotFoundException() {
-        assertThrows(IdNotFoundException.class, () -> modelManager.getPersonById(ALICE.getId()));
+    public void getPersonById_idNotInNetConnect_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> modelManager.getPersonById(ALICE.getId()));
     }
 
     @Test
@@ -130,10 +131,10 @@ public class ModelManagerTest {
     public void equals_sameValues_returnsTrue() {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
+        RelatedList relatedList = new RelatedList();
 
         modelManager = new ModelManager(netConnect, userPrefs);
         ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
-
         assertTrue(modelManager.equals(modelManagerCopy));
     }
 
@@ -171,12 +172,14 @@ public class ModelManagerTest {
 
         modelManager = new ModelManager(netConnect, userPrefs);
         String[] keywords = ALICE.getName().fullName.split("\\s+");
+      
         modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
 
         ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
 
         assertFalse(modelManager.equals(modelManagerCopy));
     }
+
 
     @Test
     public void equals_differentUserPrefs_returnsFalse() {

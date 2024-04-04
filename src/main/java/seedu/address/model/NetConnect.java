@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 
@@ -71,17 +72,36 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in
-     * the address book.
+     * Returns true if a person with the specified id exists in the NetConnect.
      */
     public boolean hasId(Id id) {
         requireNonNull(id);
         return persons.hasId(id);
     }
 
+    /**
+     * Returns the {@code Person} with the specified id.
+     */
     public Person getPersonById(Id id) {
         requireNonNull(id);
         return persons.getPersonById(id);
+    }
+
+    /**
+     * Returns true if the NetConnect has exactly one {@code Person}
+     * with the specified name.
+     */
+    public int countPersonsWithName(Name name) {
+        requireNonNull(name);
+        return persons.countPersonsWithName(name);
+    }
+
+    /**
+     * Returns the {@code Person} with the specified name.
+     */
+    public Person getPersonByName(Name name) {
+        requireNonNull(name);
+        return persons.getPersonByName(name);
     }
 
     /**
