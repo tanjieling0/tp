@@ -44,7 +44,7 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
 
 ### Advanced Search
 - **Locating persons by name:** `find`  
-  Quickly find contacts by their name, phone, remark, role, or tags
+  Quickly find contacts by their name, phone, remark, role, or tags.
 
 ### Data Management
 - **Clearing all entries:** `clear`  
