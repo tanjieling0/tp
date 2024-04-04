@@ -31,6 +31,10 @@ public class IdTuple {
         return secondPersonId;
     }
 
+    public IdTuple getReversedTuple() {
+        return new IdTuple(secondPersonId, firstPersonId);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {

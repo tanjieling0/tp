@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
-import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.NetConnectBuilder;
 
 public class ModelManagerTest {
@@ -132,11 +132,10 @@ public class ModelManagerTest {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         NetConnect differentNetConnect = new NetConnect();
         UserPrefs userPrefs = new UserPrefs();
-        RelatedList relatedList = new RelatedList();
 
         // same values -> returns true
-        modelManager = new ModelManager(netConnect, userPrefs, relatedList);
-        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs, relatedList);
+        modelManager = new ModelManager(netConnect, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
         assertTrue(modelManager.equals(modelManagerCopy));
 
         // same object -> returns true
@@ -149,13 +148,13 @@ public class ModelManagerTest {
         assertFalse(modelManager.equals(5));
 
         // different netConnect -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs, relatedList)));
+        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs)));
 
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
 
         modelManager.stackFilters(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs, relatedList)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.clearFilter();
@@ -163,6 +162,60 @@ public class ModelManagerTest {
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setNetConnectFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs, relatedList)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs)));
+    }
+
+    @Test
+    public void constructor_withReadOnlyNetConnectAndReadOnlyUserPrefs_initializesModelManager() {
+        ReadOnlyNetConnect netConnect = new NetConnect();
+        ReadOnlyUserPrefs userPrefs = new UserPrefs();
+        ModelManager modelManager = new ModelManager(netConnect, userPrefs);
+
+        assertEquals(netConnect, modelManager.getNetConnect());
+        assertEquals(userPrefs, modelManager.getUserPrefs());
+        assertEquals(netConnect.getPersonList(), modelManager.getFilteredPersonList());
+    }
+
+    @Test
+    public void constructor_withoutArguments_initializesModelManagerWithEmptyNetConnectAndUserPrefs() {
+        ModelManager modelManager = new ModelManager();
+
+        assertNotNull(modelManager.getNetConnect());
+        assertNotNull(modelManager.getUserPrefs());
+        assertTrue(modelManager.getFilteredPersonList().isEmpty());
+    }
+
+    @Test
+    public void equals_sameObject_returnsTrue() {
+        assertTrue(modelManager.equals(modelManager));
+    }
+
+    @Test
+    public void equals_nullObject_returnsFalse() {
+        assertFalse(modelManager.equals(null));
+    }
+
+    @Test
+    public void equals_differentType_returnsFalse() {
+        assertFalse(modelManager.equals(5));
+    }
+
+    @Test
+    public void equals_differentFilteredPersons_returnsFalse() {
+        NetConnect netConnect = new NetConnect();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager otherModelManager = new ModelManager(netConnect, userPrefs);
+        otherModelManager.addPerson(ALICE);
+
+        assertFalse(modelManager.equals(otherModelManager));
+    }
+
+    @Test
+    public void equals_sameValues_returnsTrue() {
+        NetConnect netConnect = new NetConnect();
+        UserPrefs userPrefs = new UserPrefs();
+        ModelManager otherModelManager = new ModelManager(netConnect, userPrefs);
+
+        assertTrue(modelManager.equals(otherModelManager));
     }
 }

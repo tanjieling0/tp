@@ -27,8 +27,10 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindNumCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.ShowRelatedCommand;
+import seedu.address.logic.commands.UnrelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Remark;
@@ -120,6 +122,16 @@ public class NetConnectParserTest {
     }
 
     @Test
+    public void parseCommand_relate() throws Exception {
+        assertTrue(parser.parseCommand("relate i/1 i/2") instanceof RelateCommand);
+    }
+
+    @Test
+    public void parseCommand_unrelate() throws Exception {
+        assertTrue(parser.parseCommand("unrelate i/1 i/2") instanceof UnrelateCommand);
+    }
+
+    @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
         assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 HelpCommand.MESSAGE_USAGE), () -> parser.parseCommand(""));
@@ -142,4 +154,5 @@ public class NetConnectParserTest {
         assertTrue(commandWithFilename instanceof ExportCommand);
         assertEquals(new ExportCommand(filename), commandWithFilename);
     }
+
 }

@@ -13,7 +13,6 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
-import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -28,12 +27,12 @@ public class AddCommandIntegrationTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+        model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
     }
 
     @Test
     public void execute_newClient_success() {
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
 
         Person validClient = new ClientBuilder().withName("John").build();
         expectedModel.addPerson(validClient);
@@ -47,7 +46,7 @@ public class AddCommandIntegrationTest {
     public void execute_newEmployee_success() {
         Person validEmployee = new EmployeeBuilder().build();
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.addPerson(validEmployee);
 
         assertCommandSuccess(new AddCommand(validEmployee), model,
@@ -59,7 +58,7 @@ public class AddCommandIntegrationTest {
     public void execute_newSupplier_success() {
         Person validSupplier = new SupplierBuilder().build();
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.addPerson(validSupplier);
 
         assertCommandSuccess(new AddCommand(validSupplier), model,

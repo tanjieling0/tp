@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.util.RelatedList;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -24,8 +23,8 @@ public class ListCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
-        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
     }
 
     @Test

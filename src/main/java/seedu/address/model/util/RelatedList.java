@@ -3,22 +3,24 @@ package seedu.address.model.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.model.person.Id;
 
 /**
  * Contains tuple methods for relate command storage.
  */
-public class RelatedList {
-    private static ArrayList<IdTuple> relatedPersons = new ArrayList<>();
+public class RelatedList implements Iterable<IdTuple> {
 
-    public RelatedList() {
-        relatedPersons = new ArrayList<>();
-    }
+    private final ObservableList<IdTuple> relatedPersons = FXCollections.observableArrayList();
+    private final ObservableList<IdTuple> relatedPersonsUnmodifiableList =
+            FXCollections.unmodifiableObservableList(relatedPersons);
 
-    public RelatedList getRelatedIdList() {
-        return this;
+    public List<IdTuple> getListIdTuple() {
+        return relatedPersons;
     }
 
     /**
@@ -56,11 +58,15 @@ public class RelatedList {
 
         RelatedList otherList = (RelatedList) other;
 
-        return relatedPersons.equals(otherList.getRelatedIdList());
+        return relatedPersons.equals(otherList);
     }
 
     public IdTuple get(int index) {
         return relatedPersons.get(index);
+    }
+
+    public void setRelatedList(List<IdTuple> idTuples) {
+        relatedPersons.addAll(idTuples);
     }
 
     /**
@@ -73,11 +79,11 @@ public class RelatedList {
         requireNonNull(idTuple);
         for (IdTuple oneIdTuple : relatedPersons) {
             if (oneIdTuple.equals(idTuple)) {
-                return true;
+                return false;
             }
         }
         relatedPersons.add(idTuple);
-        return false;
+        return true;
     }
 
     /**
@@ -104,15 +110,18 @@ public class RelatedList {
      */
     public boolean remove(IdTuple idTuple) {
         requireNonNull(idTuple);
-        return relatedPersons.remove(idTuple);
+        if (relatedPersons.contains(idTuple)) {
+            relatedPersons.remove(idTuple);
+            return true;
+        }
+        return relatedPersons.remove(idTuple.getReversedTuple());
     }
-
 
     /**
      * Retrieves all related IDs from the RelatedList.
      *
      * @param relatedList The list of related persons.
-     * @param id The ID to be checked.
+     * @param id          The ID to be checked.
      * @return The list of related IDs.
      */
     public List<Integer> getAllRelatedIds(RelatedList relatedList, Id id) {
@@ -121,21 +130,29 @@ public class RelatedList {
         // Iterate through all IdTuple objects in the RelatedList
         for (int i = 0; i < relatedList.size(); i++) {
             assert i >= 0 && i < relatedList.size();
-            System.out.println(i);
 
             IdTuple idTuple = relatedList.get(i);
-            System.out.println(idTuple);
 
-            // Check if the provided ID matches either the first or the second ID in the tuple
+            // Check if the provided ID matches either the first or the second ID in the
+            // tuple
             if (idTuple.getFirstPersonId().equals(id)) {
                 relatedIds.add(idTuple.getSecondPersonId().value);
             } else if (idTuple.getSecondPersonId().equals(id)) {
                 relatedIds.add(idTuple.getFirstPersonId().value);
             }
         }
-        System.out.println(relatedIds);
         return relatedIds;
     }
+
+    public ObservableList<IdTuple> asUnmodifiableObservableList() {
+        return relatedPersonsUnmodifiableList;
+    }
+
+    @Override
+    public Iterator<IdTuple> iterator() {
+        return relatedPersons.iterator();
+    }
+
 
     public int size() {
         return relatedPersons.size();
