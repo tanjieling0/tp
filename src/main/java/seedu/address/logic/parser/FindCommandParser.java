@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -13,10 +14,12 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.person.filter.PhoneMatchesDigitsPredicate;
 import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
-import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
+import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
 
@@ -34,7 +37,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer
-                .tokenize(args, PREFIX_NAME, PREFIX_TAG, PREFIX_ROLE, PREFIX_REMARK);
+                .tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_TAG, PREFIX_ROLE, PREFIX_REMARK);
         argMultimap.verifyOnlyOnePrefix();
 
         return new FindCommand(createPredicate(argMultimap));
@@ -63,12 +66,18 @@ public class FindCommandParser implements Parser<FindCommand> {
         } else if (argMultimap.getValue(PREFIX_ROLE).isPresent()) {
             List<String> roles = argMultimap.getAllValues(PREFIX_ROLE);
             if (!roles.stream().allMatch(Person::isValidRole)) {
-                throw new ParseException("Role can only be employee, client, or supplier");
+                throw new ParseException(Person.MESSAGE_ROLE_CONSTRAINTS);
             }
-            return new RoleContainsKeywordsPredicate(roles);
+            return new RoleMatchesKeywordsPredicate(roles);
         } else if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
             List<String> remarks = argMultimap.getAllValues(PREFIX_REMARK);
             return new RemarkContainsKeywordsPredicate(remarks);
+        } else if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
+            List<String> phones = argMultimap.getAllValues(PREFIX_PHONE);
+            if (!phones.stream().allMatch(Phone::isValidPhone)) {
+                throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+            }
+            return new PhoneMatchesDigitsPredicate(phones);
         } else {
             // no field provided
             throw new ParseException(

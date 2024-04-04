@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.utils.CsvExporter;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -148,7 +149,9 @@ public class ModelManager implements Model {
     @Override
     public boolean exportCsv(String filename) {
         requireNonNull(filename);
-        return netConnect.exportCsv(filename);
+        CsvExporter exporter = new CsvExporter(filteredPersons, filename);
+        exporter.execute();
+        return exporter.getIsSuccessful();
     }
 
     // =========== Related List Accessors
@@ -205,7 +208,7 @@ public class ModelManager implements Model {
 
     @Override
     public String printFilters() {
-        return filter.formatFilter();
+        return String.format(Filter.MESSAGE_FILTERS_APPLIED, filter.size(), filter.formatFilter());
     }
 
     @Override
