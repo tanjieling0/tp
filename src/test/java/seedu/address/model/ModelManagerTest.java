@@ -168,13 +168,10 @@ public class ModelManagerTest {
     public void equals_differentFilteredPersonList_returnsFalse() {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
-
         modelManager = new ModelManager(netConnect, userPrefs);
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-
         ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
-
         assertFalse(modelManager.equals(modelManagerCopy));
     }
 
