@@ -17,7 +17,7 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
 - **Sleek and Intuitive GUI:** Enjoy a visually pleasing experience with our application's interface, which simplifies your interaction and enhances productivity.
 - **Powerful CLI Capabilities:** For those who prefer speed and efficiency, our CLI features allow for quick navigation and management of contacts.
 - **Comprehensive Contact Management:** Store, search, edit, and delete contact details with ease. NetConnect supports a wide range of contact information types.
-- **Secure and Reliable:** Your contacts are stored securely, and with our robust backup and restore features, you'll never have to worry about losing your data.
+- **Data Backup:** You'll never have to worry about losing your data.
 
 ## Getting Started
 
@@ -47,26 +47,26 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
   Quickly find contacts by their name, phone, remark, role, or tags
 
 ### Data Management
-- **Clearing all entries:** `:clear`  
+- **Clearing all entries:** `clear`  
   Wipe your contact list for a fresh start.
 
-- **Create Relations between Profiles:** `:relate`  
+- **Create Relations between Profiles:** `relate`  
   Link contacts together to map out your network.
 
-- **Show Relations Associated to a Person:** `:showrelated`  
+- **Show Relations Associated to a Person:** `showrelated`  
   View the network of connections for a specific contact.
 
 - **Open on Last State**  
   Pick up right where you left off in your last session.
 
-- **Export Current View to CSV File:** `:export`  
+- **Export Current View to CSV File:** `export`  
   Export your contacts for use in other applications.
 
 ### Additional Features
 - **Never Miss a Birthday!**  
   Keep track of important dates like birthdays.
 
-- **Exiting the program:** `:exit`  
+- **Exiting the program:** `exit`  
   Close NetConnect safely and securely.
 
 ### Data Handling
