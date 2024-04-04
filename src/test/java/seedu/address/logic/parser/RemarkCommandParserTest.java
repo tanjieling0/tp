@@ -11,19 +11,26 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.RemarkCommand;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Remark;
 
 public class RemarkCommandParserTest {
     private final RemarkCommandParser parser = new RemarkCommandParser();
 
     @Test
-    public void parse_validIndex_returnsDeleteCommand() {
+    public void parse_validId_returnsRemarkCommand() {
         assertParseSuccess(parser, " i/1 r/remark",
                 new RemarkCommand(ID_FIRST_PERSON, new Remark("remark")));
     }
 
     @Test
-    public void parse_repeatedFields_throwsParserException() {
+    public void parse_invalidId_throwsParseException() {
+        assertParseFailure(parser, " i/0 r/remark",
+                String.format(Id.MESSAGE_CONSTRAINTS));
+    }
+
+    @Test
+    public void parse_repeatedFields_throwsParseException() {
         // repeated id
         assertParseFailure(parser, " i/1 i/2 r/remark",
                 String.format(Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ID)));
