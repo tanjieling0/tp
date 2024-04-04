@@ -129,8 +129,10 @@ public class EditCommand extends Command {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         if (personToEdit instanceof Client) {
-            if (editPersonDescriptor.getDepartment().isPresent() || editPersonDescriptor.getJobTitle().isPresent()
-                    || editPersonDescriptor.getSkills().isPresent()) {
+            if (editPersonDescriptor.getDepartment().isPresent()
+                    || editPersonDescriptor.getJobTitle().isPresent()
+                    || editPersonDescriptor.getSkills().isPresent()
+                    || editPersonDescriptor.getTermsOfService().isPresent()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_CLIENT_PROPERTY);
             }
             String updatedPreferences = editPersonDescriptor.getPreferences()
@@ -151,8 +153,10 @@ public class EditCommand extends Command {
             return new Employee(idOfPerson, updatedName, updatedPhone, updatedEmail, updatedAddress,
                     updatedRemark, updatedTags, updatedDepartment, updatedJobTitle, updatedSkills);
         } else if (personToEdit instanceof Supplier) {
-            if (editPersonDescriptor.getDepartment().isPresent() || editPersonDescriptor.getJobTitle().isPresent()
-                    || editPersonDescriptor.getSkills().isPresent()) {
+            if (editPersonDescriptor.getDepartment().isPresent()
+                    || editPersonDescriptor.getJobTitle().isPresent()
+                    || editPersonDescriptor.getSkills().isPresent()
+                    || editPersonDescriptor.getPreferences().isPresent()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_SUPPLIER_PROPERTY);
             }
             TermsOfService updatedTermsOfService = editPersonDescriptor.getTermsOfService()
