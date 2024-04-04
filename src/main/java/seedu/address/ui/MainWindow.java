@@ -194,4 +194,15 @@ public class MainWindow extends UiPart<Stage> {
             throw e;
         }
     }
+
+    /**
+     * Handles destructive confirmation for destructive commands.
+     * @param isDeleteCommand true if the command is a delete command, false otherwise.
+     * @param isClearCommand true if the command is a clear command, false otherwise.
+     *
+     * @return true if the user confirms the destructive action, false otherwise.
+     */
+    public static boolean handleDestructiveCommands(boolean isDeleteCommand, boolean isClearCommand) {
+        return DestructiveConfirmationWindow.handleDestructiveConfirmation(isDeleteCommand, isClearCommand);
+    }
 }

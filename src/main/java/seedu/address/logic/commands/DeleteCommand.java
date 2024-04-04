@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.ui.MainWindow.handleDestructiveCommands;
 
 import java.util.Objects;
 
@@ -40,7 +41,8 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " i/1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
-
+    public static final String MESSAGE_DELETE_CANCELLED = "Delete cancelled";
+    private static boolean doNotSkipConfirmation = true;
     private final Id targetId;
     private final Name targetName;
 
@@ -52,6 +54,7 @@ public class DeleteCommand extends Command {
     /**
      * Factory method to create a {@code DeleteCommand} that deletes a Person
      * by the given id.
+     *
      * @param id The id of the {@code Person} to be deleted
      * @return {@code DeleteCommand} to delete by id
      */
@@ -63,6 +66,7 @@ public class DeleteCommand extends Command {
     /**
      * Factory method to create a {@code DeleteCommand} that deletes a Person
      * by the given name.
+     *
      * @param name The name of the {@code Person} to be deleted
      * @return {@code DeleteCommand} to delete by name
      */
@@ -75,6 +79,13 @@ public class DeleteCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         assert targetId != null ^ targetName != null;
+
+        if (doNotSkipConfirmation) {
+            boolean isConfirmed = handleDestructiveCommands(true, false);
+            if (!isConfirmed) {
+                return new CommandResult(MESSAGE_DELETE_CANCELLED, false, false);
+            }
+        }
 
         Person personToDelete = getPersonToDelete(model);
 
@@ -124,6 +135,14 @@ public class DeleteCommand extends Command {
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
         return Objects.equals(targetId, otherDeleteCommand.targetId)
                 && Objects.equals(targetName, otherDeleteCommand.targetName);
+    }
+
+    public static void setUpForTesting() {
+        doNotSkipConfirmation = false;
+    }
+
+    public static void cleanUpAfterTesting() {
+        doNotSkipConfirmation = true;
     }
 
     @Override
