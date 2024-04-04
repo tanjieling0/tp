@@ -19,10 +19,6 @@ public class RelatedList implements Iterable<IdTuple> {
     private final ObservableList<IdTuple> relatedPersonsUnmodifiableList =
             FXCollections.unmodifiableObservableList(relatedPersons);
 
-    public RelatedList getRelatedList() {
-        return this;
-    }
-
     public List<IdTuple> getListIdTuple() {
         return relatedPersons;
     }
@@ -62,7 +58,7 @@ public class RelatedList implements Iterable<IdTuple> {
 
         RelatedList otherList = (RelatedList) other;
 
-        return relatedPersons.equals(otherList.getRelatedList());
+        return relatedPersons.equals(otherList);
     }
 
     public IdTuple get(int index) {
