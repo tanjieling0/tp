@@ -20,7 +20,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 * [Features](#features)
   + [Viewing help : `help`](#help)
   + [Adding a person: `add` ](#add)
-  + [Deleting a person : `delete`](#delete) 
+  + [Deleting a person : `delete`](#delete)
   + [Adding a Remark to a Person : `remark`](#remark)
   + [Listing all persons : `list`](#list)
   + [Editing a person : `edit`](#edit)
@@ -96,7 +96,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
 <section id="help">
 
-## Viewing help : `help` 
+## Viewing help : `help`
 
 Shows a message explaining how to access the help page.
 
@@ -109,7 +109,7 @@ Format: `help`
 
 <section id="add">
 
-## Adding a person: `add` 
+## Adding a person: `add`
 
 Adds a person (Client, Supplier or Employee) to the address book.
 
@@ -321,9 +321,9 @@ With every change to the command input, NetConnect saves and updates the command
 ## Export Current View to CSV File : `export`
 Retrieve information on a group of profiles at once with this function! This can be useful for consolidating all the emails or contact number at once, or to share information with third parties.
 
-**To export all profiles in the address book to a CSV file:** 
+**To export all profiles in the address book to a CSV file:**
 
-Step 1: `list` 
+Step 1: `list`
 
 Step 2: `export`
 

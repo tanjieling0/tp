@@ -53,12 +53,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
-        Id id;
-        try {
-            id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
-        }
+        Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
 

@@ -47,7 +47,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete i/1`.
 
 <puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
 
@@ -87,7 +87,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete i/1")` API call as an example.
 
 <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
@@ -155,7 +155,7 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
-   
+
 ### Export Feature
 
 #### Expected Behaviour
@@ -318,7 +318,7 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
 
 #### Design considerations
 
-**Aspect: How delete command executes:
+**Aspect: How delete command executes:**
 
 * **Alternative 1 (current choice):** A single `Model#deletePerson(Person)` method.
   * Pros:
@@ -330,7 +330,8 @@ Deletion of `Person` from NetConnect is facilitated by `Model#getPersonById(Id)`
   * Pros: Simple implementation of `DeleteCommand#execute(...)`.
   * Cons:
     1. Presence checks required in `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)`.
-    1. Much boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+    1. More boilerplate code since `Model#deletePersonById(Id)` and `Model#deletePersonByName(Name)` are very similar.
+
 ### Unique `Id` of `Person`
 
 The unique id of `Person` is stored as a private field `Id` instance in `Person`. `Id` value is enforced to be unique between each `Person` by keeping the constructors of the `Id` class private, and by using a private static field `nextId`. The `Id` class provides 3 factory methods to instantiate `Id`:
@@ -346,6 +347,36 @@ The unique id of `Person` is stored as a private field `Id` instance in `Person`
 <puml src="diagrams/IdClassDiagram.puml" alt="IdClassDiagram" />
 
 Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
+
+### `Findnum` feature
+
+#### Expected behaviour
+The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers
+Exceptional behaviour:
+* If any of the phone numbers provided is invalid, an error message is shown.
+* If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
+
+<puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
+
+#### Current implementation
+Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object.
+
+The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number.
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed.
+
+#### Design considerations
+
+**Aspect: How `PhoneContainsDigitsPredicate` tests a person's phone number**
+
+* **Alternative 1 (current choice)**: Use a regular expression to check if the phone number contains the specified numbers.
+  * Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
+  * Cons: Regular expressions can be difficult to understand and maintain.
+
+* **Alternative 2**: Instead of using `StringUtil#containsWordIgnoreCase(...)`, we could use Java's built-in `String#contains(...)` method.
+  * Pros: This method checks if the phone number string contains the specified number string.
+  * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
+=======
 
 ### \[Proposed\] Undo/redo feature
 
@@ -844,14 +875,34 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: Contact with index 1 is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete i/1`<br>
+      Expected: Contact with id 1 is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   1. Test case: `delete 1`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   1. Other incorrect delete commands to try: `delete`, `delete i/x`, `...` (where no persons have id x)<br>
       Expected: Similar to previous.
+
+   1. Guarantees: Person with the specified id will be deleted from NetConnect and removed from the displayed list.
+
+1. Deleting a person while displayed list is filtered
+
+   1. Prerequisites: Filter displayed list using `find` command or one of its variants. Partial contact list displayed.
+
+   1. Test case: `delete i/x` (where x is the id of person displayed in the list)<br>
+      Expected: Contact with id x is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
+   1. Test case: `delete i/y` (where y is the id of a person **not** displayed in the list)<br>
+      Expected: Contact with id x is deleted from NetConnect, and displayed list displays the full list of persons in NetConnect (without the person with id y. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+
+   1. Test case: `delete 1`<br>
+      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+
+   1. Other incorrect delete commands to try: `delete`, `delete i/z`, `...` (where no persons have id z)<br>
+      Expected: Similar to previous.
+
+   1. Guarantees: Person with the specified id will be deleted from NetConnect and removed from the displayed list. Full unfiltered list of persons will be displayed (similar to when `list` command is entered).
 
 ### Saving data
 
