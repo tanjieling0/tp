@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
@@ -71,41 +72,8 @@ public class AddCommandParser implements Parser<AddCommand> {
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
         String role = argMultimap.getValue(PREFIX_ROLE).get();
 
-        Person person;
-        switch (role.toLowerCase()) {
-        case "client":
-            Optional<String> optionalPreferences = argMultimap.getValue(PREFIX_PREFERENCES);
-            Optional<List<String>> optionalProducts = Optional.ofNullable(argMultimap.getAllValues(PREFIX_PRODUCTS));
-            String preferences = optionalPreferences.orElse("");
-            Products products = ParserUtil.parseProducts(optionalProducts.orElse(Collections.emptyList()));
-            person = new Client(name, phone, email, address, remark, tagList, products, preferences);
-            break;
-        case "employee":
-            Optional<String> optionalDepartment = argMultimap.getValue(PREFIX_DEPARTMENT);
-            Optional<String> optionalJobTitle = argMultimap.getValue(PREFIX_JOBTITLE);
-            Optional<List<String>> optionalSkills = Optional.ofNullable(argMultimap.getAllValues(PREFIX_SKILLS));
-            Department department = optionalDepartment.isPresent() ? optionalDepartment.map(Department::new).get()
-                    : new Department("-");
-            JobTitle jobTitle = optionalJobTitle.isPresent() ? optionalJobTitle.map(JobTitle::new).get()
-                    : new JobTitle("-");
-            Skills skills = ParserUtil.parseSkills(optionalSkills.orElse(Collections.emptyList()));
-            person = new Employee(name, phone, email, address, remark, tagList, department, jobTitle, skills);
-            break;
-        case "supplier":
-            Optional<List<String>> optionalSupplierProducts = Optional.ofNullable(argMultimap
-                    .getAllValues(PREFIX_PRODUCTS));
-            Optional<String> optionalTermsOfService = argMultimap.getValue(PREFIX_TERMSOFSERVICE);
-            Products supplierProducts = ParserUtil.parseProducts(optionalSupplierProducts
-                    .orElse(Collections.emptyList()));
-            TermsOfService termsOfService = optionalTermsOfService.isPresent() ? optionalTermsOfService
-                    .map(TermsOfService::new).get()
-                    : new TermsOfService("-");
-            person = new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
-            break;
-        default:
-            throw new ParseException(Person.MESSAGE_ROLE_CONSTRAINTS);
-        }
-        return new AddCommand(person);
+        return new AddCommand(
+                createPerson(role, name, phone, email, address, remark, tagList, argMultimap));
     }
 
     /**
@@ -114,6 +82,60 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    /**
+     * Returns true if any of the prefixes are present in the given {@code ArgumentMultimap}.
+     */
+    private static boolean anyPrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
+
+    private static Person createPerson(
+            String role, Name name, Phone phone, Email email,
+            Address address, Remark remark, Set<Tag> tagList, ArgumentMultimap argMultimap)
+            throws ParseException {
+        switch (role.toLowerCase()) {
+        case "client":
+            if (anyPrefixesPresent(
+                    argMultimap, PREFIX_DEPARTMENT, PREFIX_JOBTITLE, PREFIX_SKILLS, PREFIX_TERMSOFSERVICE)) {
+                throw new ParseException(Messages.MESSAGE_INVALID_CLIENT_PROPERTY);
+            }
+            Optional<String> optionalPreferences = argMultimap.getValue(PREFIX_PREFERENCES);
+            Optional<List<String>> optionalProducts = Optional.ofNullable(argMultimap.getAllValues(PREFIX_PRODUCTS));
+            String preferences = optionalPreferences.orElse("");
+            Products products = ParserUtil.parseProducts(optionalProducts.orElse(Collections.emptyList()));
+            return new Client(name, phone, email, address, remark, tagList, products, preferences);
+        case "employee":
+            if (anyPrefixesPresent(argMultimap, PREFIX_PRODUCTS, PREFIX_PREFERENCES, PREFIX_TERMSOFSERVICE)) {
+                throw new ParseException(Messages.MESSAGE_INVALID_EMPLOYEE_PROPERTY);
+            }
+            Optional<String> optionalDepartment = argMultimap.getValue(PREFIX_DEPARTMENT);
+            Optional<String> optionalJobTitle = argMultimap.getValue(PREFIX_JOBTITLE);
+            Optional<List<String>> optionalSkills = Optional.ofNullable(argMultimap.getAllValues(PREFIX_SKILLS));
+            Department department = optionalDepartment
+                    .map(Department::new)
+                    .orElseGet(() -> new Department("-"));
+            JobTitle jobTitle = optionalJobTitle.map(JobTitle::new).orElseGet(() -> new JobTitle("-"));
+            Skills skills = ParserUtil.parseSkills(optionalSkills.orElse(Collections.emptyList()));
+            return new Employee(name, phone, email, address, remark, tagList, department, jobTitle, skills);
+        case "supplier":
+            if (anyPrefixesPresent(
+                    argMultimap, PREFIX_DEPARTMENT, PREFIX_JOBTITLE, PREFIX_SKILLS, PREFIX_PREFERENCES)) {
+                throw new ParseException(Messages.MESSAGE_INVALID_SUPPLIER_PROPERTY);
+            }
+            Optional<List<String>> optionalSupplierProducts = Optional.ofNullable(argMultimap
+                    .getAllValues(PREFIX_PRODUCTS));
+            Optional<String> optionalTermsOfService = argMultimap.getValue(PREFIX_TERMSOFSERVICE);
+            Products supplierProducts = ParserUtil.parseProducts(optionalSupplierProducts
+                    .orElse(Collections.emptyList()));
+            TermsOfService termsOfService = optionalTermsOfService
+                    .map(TermsOfService::new)
+                    .orElseGet(() -> new TermsOfService("-"));
+            return new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
+        default:
+            throw new ParseException("Invalid role specified. Must be one of: client, employee, supplier.");
+        }
     }
 
 }

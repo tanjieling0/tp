@@ -295,11 +295,29 @@ public class EditCommandTest {
     @Test
     public void createEditedPerson_invalidClientProperty_throwsCommandException() {
         Person personToEdit = new ClientBuilder().build();
-        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptorBuilder()
+        EditPersonDescriptor editPersonDescriptorDepartment = new EditPersonDescriptorBuilder()
                 .withDepartment("Updated Department")
                 .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorDepartment));
 
-        assertThrows(CommandException.class, () -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptor));
+        EditPersonDescriptor editPersonDescriptorJob = new EditPersonDescriptorBuilder()
+                .withJobTitle("Updated Job")
+                .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorJob));
+
+        EditPersonDescriptor editPersonDescriptorSkills = new EditPersonDescriptorBuilder()
+                .withSkills("Updated Skills")
+                .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorSkills));
+
+        EditPersonDescriptor editPersonDescriptorTos = new EditPersonDescriptorBuilder()
+                .withTermsOfService("Updated TOS")
+                .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorTos));
     }
 
     @Test
@@ -315,10 +333,28 @@ public class EditCommandTest {
     @Test
     public void createEditedPerson_invalidSupplierProperty_throwsCommandException() {
         Person personToEdit = new SupplierBuilder().build();
-        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptorBuilder()
+        EditPersonDescriptor editPersonDescriptorDepartment = new EditPersonDescriptorBuilder()
+                .withDepartment("Updated Department")
+                .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorDepartment));
+
+        EditPersonDescriptor editPersonDescriptorJob = new EditPersonDescriptorBuilder()
+                .withJobTitle("Updated Job")
+                .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorJob));
+
+        EditPersonDescriptor editPersonDescriptorSkills = new EditPersonDescriptorBuilder()
                 .withSkills("Skill A", "Skill B")
                 .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorSkills));
 
-        assertThrows(CommandException.class, () -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptor));
+        EditPersonDescriptor editPersonDescriptorPref = new EditPersonDescriptorBuilder()
+                .withPreferences("Updated Preferences")
+                .build();
+        assertThrows(CommandException.class, ()
+                -> EditCommand.createEditedPerson(personToEdit, editPersonDescriptorPref));
     }
 }

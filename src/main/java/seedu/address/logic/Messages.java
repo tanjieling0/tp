@@ -34,7 +34,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_EMPLOYEE_PROPERTY = "Employee cannot have preferences, products, "
             + "and terms of service fields";
     public static final String MESSAGE_INVALID_SUPPLIER_PROPERTY = "Supplier cannot have department, job title, "
-            + "and skills fields";
+            + "skills, and preferences fields";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

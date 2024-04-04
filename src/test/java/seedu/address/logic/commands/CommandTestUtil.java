@@ -48,6 +48,7 @@ public class CommandTestUtil {
     public static final String VALID_TAG_FRIEND = "friend";
     public static final String VALID_ROLE_CLIENT = "client";
     public static final String VALID_ROLE_EMPLOYEE = "employee";
+    public static final String VALID_ROLE_SUPPLIER = "supplier";
     public static final String VALID_PRODUCTS_LAPTOP = "Laptop";
     public static final String VALID_PRODUCTS_SMARTPHONE = "Smartphone";
     public static final String VALID_PREFERENCE_AMY = "Latest tech";
@@ -72,6 +73,7 @@ public class CommandTestUtil {
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
     public static final String ROLE_DESC_CLIENT = " " + PREFIX_ROLE + VALID_ROLE_CLIENT;
     public static final String ROLE_DESC_EMPLOYEE = " " + PREFIX_ROLE + VALID_ROLE_EMPLOYEE;
+    public static final String ROLE_DESC_SUPPLIER = " " + PREFIX_ROLE + VALID_ROLE_SUPPLIER;
     public static final String PRODUCTS_DESC_LAPTOP = " " + PREFIX_PRODUCTS + VALID_PRODUCTS_LAPTOP;
     public static final String PRODUCTS_DESC_SMARTPHONE = " " + PREFIX_PRODUCTS + VALID_PRODUCTS_SMARTPHONE;
     public static final String PREFERENCE_DESC_AMY = " " + PREFIX_PREFERENCES + VALID_PREFERENCE_AMY;
