@@ -13,7 +13,7 @@ import seedu.address.model.util.IdTuple;
 /**
  * Represents a command to unrelate two persons in NetConnect using either their unique id or name.
  * The unique IDs or names provided must exist.
- * Parameters: [i/ID_1][n/NAME_1] [i/ID_2][n/NAME_2]
+ * Parameters: [i/ID_1] [i/ID_2]
  * Example: unrelate i/4 i/12
  */
 public class UnrelateCommand extends Command {
@@ -22,7 +22,7 @@ public class UnrelateCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unrelates the two specified persons in NetConnect using either their unique id, OR, name.\n"
             + "The unique IDs or names provided must exist.\n"
-            + "Parameters: [i/ID_1][n/NAME_1] [i/ID_2][n/NAME_2]\n"
+            + "Parameters: [i/ID_1] [i/ID_2]\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
 
     private final IdContainsDigitsPredicate predicate;
