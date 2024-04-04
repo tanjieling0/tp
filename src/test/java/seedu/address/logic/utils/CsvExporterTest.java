@@ -92,7 +92,8 @@ public class CsvExporterTest {
     @Test
     public void convertPersonToStringArray_employee() {
         String[] expectedArray = new String[]{
-                "3", "Daniel Meier", "87652533", "cornelia@example.com", "\"10th street\"", "some remarks", "\"friends\"", "Marketing", "Manager", "Digital Marketing, Public Speaking", "", "", ""
+            "3", "Daniel Meier", "87652533", "cornelia@example.com", "\"10th street\"", "some remarks",
+            "\"friends\"", "Marketing", "Manager", "Digital Marketing, Public Speaking", "", "", ""
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.DANIEL));
     }
@@ -100,7 +101,8 @@ public class CsvExporterTest {
     @Test
     public void convertPersonToStringArray_client() {
         String[] expectedArray = new String[]{
-                "1", "Alice Pauline", "94351253", "alice@example.com", "\"123, Jurong West Ave 6, #08-111\"", "some remarks", "\"friends\"", "", "", "", "Product1, Product2", "Vegan", ""
+            "1", "Alice Pauline", "94351253", "alice@example.com", "\"123, Jurong West Ave 6, #08-111\"",
+            "some remarks", "\"friends\"", "", "", "", "Product1, Product2", "Vegan", ""
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.ALICE));
     }
@@ -108,7 +110,8 @@ public class CsvExporterTest {
     @Test
     public void convertPersonToStringArray_supplier() {
         String[] expectedArray = new String[]{
-                "5", "Fiona Kunz", "9482427", "lydia@example.com", "\"little tokyo\"", "some remarks", "\"\"", "", "", "", "Office Supplies, Furniture", "", "Delivery within 2 weeks"
+            "5", "Fiona Kunz", "9482427", "lydia@example.com", "\"little tokyo\"", "some remarks", "\"\"", "", "",
+            "", "Office Supplies, Furniture", "", "Delivery within 2 weeks"
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.FIONA));
     }
