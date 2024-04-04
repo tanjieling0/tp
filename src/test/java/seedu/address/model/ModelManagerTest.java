@@ -3,7 +3,6 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.ALICE;
@@ -128,39 +127,68 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void equals() {
+    public void equals_sameValues_returnsTrue() {
+        NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+
+        modelManager = new ModelManager(netConnect, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
+
+        assertTrue(modelManager.equals(modelManagerCopy));
+    }
+
+    @Test
+    public void equals_sameObject_returnsTrue() {
+        assertTrue(modelManager.equals(modelManager));
+    }
+
+    @Test
+    public void equals_nullObject_returnsFalse() {
+        assertFalse(modelManager.equals(null));
+    }
+
+    @Test
+    public void equals_differentTypes_returnsFalse() {
+        assertFalse(modelManager.equals(5));
+    }
+
+    @Test
+    public void equals_differentNetConnect_returnsFalse() {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         NetConnect differentNetConnect = new NetConnect();
         UserPrefs userPrefs = new UserPrefs();
 
-        // same values -> returns true
         modelManager = new ModelManager(netConnect, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
-        assertTrue(modelManager.equals(modelManagerCopy));
+        ModelManager otherModelManager = new ModelManager(differentNetConnect, userPrefs);
 
-        // same object -> returns true
-        assertTrue(modelManager.equals(modelManager));
+        assertFalse(modelManager.equals(otherModelManager));
+    }
 
-        // null -> returns false
-        assertFalse(modelManager.equals(null));
+    @Test
+    public void equals_differentFilteredPersonList_returnsFalse() {
+        NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
 
-        // different types -> returns false
-        assertFalse(modelManager.equals(5));
-
-        // different netConnect -> returns false
-        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs)));
-
-        // different filteredList -> returns false
+        modelManager = new ModelManager(netConnect, userPrefs);
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs)));
 
-        // resets modelManager to initial state for upcoming tests
-        modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
 
-        // different userPrefs -> returns false
+        assertFalse(modelManager.equals(modelManagerCopy));
+    }
+
+    @Test
+    public void equals_differentUserPrefs_returnsFalse() {
+        NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setNetConnectFilePath(Paths.get("differentFilePath"));
-        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs)));
+
+        modelManager = new ModelManager(netConnect, userPrefs);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, differentUserPrefs);
+
+        assertFalse(modelManager.equals(modelManagerCopy));
     }
+
 }
