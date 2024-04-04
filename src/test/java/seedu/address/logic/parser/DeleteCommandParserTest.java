@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
+import static seedu.address.testutil.TypicalPersons.ALICE;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +25,19 @@ public class DeleteCommandParserTest {
     private final DeleteCommandParser parser = new DeleteCommandParser();
 
     @Test
-    public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, " i/1", new DeleteCommand(ID_FIRST_PERSON));
+    public void parse_validId_returnsDeleteCommand() {
+        assertParseSuccess(parser, " i/1", DeleteCommand.byId(ID_FIRST_PERSON));
+    }
+
+    @Test
+    public void parse_validName_returnsDeleteCommand() {
+        assertParseSuccess(parser, " n/" + ALICE.getName().fullName, DeleteCommand.byName(ALICE.getName()));
+    }
+
+    @Test
+    public void parse_tooManyArgs_throwsParseException() {
+        assertParseFailure(parser, " i/1 n/John",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
     }
 
     @Test

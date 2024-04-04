@@ -155,7 +155,7 @@ Classes used by multiple components are in the `seedu.netconnect.commons` packag
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
-   
+
 ### Export Feature
 
 #### Expected Behaviour
@@ -359,11 +359,11 @@ Exceptional behaviour:
 <puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
 
 #### Current implementation
-Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object. 
+Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object.
 
-The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number. 
+The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number.
 
-Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed. 
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed.
 
 #### Design considerations
 

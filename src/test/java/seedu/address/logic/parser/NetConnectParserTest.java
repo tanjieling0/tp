@@ -25,18 +25,17 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.FindNumCommand;
-import seedu.address.logic.commands.FindRemCommand;
-import seedu.address.logic.commands.FindRoleCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.commands.RemarkCommand;
+import seedu.address.logic.commands.ShowRelatedCommand;
+import seedu.address.logic.commands.UnrelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.PhoneContainsDigitsPredicate;
 import seedu.address.model.person.Remark;
-import seedu.address.model.person.RemarkContainsKeywordsPredicate;
-import seedu.address.model.person.RoleContainsKeywordsPredicate;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -61,7 +60,7 @@ public class NetConnectParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(PersonUtil.getDeleteCommand(ALICE));
-        assertEquals(new DeleteCommand(ALICE.getId()), command);
+        assertEquals(DeleteCommand.byId(ALICE.getId()), command);
     }
 
     @Test
@@ -83,7 +82,8 @@ public class NetConnectParserTest {
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+                FindCommand.COMMAND_WORD + " " + keywords.stream()
+                        .map(s -> "n/" + s).collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
     }
 
@@ -93,22 +93,6 @@ public class NetConnectParserTest {
         FindNumCommand command = (FindNumCommand) parser.parseCommand(
                 FindNumCommand.COMMAND_WORD + " " + phones.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindNumCommand(new PhoneContainsDigitsPredicate(phones)), command);
-    }
-
-    @Test
-    public void parseCommand_findRem() throws Exception {
-        List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindRemCommand command = (FindRemCommand) parser.parseCommand(
-                FindRemCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindRemCommand(new RemarkContainsKeywordsPredicate(keywords)), command);
-    }
-
-    @Test
-    public void parseCommand_findRole() throws Exception {
-        List<String> roles = Arrays.asList("supplier", "employee");
-        FindRoleCommand command = (FindRoleCommand) parser.parseCommand(
-                FindRoleCommand.COMMAND_WORD + " " + roles.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindRoleCommand(new RoleContainsKeywordsPredicate(roles)), command);
     }
 
     @Test
@@ -129,6 +113,22 @@ public class NetConnectParserTest {
         RemarkCommand command = (RemarkCommand) parser.parseCommand(RemarkCommand.COMMAND_WORD + " "
                 + PREFIX_ID + "1 " + PREFIX_REMARK + remark.value);
         assertEquals(new RemarkCommand(ID_FIRST_PERSON, remark), command);
+    }
+
+    @Test
+    public void parseCommand_showRelated() throws Exception {
+        assertTrue(
+                parser.parseCommand(ShowRelatedCommand.COMMAND_WORD + " i/3") instanceof ShowRelatedCommand);
+    }
+
+    @Test
+    public void parseCommand_relate() throws Exception {
+        assertTrue(parser.parseCommand("relate i/1 i/2") instanceof RelateCommand);
+    }
+
+    @Test
+    public void parseCommand_unrelate() throws Exception {
+        assertTrue(parser.parseCommand("unrelate i/1 i/2") instanceof UnrelateCommand);
     }
 
     @Test
@@ -154,4 +154,5 @@ public class NetConnectParserTest {
         assertTrue(commandWithFilename instanceof ExportCommand);
         assertEquals(new ExportCommand(filename), commandWithFilename);
     }
+
 }

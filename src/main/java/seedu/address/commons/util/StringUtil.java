@@ -6,6 +6,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * Helper functions for handling strings.
@@ -37,6 +38,27 @@ public class StringUtil {
 
         return Arrays.stream(wordsInPreppedSentence)
                 .anyMatch(preppedWord::equalsIgnoreCase);
+    }
+
+    /**
+     * Returns true if the {@code source} contains the {@code target}.
+     * Ignores case, and a partial match also returns true.
+     * <br>examples:<pre>
+     *       hasPartialMatchIgnoreCase("ABc def", "abc") == true
+     *       hasPartialMatchIgnoreCase("ABc def", "DEF") == true
+     *       // partial match, compared to return false in {@link #containsWordIgnoreCase(String, String)}
+     *       hasPartialMatchIgnoreCase("ABc def", "AB") == true
+     *       </pre>
+     *
+     * @param target cannot be null, cannot be empty
+     * @param source cannot be null,
+     */
+    public static boolean hasPartialMatchIgnoreCase(String target, String source) {
+        requireNonNull(target);
+        requireNonNull(source);
+        checkArgument(!target.trim().isEmpty(), "Target cannot be empty");
+
+        return Pattern.compile(Pattern.quote(target), Pattern.CASE_INSENSITIVE).matcher(source).find();
     }
 
     /**
