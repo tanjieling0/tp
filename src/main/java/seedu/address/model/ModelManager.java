@@ -29,28 +29,23 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private Filter filter = Filter.noFilter();
 
-    private final RelatedList relatedIdList;
-
     /**
      * Initializes a ModelManager with the given netConnect and userPrefs.
      */
-    public ModelManager(ReadOnlyNetConnect netConnect, ReadOnlyUserPrefs userPrefs, RelatedList relatedIdList) {
-        requireAllNonNull(netConnect, userPrefs, relatedIdList);
+    public ModelManager(ReadOnlyNetConnect netConnect, ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(netConnect, userPrefs);
 
         logger.fine("Initializing with address book: "
                 + netConnect + " , user prefs "
-                + userPrefs + " and relation list "
-                + relatedIdList);
+                + userPrefs);
 
         this.netConnect = new NetConnect(netConnect);
         this.userPrefs = new UserPrefs(userPrefs);
-        // not ReadOnly as relatedIdList is mutable and recorded in .txt format
-        this.relatedIdList = relatedIdList;
         filteredPersons = new FilteredList<>(this.netConnect.getPersonList());
     }
 
     public ModelManager() {
-        this(new NetConnect(), new UserPrefs(), new RelatedList());
+        this(new NetConnect(), new UserPrefs());
     }
 
     // =========== UserPrefs
@@ -162,18 +157,24 @@ public class ModelManager implements Model {
     @Override
     public boolean hasRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
-        return relatedIdList.hasId(idTuple);
+        return netConnect.hasRelatedId(idTuple);
     }
 
     @Override
     public void addRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
-        relatedIdList.allowAddIdTuple(idTuple);
+        netConnect.allowAddIdTuple(idTuple);
+    }
+
+    @Override
+    public boolean removeRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return netConnect.removeRelatedId(idTuple);
     }
 
     @Override
     public RelatedList getRelatedIdTuples() {
-        return this.relatedIdList;
+        return netConnect.getRelatedList();
     }
 
     // =========== Filtered Person List Accessors

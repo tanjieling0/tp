@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
@@ -25,7 +25,6 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NetConnectPredicate;
-import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.EmployeeBuilder;
 
 /**
@@ -34,7 +33,7 @@ import seedu.address.testutil.EmployeeBuilder;
  */
 public class DeleteCommandTest {
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
 
     @Test
     public void execute_validIdUnfilteredList_success() {
@@ -44,7 +43,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -60,7 +59,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
         showNoPerson(expectedModel);
 
@@ -77,7 +76,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
         showAllPersons(expectedModel);
 
@@ -89,7 +88,7 @@ public class DeleteCommandTest {
         Id outOfBoundId = Id.generateNextId();
         DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
 
         assertCommandFailure(deleteCommand, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, outOfBoundId.value), expectedModel);
@@ -102,7 +101,7 @@ public class DeleteCommandTest {
         Id outOfBoundId = Id.generateNextId();
         DeleteCommand deleteCommand = DeleteCommand.byId(outOfBoundId);
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         showAllPersons(expectedModel);
 
         assertCommandFailure(deleteCommand, model,
@@ -117,7 +116,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        ModelManager expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -133,7 +132,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
         showNoPerson(expectedModel);
 
@@ -150,7 +149,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
         showAllPersons(expectedModel);
 
@@ -164,24 +163,24 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
 
         ModelManager expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
-                new UserPrefs(),
-                new RelatedList());
+                new UserPrefs());
 
         assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName), expectedModel);
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName),
+                expectedModel);
 
         // more than one persons matching the name
         model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
         expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
-                new UserPrefs(),
-                new RelatedList());
+                new UserPrefs());
         expectedModel.stackFilters(NetConnectPredicate.box(p -> p.getName().equals(ALICE.getName())));
 
         assertCommandFailure(deleteCommand, model,
                 String.format(DeleteCommand.MESSAGE_DUPLICATE_NAME_USAGE,
-                model.countPersonsWithName(ALICE.getName()), ALICE.getName().fullName), expectedModel);
+                        model.countPersonsWithName(ALICE.getName()), ALICE.getName().fullName),
+                expectedModel);
     }
 
     @Test
@@ -192,11 +191,12 @@ public class DeleteCommandTest {
         Name invalidName = HOON.getName();
         DeleteCommand deleteCommand = DeleteCommand.byName(invalidName);
 
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         showAllPersons(expectedModel);
 
         assertCommandFailure(deleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName), expectedModel);
+                String.format(Messages.MESSAGE_INVALID_PERSON_NAME, invalidName.fullName),
+                expectedModel);
 
         // more than one persons matching the name
         showPersonAtId(model, ID_FIRST_PERSON);
@@ -204,12 +204,13 @@ public class DeleteCommandTest {
         model.addPerson(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
         deleteCommand = DeleteCommand.byName(ALICE.getName());
 
-        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         expectedModel.stackFilters(NetConnectPredicate.box(p -> p.getName().equals(ALICE.getName())));
 
         assertCommandFailure(deleteCommand, model,
                 String.format(DeleteCommand.MESSAGE_DUPLICATE_NAME_USAGE,
-                model.countPersonsWithName(ALICE.getName()), ALICE.getName().fullName), expectedModel);
+                        model.countPersonsWithName(ALICE.getName()), ALICE.getName().fullName),
+                expectedModel);
     }
 
     @Test
@@ -219,40 +220,40 @@ public class DeleteCommandTest {
         DeleteCommand deleteSecondCommand = DeleteCommand.byId(ID_SECOND_PERSON);
 
         // same object -> returns true
-        assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
+        assertEquals(deleteFirstCommand, deleteFirstCommand);
 
         // same values -> returns true
         DeleteCommand deleteFirstCommandCopy = DeleteCommand.byId(ID_FIRST_PERSON);
-        assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
+        assertEquals(deleteFirstCommand, deleteFirstCommandCopy);
 
         // different types -> returns false
-        assertFalse(deleteFirstCommand.equals(1));
+        assertNotEquals(1, deleteFirstCommand);
 
         // null -> returns false
-        assertFalse(deleteFirstCommand.equals(null));
+        assertNotEquals(null, deleteFirstCommand);
 
         // different person -> returns false
-        assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
+        assertNotEquals(deleteFirstCommand, deleteSecondCommand);
 
         // by name
         deleteFirstCommand = DeleteCommand.byName(ALICE.getName());
         deleteSecondCommand = DeleteCommand.byName(BENSON.getName());
 
         // same object -> returns true
-        assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
+        assertEquals(deleteFirstCommand, deleteFirstCommand);
 
         // same values -> returns true
         deleteFirstCommandCopy = DeleteCommand.byName(ALICE.getName());
-        assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
+        assertEquals(deleteFirstCommand, deleteFirstCommandCopy);
 
         // different types -> returns false
-        assertFalse(deleteFirstCommand.equals(1));
+        assertNotEquals(1, deleteFirstCommand);
 
         // null -> returns false
-        assertFalse(deleteFirstCommand.equals(null));
+        assertNotEquals(null, deleteFirstCommand);
 
         // different person -> returns false
-        assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
+        assertNotEquals(deleteFirstCommand, deleteSecondCommand);
     }
 
     @Test

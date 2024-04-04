@@ -11,14 +11,16 @@ import seedu.address.model.person.filter.IdContainsDigitsPredicate;
 import seedu.address.model.util.IdTuple;
 
 /**
- * Finds and lists all persons in address book whose ID contains any of the argument IDs.
+ * Represents a command to unrelate two persons in NetConnect using either their unique id or name.
+ * The unique IDs or names provided must exist.
+ * Parameters: [i/ID_1] [i/ID_2]
+ * Example: unrelate i/4 i/12
  */
-public class RelateCommand extends Command {
+public class UnrelateCommand extends Command {
+    public static final String COMMAND_WORD = "unrelate";
 
-    public static final String COMMAND_WORD = "relate";
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": relates strictly two existing persons in NetConnect "
-            + "using either their unique id, OR, name.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Unrelates the two specified persons in NetConnect using either their unique id, OR, name.\n"
             + "The unique IDs or names provided must exist.\n"
             + "Parameters: [i/ID_1] [i/ID_2]\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
@@ -29,9 +31,9 @@ public class RelateCommand extends Command {
     private final Id secondPersonId;
 
     /**
-     * Creates a RelateCommand to relate the two specified {@code IdContainsDigitsPredicate}
+     * Creates a UnrelateCommand to unrelate the two specified {@code IdContainsDigitsPredicate}
      */
-    public RelateCommand(IdContainsDigitsPredicate predicate) {
+    public UnrelateCommand(IdContainsDigitsPredicate predicate) {
         this.predicate = predicate;
         this.firstPersonId = Id.generateTempId(predicate.getFirstId());
         this.secondPersonId = Id.generateTempId(predicate.getSecondId());
@@ -43,7 +45,7 @@ public class RelateCommand extends Command {
         // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
         model.stackFilters(predicate);
         if (firstPersonId.equals(secondPersonId)) {
-            throw new CommandException(Messages.MESSAGE_CANNOT_RELATE_ITSELF);
+            throw new CommandException(Messages.MESSAGE_CANNOT_UNRELATE_ITSELF);
         }
         // actual execution occurs here
         if (!model.hasId(firstPersonId)) {
@@ -54,29 +56,20 @@ public class RelateCommand extends Command {
 
         IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
 
-        if (model.hasRelatedIdTuple(tuple)) {
-            throw new CommandException(Messages.MESSAGE_RELATION_EXISTS);
+        if (!model.hasRelatedIdTuple(tuple)) {
+            throw new CommandException(Messages.MESSAGE_RELATION_NOT_EXISTS);
         } else {
-            model.addRelatedIdTuple(tuple);
+            model.removeRelatedIdTuple(tuple);
         }
 
-        return new CommandResult(
-            String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+        return new CommandResult(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, tuple));
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof RelateCommand)) {
-            return false;
-        }
-
-        RelateCommand otherFindNumCommand = (RelateCommand) other;
-        return predicate.equals(otherFindNumCommand.predicate);
+        return other == this
+                || (other instanceof UnrelateCommand
+                && predicate.equals(((UnrelateCommand) other).predicate));
     }
 
     @Override

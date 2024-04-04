@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BOB;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +24,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Supplier;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.util.IdTuple;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -164,12 +167,54 @@ public class NetConnectTest {
         assertTrue(netConnect.hasPerson(aliceEmployee));
     }
 
+    @Test
+    public void hasRelatedId_nullId_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> netConnect.hasRelatedId(null));
+    }
+
+    @Test
+    public void hasRelatedId_idNotInNetConnect_returnsFalse() {
+        assertFalse(netConnect.hasRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
+    @Test
+    public void hasRelatedId_idInNetConnect_returnsTrue() {
+        netConnect.addPerson(ALICE);
+        netConnect.addPerson(BOB);
+        netConnect.allowAddIdTuple(new IdTuple(ALICE.getId(), BOB.getId()));
+        assertTrue(netConnect.hasRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
+    @Test
+    public void allowAddIdTuple_nullId_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> netConnect.allowAddIdTuple(null));
+    }
+
+    @Test
+    public void removeRelatedId_nullId_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> netConnect.removeRelatedId(null));
+    }
+
+    @Test
+    public void removeRelatedId_idNotInNetConnect_returnsFalse() {
+        assertFalse(netConnect.removeRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
+    @Test
+    public void removeRelatedId_idInNetConnect_returnsTrue() {
+        netConnect.addPerson(ALICE);
+        netConnect.addPerson(BOB);
+        netConnect.allowAddIdTuple(new IdTuple(ALICE.getId(), BOB.getId()));
+        assertTrue(netConnect.removeRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+    }
+
     /**
      * A stub ReadOnlyNetConnect whose persons list can violate interface
      * constraints.
      */
     private static class NetConnectStub implements ReadOnlyNetConnect {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final List<IdTuple> relatedList = new ArrayList<>();
 
         NetConnectStub(Collection<Person> persons) {
             this.persons.setAll(persons);
@@ -178,6 +223,11 @@ public class NetConnectTest {
         @Override
         public ObservableList<Person> getPersonList() {
             return persons;
+        }
+
+        @Override
+        public List<IdTuple> getListIdTuple() {
+            return relatedList;
         }
     }
 }

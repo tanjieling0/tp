@@ -13,10 +13,10 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.util.RelatedList;
 
 public class ShowRelatedCommandTest {
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+
     @Test
     public void execute_showRelatedUnfilteredList_success() throws CommandException {
         CommandResult commandResult = new ShowRelatedCommand(ID_FIRST_PERSON).execute(model);
@@ -31,6 +31,7 @@ public class ShowRelatedCommandTest {
         assertEquals(String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 commandResult.getFeedbackToUser());
     }
+
     @Test
     public void equals() {
         ShowRelatedCommand showRelatedFirstCommand = new ShowRelatedCommand(ID_FIRST_PERSON);

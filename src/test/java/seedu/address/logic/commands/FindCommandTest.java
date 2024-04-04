@@ -20,15 +20,14 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.filter.Filter;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
-import seedu.address.model.util.RelatedList;
 
 /**
  * Contains integration tests (interaction with the Model) for
  * {@code FindCommand}.
  */
 public class FindCommandTest {
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
-    private final Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
+    private final Model expectedModel = new ModelManager(getTypicalNetConnect(), new UserPrefs());
 
     @Test
     public void equals() {

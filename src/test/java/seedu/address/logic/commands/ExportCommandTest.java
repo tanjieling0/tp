@@ -18,18 +18,17 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.util.RelatedList;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code ExportCommand}.
+ * Contains integration tests (interaction with the Model) for
+ * {@code ExportCommand}.
  */
 public class ExportCommandTest {
 
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "ExportCommandTest");
     private static final Path NON_EXISTENT_FILE = TEST_DATA_FOLDER.resolve("nonexistent.csv");
 
-    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs(), new RelatedList());
-
+    private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
 
     @Test
     public void execute_exportSuccess() throws CommandException {
@@ -40,8 +39,7 @@ public class ExportCommandTest {
         String expectedMessage = ExportCommand.MESSAGE_SUCCESS + filename;
         exportCommand.execute(model);
 
-
-        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs(), new RelatedList());
+        Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
         assertTrue(filePath.toFile().exists());
 
@@ -64,7 +62,7 @@ public class ExportCommandTest {
         String filename = NON_EXISTENT_FILE.toString();
         ExportCommand exportCommand = new ExportCommand(filename);
         String expectedMessage = ExportCommand.MESSAGE_FAILURE_FILE_WRITE;
-        assertThrows(CommandException.class, expectedMessage , () -> exportCommand.execute(model));
+        assertThrows(CommandException.class, expectedMessage, () -> exportCommand.execute(model));
     }
 
     @Test
