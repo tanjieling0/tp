@@ -1,21 +1,20 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
-import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
-    /**
-     * {@code Predicate} that always evaluate to true
-     */
-    Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -64,15 +63,25 @@ public interface Model {
     boolean hasPerson(Person person);
 
     /**
-     * Returns true if a person with the same id as {@code Id} exists in
-     * the netconnect.
+     * Returns true if a person with the specified id exists in the NetConnect.
      */
     boolean hasId(Id id);
 
     /**
-     * Returns the Person with the given {@code Id}.
+     * Returns the {@code Person} with the specified id.
      */
     Person getPersonById(Id id);
+
+    /**
+     * Returns the number of {@code Person}s in the NetConnect with
+     * the specified name.
+     */
+    int countPersonsWithName(Name name);
+
+    /**
+     * Returns the {@code Person} with the specified name.
+     */
+    Person getPersonByName(Name name);
 
     /**
      * Deletes the given person.
@@ -90,7 +99,8 @@ public interface Model {
      * Replaces the given person {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
      * The person identity of {@code editedPerson} must not be the same as another
-     * existing person in the address book.
+     * existing person in the NetConnect.
+     * {@code target} and {@code editedPerson} must have the same id.
      */
     void setPerson(Person target, Person editedPerson);
 
@@ -100,16 +110,35 @@ public interface Model {
     ObservableList<Person> getFilteredPersonList();
 
     /**
-     * Updates the filter of the filtered person list to filter by the given
-     * {@code predicate}.
+     * Clears all filters of the filtered person list. Displays all persons.
+     *
+     */
+    void clearFilter();
+
+    /**
+     * Updates the existing filter of the filtered person list with an
+     * additional filter by the given {@code predicate}.
      *
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredPersonList(Predicate<Person> predicate);
+    void stackFilters(NetConnectPredicate<Person> predicate);
+
+    /**
+     * Returns the current filters applied in a user readable format.
+     */
+    String printFilters();
 
     /**
      * Exports the data from the address book as a CSV file with the specified filename.
      * Returns {@code true} if the export operation is successful, {@code false} otherwise.
      */
     boolean exportCsv(String filename);
+
+    boolean hasRelatedIdTuple(IdTuple idTuple);
+
+    void addRelatedIdTuple(IdTuple idTuple);
+
+    boolean removeRelatedIdTuple(IdTuple idTuple);
+
+    RelatedList getRelatedIdTuples();
 }

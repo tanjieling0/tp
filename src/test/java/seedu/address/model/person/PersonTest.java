@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import org.junit.jupiter.api.Test;
@@ -31,17 +32,32 @@ public class PersonTest {
         // same object -> returns true
         assertTrue(ALICE.isSamePerson(ALICE));
 
+        // same name, phone, and email -> returns true
+        Person bobCopy = new ClientBuilder()
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .build();
+        assertTrue(BOB.isSamePerson(bobCopy));
+
         // null -> returns false
         assertFalse(ALICE.isSamePerson(null));
 
-        // same name, all other attributes different -> returns true
-        Person editedAlice = new ClientBuilder(ALICE).withId(VALID_ID_BOB).withPhone(VALID_PHONE_BOB)
-                .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND).build();
-        assertTrue(ALICE.isSamePerson(editedAlice));
+        // same single field of name/phone/email, all other attributes different -> returns false
+        Person sameName = new ClientBuilder(BENSON).withName(ALICE.getName().fullName).build();
+        assertFalse(ALICE.isSamePerson(sameName));
+        Person samePhone = new ClientBuilder(BENSON).withPhone(ALICE.getPhone().value).build();
+        assertFalse(ALICE.isSamePerson(samePhone));
+        Person sameEmail = new ClientBuilder(BENSON).withEmail(ALICE.getEmail().value).build();
+        assertFalse(ALICE.isSamePerson(sameEmail));
 
-        // different name, all other attributes same -> returns false
-        editedAlice = new ClientBuilder(ALICE).withName(VALID_NAME_BOB).build();
-        assertFalse(ALICE.isSamePerson(editedAlice));
+        // different single field of name/phone/email, all other attributes same -> returns false
+        Person diffName = new ClientBuilder(ALICE).withName(VALID_NAME_BOB).build();
+        assertFalse(ALICE.isSamePerson(diffName));
+        Person diffPhone = new ClientBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
+        assertFalse(ALICE.isSamePerson(diffPhone));
+        Person diffEmail = new ClientBuilder(ALICE).withEmail(VALID_EMAIL_BOB).build();
+        assertFalse(ALICE.isSamePerson(diffEmail));
 
         // name differs in case, all other attributes same -> returns false
         Person editedBob = new EmployeeBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();

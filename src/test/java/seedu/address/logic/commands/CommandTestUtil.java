@@ -21,13 +21,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.NetConnect;
 import seedu.address.model.person.Id;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 
 /**
@@ -135,8 +134,20 @@ public class CommandTestUtil {
     /**
      * Executes the given {@code command}, confirms that <br>
      * - a {@code CommandException} is thrown <br>
+     * - the {@code CommandException} message matches {@code expectedMessage} <br>
+     * - the {@code actualModel} matches {@code expectedModel}
+     */
+    public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage,
+            Model expectedModel) {
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
+        assertEquals(expectedModel, actualModel);
+    }
+
+    /**
+     * Executes the given {@code command}, confirms that <br>
+     * - a {@code CommandException} is thrown <br>
      * - the CommandException message matches {@code expectedMessage} <br>
-     * - the address book, filtered person list and selected person in
+     * - the NetConnect, filtered person list and selected person in
      * {@code actualModel} remain unchanged
      */
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
@@ -149,20 +160,6 @@ public class CommandTestUtil {
         assertEquals(expectedNetConnect, actualModel.getNetConnect());
         assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
     }
-    /**
-     * Updates {@code model}'s filtered list to show only the person at the given
-     * {@code targetIndex} in the
-     * {@code model}'s address book.
-     */
-    public static void showPersonAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredPersonList().size());
-
-        Person person = model.getFilteredPersonList().get(targetIndex.getZeroBased());
-        final String[] splitName = person.getName().fullName.split("\\s+");
-        model.updateFilteredPersonList(new NameContainsKeywordsPredicate(Collections.singletonList(splitName[0])));
-
-        assertEquals(1, model.getFilteredPersonList().size());
-    }
 
     /**
      * Updates {@code model}'s filtered list to show only the person at the given
@@ -173,8 +170,15 @@ public class CommandTestUtil {
 
         Person person = model.getPersonById(targetId);
         final String[] splitName = person.getName().fullName.split("\\s+");
-        model.updateFilteredPersonList(new NameContainsKeywordsPredicate(Collections.singletonList(splitName[0])));
+        model.stackFilters(new NameContainsKeywordsPredicate(Collections.singletonList(splitName[0])));
 
         assertEquals(1, model.getFilteredPersonList().size());
+    }
+
+    /**
+     * Updates {@code model}'s filtered list to show all persons.
+     */
+    public static void showAllPersons(Model model) {
+        model.clearFilter();
     }
 }

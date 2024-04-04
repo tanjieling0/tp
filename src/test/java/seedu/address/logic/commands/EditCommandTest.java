@@ -55,7 +55,8 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -75,7 +76,8 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -88,7 +90,8 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()),
+                new UserPrefs());
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -104,7 +107,9 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedClient));
 
-        Model expectedModel = new ModelManager(new NetConnect(model.getNetConnect()), new UserPrefs());
+        Model expectedModel = new ModelManager(
+                new NetConnect(model.getNetConnect()),
+                new UserPrefs());
         expectedModel.setPerson(model.getPersonById(ID_FIRST_PERSON), editedClient);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -237,7 +242,8 @@ public class EditCommandTest {
         assertEquals("updated@example.com", editedPerson.getEmail().toString());
         assertEquals("Updated Address", editedPerson.getAddress().toString());
         assertEquals("Updated Remark", editedPerson.getRemark().toString());
-        assertEquals(new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2"))), editedPerson.getTags());
+        assertEquals(new HashSet<>(Arrays.asList(new Tag("tag1"), new Tag("tag2"))),
+                editedPerson.getTags());
         assertTrue(editedPerson instanceof Employee);
         Employee editedEmployee = (Employee) editedPerson;
         assertEquals("Updated Department", editedEmployee.getDepartment().toString());
