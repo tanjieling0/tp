@@ -10,6 +10,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.JOB_TITLE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
@@ -154,6 +155,13 @@ public class AddCommandParserTest {
                         + ROLE_DESC_CLIENT + REMARK_DESC_AMY + PRODUCTS_DESC_LAPTOP + PRODUCTS_DESC_SMARTPHONE
                         + PREFERENCE_DESC_AMY,
                 new AddCommand(expectedPerson));
+
+        // employee
+        expectedPerson = new EmployeeBuilder(BOB).build();
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + ROLE_DESC_EMPLOYEE + TAG_DESC_HUSBAND + TAG_DESC_FRIEND + REMARK_DESC_BOB + DEPARTMENT_DESC_BOB
+                + JOB_TITLE_DESC_BOB + SKILLS_DESC_NEGOTIATION + SKILLS_DESC_COMMUNICATION,
+                new AddCommand(expectedPerson));
     }
 
     @Test
@@ -211,6 +219,11 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                         + ADDRESS_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND + ROLE_DESC_EMPLOYEE,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+
+        // invalid role
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + TAG_DESC_HUSBAND + INVALID_ROLE_DESC,
+                "Invalid role specified. Must be one of: client, employee, supplier.");
     }
 
     @Test

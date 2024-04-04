@@ -113,12 +113,10 @@ public class AddCommandParser implements Parser<AddCommand> {
             Optional<String> optionalDepartment = argMultimap.getValue(PREFIX_DEPARTMENT);
             Optional<String> optionalJobTitle = argMultimap.getValue(PREFIX_JOBTITLE);
             Optional<List<String>> optionalSkills = Optional.ofNullable(argMultimap.getAllValues(PREFIX_SKILLS));
-            Department department = optionalDepartment.isPresent()
-                    ? optionalDepartment.map(Department::new).get()
-                    : new Department("-");
-            JobTitle jobTitle = optionalJobTitle.isPresent()
-                    ? optionalJobTitle.map(JobTitle::new).get()
-                    : new JobTitle("-");
+            Department department = optionalDepartment
+                    .map(Department::new)
+                    .orElseGet(() -> new Department("-"));
+            JobTitle jobTitle = optionalJobTitle.map(JobTitle::new).orElseGet(() -> new JobTitle("-"));
             Skills skills = ParserUtil.parseSkills(optionalSkills.orElse(Collections.emptyList()));
             return new Employee(name, phone, email, address, remark, tagList, department, jobTitle, skills);
         case "supplier":
@@ -131,9 +129,9 @@ public class AddCommandParser implements Parser<AddCommand> {
             Optional<String> optionalTermsOfService = argMultimap.getValue(PREFIX_TERMSOFSERVICE);
             Products supplierProducts = ParserUtil.parseProducts(optionalSupplierProducts
                     .orElse(Collections.emptyList()));
-            TermsOfService termsOfService = optionalTermsOfService.isPresent()
-                    ? optionalTermsOfService.map(TermsOfService::new).get()
-                    : new TermsOfService("-");
+            TermsOfService termsOfService = optionalTermsOfService
+                    .map(TermsOfService::new)
+                    .orElseGet(() -> new TermsOfService("-"));
             return new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
         default:
             throw new ParseException("Invalid role specified. Must be one of: client, employee, supplier.");
