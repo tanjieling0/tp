@@ -49,7 +49,6 @@ public class LogicManagerTest {
         cleanUpAfterTesting();
     }
 
-
     @BeforeEach
     public void setUp() {
         JsonNetConnectStorage netConnectStorage = new JsonNetConnectStorage(
