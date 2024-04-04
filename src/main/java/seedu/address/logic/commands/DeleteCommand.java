@@ -2,8 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
-import static seedu.address.ui.MainWindow.handleDestructiveCommands;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.ui.MainWindow.handleDestructiveCommands;
 
 import java.util.Objects;
 
@@ -54,6 +54,7 @@ public class DeleteCommand extends Command {
     /**
      * Factory method to create a {@code DeleteCommand} that deletes a Person
      * by the given id.
+     *
      * @param id The id of the {@code Person} to be deleted
      * @return {@code DeleteCommand} to delete by id
      */
@@ -65,6 +66,7 @@ public class DeleteCommand extends Command {
     /**
      * Factory method to create a {@code DeleteCommand} that deletes a Person
      * by the given name.
+     *
      * @param name The name of the {@code Person} to be deleted
      * @return {@code DeleteCommand} to delete by name
      */
@@ -78,13 +80,7 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
         assert targetId != null ^ targetName != null;
 
-        // check if the ID is valid
-        if (!model.hasId(targetId)) {
-            throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID, targetId.value));
-        }
-
         if (doNotSkipConfirmation) {
-            // obtain confirmation from
             boolean isConfirmed = handleDestructiveCommands(true, false);
             if (!isConfirmed) {
                 return new CommandResult(MESSAGE_DELETE_CANCELLED, false, false);
