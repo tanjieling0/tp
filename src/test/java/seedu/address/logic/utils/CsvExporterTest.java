@@ -27,17 +27,13 @@ public class CsvExporterTest {
 
     @BeforeEach
     public void setUp() {
-        ObservableList<Person> sourceList = FXCollections.observableArrayList();
-
-        FilteredList<Person> persons = new FilteredList<>(sourceList);
-
-        // Adding typical persons to the filtered list
         List<Person> personList = Arrays.asList(
                 TypicalPersons.ALICE, TypicalPersons.BENSON,
                 TypicalPersons.DANIEL, TypicalPersons.ELLE, TypicalPersons.FIONA);
 
-        // Adding persons directly to the filtered list
-        persons.addAll(personList);
+        ObservableList<Person> sourceList = FXCollections.observableArrayList(personList);
+
+        persons = new FilteredList<>(sourceList);
 
         csvExporter = new CsvExporter(persons, TEST_FILENAME);
     }
