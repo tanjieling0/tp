@@ -264,8 +264,8 @@ public class UniquePersonListTest {
     @Test
     public void setPerson_editedPersonHasModifiedId_throwsIdModifiedException() {
         uniquePersonList.add(ALICE);
-        Person editedAlice = new ClientBuilder(ALICE).withId(BOB.getId().value).build();
-        assertThrows(IdModifiedException.class, () -> uniquePersonList.setPerson(ALICE, editedAlice));
+        Person aliceWithDifferentId = new ClientBuilder(ALICE).withId(BOB.getId().value).build();
+        assertThrows(IdModifiedException.class, () -> uniquePersonList.setPerson(ALICE, aliceWithDifferentId));
     }
 
     @Test
