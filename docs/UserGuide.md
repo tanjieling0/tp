@@ -24,7 +24,6 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Listing all persons : `list`](#list)
   + [Editing a person : `edit`](#edit)
   + [Locating persons by name: `find`](#find)
-  + [Locating persons by phone number: `findnum`](#findnum)
   + [Clearing all entries : `clear`](#clear)
   + [Create Relations between Profiles : `relate`](#relate)
   + [Show Relations Associated to a Person : `showrelated`](#showrelated)
@@ -108,13 +107,19 @@ Format: `help`
 
 ## Adding a person: `add`
 
-Adds a person (Client, Supplier or Employee) to the address book. Each role (eg. Client, Supplier, Employee) has its own set of fields that can be added.
+Adds a person (Client, Supplier or Employee) to the address book. Each role (eg. Client, Supplier, Employee) has its own specific set of fields that can be added.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [dob/yyyy-mm-dd][t/TAG]…​`
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years prod/Laptop skills/Java`
+
+Examples (Employee):
+* `add n/NAME p/PHONE e/EMAIL a/ADDRESS t/TAG [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`
+* `add n/Daniel Meier p/87652533 e/cornelia@example.com a/10th street`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years prod/Laptop skills/Java`
 
 **Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
 </section>
@@ -177,18 +182,16 @@ Examples:
 
 <section id="find">
 
-## Locating persons by name: `find [n/NAME] [t/TAG] [p/PHONE] [role/] [r/REMARK]`
+## Locating persons by name: `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`
 
-Finds persons whose names contain any of the given name keywords. You can also find persons by tags, phone numbers, roles, and remarks.
+Finds persons whose names contain any of the given name keywords. You can also find persons by tags, phone numbers, roles, and remarks. You can also stack multiple characteristics to narrow down your search.
 
-Format: `find NAME_KEYWORD [MORE_NAME_KEYWORDS]`
+Format: `find FLAG/FLAG_KEYWORD [MORE FLAG/FLAG_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only full words will be matched e.g. `Han` will not match `Hans` and `frien` will not match `friend`.
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
+* Only full words will be matched e.g. `Han` will not match `Hans` and `frien` will not match `friend`. Similarly, only the full phone number is searched (i.e. no partial match). e.g. `83647382` or `8364` will not match `83641001`.
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
-* Only the full phone number is searched (i.e. no partial match). e.g. `83647382` or `8364` will not match `83641001`.
 * `find r/` will search for contacts with an empty remark. 
 * Full matches will be required for phone numbers and roles.
 
@@ -212,6 +215,9 @@ Examples: `r/`
 * `find r/has a dog` returns all persons who have the remark `has a dog`.
 * Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
 * `find r/marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.
+
+Examples: `n/` and `t/`'
+* `find n/John t/friend` returns all persons who have the name `John` and the tag `friend`.
 
 **Note:** NetConnect accepts phone numbers with three or more digits, to account for staff extensions in the company. This is not a bug.
 
