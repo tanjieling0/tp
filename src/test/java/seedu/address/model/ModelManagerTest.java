@@ -128,67 +128,41 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void equals_sameValues_returnsTrue() {
-        NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
-        UserPrefs userPrefs = new UserPrefs();
-        RelatedList relatedList = new RelatedList();
-
-        modelManager = new ModelManager(netConnect, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
-        assertTrue(modelManager.equals(modelManagerCopy));
-    }
-
-    @Test
-    public void equals_sameObject_returnsTrue() {
-        assertTrue(modelManager.equals(modelManager));
-    }
-
-    @Test
-    public void equals_nullObject_returnsFalse() {
-        assertFalse(modelManager.equals(null));
-    }
-
-    @Test
-    public void equals_differentTypes_returnsFalse() {
-        assertFalse(modelManager.equals(5));
-    }
-
-    @Test
-    public void equals_differentNetConnect_returnsFalse() {
+    public void equals() {
         NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
         NetConnect differentNetConnect = new NetConnect();
         UserPrefs userPrefs = new UserPrefs();
+        RelatedList relatedList = new RelatedList();
 
-        modelManager = new ModelManager(netConnect, userPrefs);
-        ModelManager otherModelManager = new ModelManager(differentNetConnect, userPrefs);
+        // same values -> returns true
+        modelManager = new ModelManager(netConnect, userPrefs, relatedList);
+        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs, relatedList);
+        assertTrue(modelManager.equals(modelManagerCopy));
 
-        assertFalse(modelManager.equals(otherModelManager));
-    }
+        // same object -> returns true
+        assertTrue(modelManager.equals(modelManager));
 
-    @Test
-    public void equals_differentFilteredPersonList_returnsFalse() {
-        NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
-        UserPrefs userPrefs = new UserPrefs();
-        modelManager = new ModelManager(netConnect, userPrefs);
+        // null -> returns false
+        assertFalse(modelManager.equals(null));
+
+        // different types -> returns false
+        assertFalse(modelManager.equals(5));
+
+        // different netConnect -> returns false
+        assertFalse(modelManager.equals(new ModelManager(differentNetConnect, userPrefs, relatedList)));
+
+        // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
-      
-        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
-        ModelManager modelManagerCopy = new ModelManager(netConnect, userPrefs);
-        assertFalse(modelManager.equals(modelManagerCopy));
-    }
 
+        modelManager.stackFilters(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, userPrefs, relatedList)));
 
-    @Test
-    public void equals_differentUserPrefs_returnsFalse() {
-        NetConnect netConnect = new NetConnectBuilder().withPerson(ALICE).withPerson(BENSON).build();
-        UserPrefs userPrefs = new UserPrefs();
+        // resets modelManager to initial state for upcoming tests
+        modelManager.clearFilter();
+
+        // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setNetConnectFilePath(Paths.get("differentFilePath"));
-
-        modelManager = new ModelManager(netConnect, userPrefs);
-        ModelManager modelManagerCopy = new ModelManager(netConnect, differentUserPrefs);
-
-        assertFalse(modelManager.equals(modelManagerCopy));
+        assertFalse(modelManager.equals(new ModelManager(netConnect, differentUserPrefs, relatedList)));
     }
-
 }
