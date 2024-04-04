@@ -91,7 +91,7 @@ public class CsvExporter {
             Employee employee = (Employee) person;
             personStringArray[7] = employee.getDepartment().toString();
             personStringArray[8] = employee.getJobTitle().toString();
-            personStringArray[9] = employee.getSkills().toString();
+            personStringArray[9] = employee.getSkills().toString().replace("[", "").replace("]", "");
             personStringArray[10] = "";
             personStringArray[11] = "";
             personStringArray[12] = "";
