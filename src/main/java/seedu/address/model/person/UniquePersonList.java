@@ -11,7 +11,6 @@ import javafx.collections.ObservableList;
 import seedu.address.model.person.exceptions.DuplicateIdException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.IdModifiedException;
-import seedu.address.model.person.exceptions.IdNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
@@ -24,7 +23,6 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  * Supports a minimal set of list operations.
  *
  * @see Person#isSamePerson(Person)
- * @see Person#hasSameId(Person)
  */
 public class UniquePersonList implements Iterable<Person> {
 
@@ -48,10 +46,41 @@ public class UniquePersonList implements Iterable<Person> {
         return internalList.stream().map(Person::getId).anyMatch(id -> id.equals(toCheck));
     }
 
+    /**
+     * Returns the first Person in the list with the same id as in the given argument.
+     *
+     * @throws PersonNotFoundException if no Person in the list has the {@code id}
+     */
     public Person getPersonById(Id id) {
         requireNonNull(id);
         return internalList.stream().filter(p -> p.getId().equals(id))
-                .findAny().orElseThrow(IdNotFoundException::new);
+                .findFirst().orElseThrow(PersonNotFoundException::new);
+    }
+
+    /**
+     * Returns true if the list has exactly one {@code Person}
+     * with the specified name. The check is case-insensitive.
+     */
+    public int countPersonsWithName(Name toCheck) {
+        requireNonNull(toCheck);
+        return (int) internalList.stream()
+                .filter(p -> p.getName().fullName.equalsIgnoreCase(toCheck.fullName)).count();
+    }
+
+    /**
+     * Returns the first Person in the list with the same name as in the given argument.
+     * The match is case-insensitive.
+     *
+     * @throws PersonNotFoundException if no Person in the list has the {@code name}
+     */
+    public Person getPersonByName(Name name) {
+        requireNonNull(name);
+        if (countPersonsWithName(name) != 1) {
+            throw new PersonNotFoundException();
+        }
+        return internalList.stream()
+                .filter(p -> p.getName().fullName.equalsIgnoreCase(name.fullName))
+                .findFirst().orElseThrow(PersonNotFoundException::new);
     }
 
     /**

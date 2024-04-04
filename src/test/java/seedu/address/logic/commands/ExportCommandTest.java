@@ -20,7 +20,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code ExportCommand}.
+ * Contains integration tests (interaction with the Model) for
+ * {@code ExportCommand}.
  */
 public class ExportCommandTest {
 
@@ -28,7 +29,6 @@ public class ExportCommandTest {
     private static final Path NON_EXISTENT_FILE = TEST_DATA_FOLDER.resolve("nonexistent.csv");
 
     private final Model model = new ModelManager(getTypicalNetConnect(), new UserPrefs());
-
 
     @Test
     public void execute_exportSuccess() throws CommandException {
@@ -38,7 +38,6 @@ public class ExportCommandTest {
         ExportCommand exportCommand = new ExportCommand(filename);
         String expectedMessage = ExportCommand.MESSAGE_SUCCESS + filename;
         exportCommand.execute(model);
-
 
         Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
@@ -63,7 +62,7 @@ public class ExportCommandTest {
         String filename = NON_EXISTENT_FILE.toString();
         ExportCommand exportCommand = new ExportCommand(filename);
         String expectedMessage = ExportCommand.MESSAGE_FAILURE_FILE_WRITE;
-        assertThrows(CommandException.class, expectedMessage , () -> exportCommand.execute(model));
+        assertThrows(CommandException.class, expectedMessage, () -> exportCommand.execute(model));
     }
 
     @Test

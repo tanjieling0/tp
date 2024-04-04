@@ -3,11 +3,16 @@ package seedu.address.ui;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Employee;
 import seedu.address.model.person.Person;
@@ -83,6 +88,20 @@ public class PersonCard extends UiPart<Region> {
         String remarkValue = person.getRemark() != null ? person.getRemark().value : "";
         remark.setText("Remark: " + remarkValue);
         id.setText("ID: " + String.valueOf(person.getId().value));
+
+        // Bind the background color of the role FlowPane based on its text content
+        role.backgroundProperty().bind(Bindings.createObjectBinding(() -> {
+            String roleText = role.getChildren().isEmpty() ? "" : ((Label) role.getChildren().get(0)).getText();
+            if (roleText.equals("Client")) {
+                return new Background(new BackgroundFill(Color.web("#ab9360"), new CornerRadii(5), null));
+            } else if (roleText.equals("Employee")) {
+                return new Background(new BackgroundFill(Color.web("#728FCE"), new CornerRadii(5), null));
+            } else if (roleText.equals("Supplier")) {
+                return new Background(new BackgroundFill(Color.web("#8C2F39"), new CornerRadii(5), null));
+            } else {
+                return null;
+            }
+        }, role.getChildren()));
 
         preferences.setVisible(false);
         department.setVisible(false);

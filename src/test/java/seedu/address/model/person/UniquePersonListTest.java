@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import seedu.address.model.person.exceptions.DuplicateIdException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.IdModifiedException;
-import seedu.address.model.person.exceptions.IdNotFoundException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
@@ -96,14 +95,74 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void getPersonById_idNotInList_throwsIdNotFoundException() {
-        assertThrows(IdNotFoundException.class, () -> uniquePersonList.getPersonById(ALICE.getId()));
+    public void getPersonById_idNotInList_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonById(ALICE.getId()));
     }
 
     @Test
     public void getPersonById_idInList_returnsPerson() {
         uniquePersonList.add(ALICE);
         assertEquals(ALICE, uniquePersonList.getPersonById(ALICE.getId()));
+    }
+
+    @Test
+    public void countPersonsWithName_nullName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniquePersonList.countPersonsWithName(null));
+    }
+
+    @Test
+    public void countPersonsWithName_emptyList_returnsZero() {
+        assertEquals(0, uniquePersonList.countPersonsWithName(ALICE.getName()));
+    }
+
+    @Test
+    public void countPersonsWithName_oneNameInList_returnsOne() {
+        uniquePersonList.add(ALICE);
+        assertEquals(1, uniquePersonList.countPersonsWithName(ALICE.getName()));
+    }
+
+    @Test
+    public void countPersonsWithName_mixedCase_returnsTwo() {
+        Person editedAlice = new ClientBuilder(ALICE).withId(2).withName("alicE pauLiNe").build();
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(editedAlice);
+        assertEquals(2, uniquePersonList.countPersonsWithName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_nullName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniquePersonList.getPersonByName(null));
+    }
+
+    @Test
+    public void getPersonByName_nameNotInList_throwsPersonNotFoundException() {
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_partialMatch_throwsPersonNotFoundException() {
+        uniquePersonList.add(ALICE);
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonByName(new Name("Alice")));
+    }
+
+    @Test
+    public void getPersonByName_oneNameInListExactCaseMatch_returnsPerson() {
+        uniquePersonList.add(ALICE);
+        assertEquals(ALICE, uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_oneNameInListMixedCase_returnsPerson() {
+        Person editedAlice = new ClientBuilder(ALICE).withName("alicE pauLiNe").build();
+        uniquePersonList.add(editedAlice);
+        assertEquals(editedAlice, uniquePersonList.getPersonByName(ALICE.getName()));
+    }
+
+    @Test
+    public void getPersonByName_twoNameInList_throwsPersonNotFoundException() {
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(new EmployeeBuilder().withName(ALICE.getName().fullName).build());
+        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.getPersonByName(ALICE.getName()));
     }
 
     @Test

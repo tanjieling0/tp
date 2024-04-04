@@ -8,8 +8,11 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.utils.CsvExporter;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Wraps all data at the address-book level
@@ -18,19 +21,15 @@ import seedu.address.model.person.UniquePersonList;
 public class NetConnect implements ReadOnlyNetConnect {
 
     private final UniquePersonList persons;
+    private final RelatedList relatedList;
 
-    /*
-     * The 'unusual' code block below is a non-static initialization block,
-     * sometimes used to avoid duplication
-     * between constructors. See
-     * https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     *
-     * Note that non-static init blocks are not recommended to use. There are other
-     * ways to avoid duplication
-     * among constructors.
+    /**
+     * Represents the main class for the NetConnect application.
+     * It contains the constructor for initializing the application.
      */
     public NetConnect() {
         persons = new UniquePersonList();
+        relatedList = new RelatedList();
     }
 
     /**
@@ -52,12 +51,22 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
+     * Replaces the contents of the related list with {@code relatedList}.
+     * {@code relatedList} must not contain duplicate related persons.
+     */
+    public void setRelatedList(List<IdTuple> relatedList) {
+        this.relatedList.setRelatedList(relatedList);
+    }
+
+    /**
      * Resets the existing data of this {@code NetConnect} with {@code newData}.
      */
     public void resetData(ReadOnlyNetConnect newData) {
         requireNonNull(newData);
 
         setPersons(newData.getPersonList());
+        setRelatedList(newData.getListIdTuple());
+
     }
 
     //// person-level operations
@@ -72,17 +81,36 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in
-     * the address book.
+     * Returns true if a person with the specified id exists in the NetConnect.
      */
     public boolean hasId(Id id) {
         requireNonNull(id);
         return persons.hasId(id);
     }
 
+    /**
+     * Returns the {@code Person} with the specified id.
+     */
     public Person getPersonById(Id id) {
         requireNonNull(id);
         return persons.getPersonById(id);
+    }
+
+    /**
+     * Returns true if the NetConnect has exactly one {@code Person}
+     * with the specified name.
+     */
+    public int countPersonsWithName(Name name) {
+        requireNonNull(name);
+        return persons.countPersonsWithName(name);
+    }
+
+    /**
+     * Returns the {@code Person} with the specified name.
+     */
+    public Person getPersonByName(Name name) {
+        requireNonNull(name);
+        return persons.getPersonByName(name);
     }
 
     /**
@@ -114,17 +142,53 @@ public class NetConnect implements ReadOnlyNetConnect {
         persons.remove(key);
     }
 
-
     /**
-     * Exports the data from the address book as a CSV file with the specified filename.
-     * Returns {@code true} if the export operation is successful, {@code false} otherwise.
+     * Exports the data from the address book as a CSV file with the specified
+     * filename.
+     * Returns {@code true} if the export operation is successful, {@code false}
+     * otherwise.
      *
-     * @return {@code true} if the export operation is successful, {@code false} otherwise.
+     * @return {@code true} if the export operation is successful, {@code false}
+     *         otherwise.
      */
     public boolean exportCsv(String filename) {
         CsvExporter exporter = new CsvExporter(persons, filename);
         exporter.execute();
         return exporter.getIsSuccessful();
+    }
+
+    //// related list operations
+    /**
+     * Returns true if the specified IdTuple is present in the relatedList, false otherwise.
+     *
+     * @param idTuple The IdTuple to check for presence in the relatedList. Must not be null.
+     * @return true if the specified IdTuple is present in the relatedList, false otherwise.
+     */
+    public boolean hasRelatedId(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return relatedList.hasId(idTuple);
+    }
+
+    /**
+     * Allows the addition of an IdTuple to the NetConnect model.
+     *
+     * @param idTuple The IdTuple to be added.
+     * @throws NullPointerException if idTuple is null.
+     */
+    public void allowAddIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        relatedList.allowAddIdTuple(idTuple);
+    }
+
+    /**
+     * Removes the specified IdTuple from the relatedList.
+     *
+     * @param idTuple The IdTuple to be removed.
+     * @return true if the IdTuple is removed, false otherwise.
+     */
+    public boolean removeRelatedId(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return relatedList.remove(idTuple);
     }
 
     //// util methods
@@ -136,9 +200,32 @@ public class NetConnect implements ReadOnlyNetConnect {
                 .toString();
     }
 
+    /**
+     * Returns an unmodifiable view of the person list.
+     * This list will not contain any duplicate persons.
+     *
+     * @return An unmodifiable {@link ObservableList} of {@link Person}.
+     */
     @Override
     public ObservableList<Person> getPersonList() {
         return persons.asUnmodifiableObservableList();
+    }
+
+    /**
+     * Returns a list of IdTuple objects.
+     *
+     * @return A list of IdTuple objects.
+     */
+    @Override
+    public List<IdTuple> getListIdTuple() {
+        return relatedList.getListIdTuple();
+    }
+
+    /**
+     * Represents a list of related items.
+     */
+    public RelatedList getRelatedList() {
+        return relatedList;
     }
 
     @Override

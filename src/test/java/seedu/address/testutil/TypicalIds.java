@@ -8,4 +8,5 @@ import seedu.address.model.person.Id;
 public class TypicalIds {
     public static final Id ID_FIRST_PERSON = Id.generateId(1);
     public static final Id ID_SECOND_PERSON = Id.generateId(2);
+    public static final Id ID_THIRD_PERSON = Id.generateId(3);
 }

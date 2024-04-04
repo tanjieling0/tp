@@ -9,7 +9,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindNumCommand;
-import seedu.address.model.person.PhoneContainsDigitsPredicate;
+import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 
 public class FindNumCommandParserTest {
 
