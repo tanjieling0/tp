@@ -19,15 +19,17 @@ public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private final NetConnectStorage netConnectStorage;
     private final UserPrefsStorage userPrefsStorage;
+    private final StateStorage stateStorage;
 
     /**
      * Creates a {@code StorageManager} with the given {@code NetConnectStorage} and
      * {@code UserPrefStorage}.
      */
     public StorageManager(NetConnectStorage netConnectStorage,
-                          UserPrefsStorage userPrefsStorage) {
+                          UserPrefsStorage userPrefsStorage, StateStorage stateStorage) {
         this.netConnectStorage = netConnectStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.stateStorage = stateStorage;
     }
 
     // ================ UserPrefs methods ==============================
@@ -76,4 +78,22 @@ public class StorageManager implements Storage {
         netConnectStorage.saveNetConnect(netConnect, filePath);
     }
 
+    // ================ StateStorage methods ==============================
+
+    @Override
+    public void saveState(String input) throws IOException {
+        logger.fine("Attempting to write to data file: " + getStateStorageFilePath());
+        stateStorage.saveState(input);
+    }
+
+    @Override
+    public String readState() throws DataLoadingException {
+        logger.fine("Attempting to read data from file: " + stateStorage.getStateStorageFilePath());
+        return stateStorage.readState();
+    }
+
+    @Override
+    public Path getStateStorageFilePath() {
+        return stateStorage.getStateStorageFilePath();
+    }
 }

@@ -12,7 +12,7 @@ import seedu.address.model.UserPrefs;
 /**
  * API of the Storage component
  */
-public interface Storage extends NetConnectStorage, UserPrefsStorage {
+public interface Storage extends NetConnectStorage, UserPrefsStorage, StateStorage {
 
     @Override
     Optional<UserPrefs> readUserPrefs() throws DataLoadingException;
@@ -29,4 +29,12 @@ public interface Storage extends NetConnectStorage, UserPrefsStorage {
     @Override
     void saveNetConnect(ReadOnlyNetConnect netConnect) throws IOException;
 
+    @Override
+    String readState() throws DataLoadingException;
+
+    @Override
+    void saveState(String input) throws IOException;
+
+    @Override
+    Path getStateStorageFilePath();
 }
