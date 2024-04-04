@@ -32,5 +32,6 @@
       "skills": {"skills": []},
       "remark": "some remarks"
     }
-  ]
+  ],
+  "relatedIds" : []
 }

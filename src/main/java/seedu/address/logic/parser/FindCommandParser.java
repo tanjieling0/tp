@@ -37,7 +37,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     public FindCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer
-                .tokenize(args, PREFIX_NAME, PREFIX_TAG, PREFIX_ROLE, PREFIX_REMARK, PREFIX_PHONE);
+                .tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_TAG, PREFIX_ROLE, PREFIX_REMARK);
         argMultimap.verifyOnlyOnePrefix();
 
         return new FindCommand(createPredicate(argMultimap));

@@ -5,8 +5,11 @@ import java.nio.file.Path;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * The API of the Model component.
@@ -60,15 +63,25 @@ public interface Model {
     boolean hasPerson(Person person);
 
     /**
-     * Returns true if a person with the same id as {@code Id} exists in
-     * the netconnect.
+     * Returns true if a person with the specified id exists in the NetConnect.
      */
     boolean hasId(Id id);
 
     /**
-     * Returns the Person with the given {@code Id}.
+     * Returns the {@code Person} with the specified id.
      */
     Person getPersonById(Id id);
+
+    /**
+     * Returns the number of {@code Person}s in the NetConnect with
+     * the specified name.
+     */
+    int countPersonsWithName(Name name);
+
+    /**
+     * Returns the {@code Person} with the specified name.
+     */
+    Person getPersonByName(Name name);
 
     /**
      * Deletes the given person.
@@ -119,4 +132,12 @@ public interface Model {
      * Returns {@code true} if the export operation is successful, {@code false} otherwise.
      */
     boolean exportCsv(String filename);
+
+    boolean hasRelatedIdTuple(IdTuple idTuple);
+
+    void addRelatedIdTuple(IdTuple idTuple);
+
+    boolean removeRelatedIdTuple(IdTuple idTuple);
+
+    RelatedList getRelatedIdTuples();
 }

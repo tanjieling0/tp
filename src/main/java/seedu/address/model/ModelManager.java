@@ -11,9 +11,12 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.Filter;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -32,7 +35,9 @@ public class ModelManager implements Model {
     public ModelManager(ReadOnlyNetConnect netConnect, ReadOnlyUserPrefs userPrefs) {
         requireAllNonNull(netConnect, userPrefs);
 
-        logger.fine("Initializing with address book: " + netConnect + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: "
+                + netConnect + " , user prefs "
+                + userPrefs);
 
         this.netConnect = new NetConnect(netConnect);
         this.userPrefs = new UserPrefs(userPrefs);
@@ -111,6 +116,18 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public int countPersonsWithName(Name name) {
+        requireNonNull(name);
+        return netConnect.countPersonsWithName(name);
+    }
+
+    @Override
+    public Person getPersonByName(Name name) {
+        requireNonNull(name);
+        return netConnect.getPersonByName(name);
+    }
+
+    @Override
     public void deletePerson(Person target) {
         netConnect.removePerson(target);
     }
@@ -132,6 +149,32 @@ public class ModelManager implements Model {
     public boolean exportCsv(String filename) {
         requireNonNull(filename);
         return netConnect.exportCsv(filename);
+    }
+
+    // =========== Related List Accessors
+    // =============================================================
+
+    @Override
+    public boolean hasRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return netConnect.hasRelatedId(idTuple);
+    }
+
+    @Override
+    public void addRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        netConnect.allowAddIdTuple(idTuple);
+    }
+
+    @Override
+    public boolean removeRelatedIdTuple(IdTuple idTuple) {
+        requireNonNull(idTuple);
+        return netConnect.removeRelatedId(idTuple);
+    }
+
+    @Override
+    public RelatedList getRelatedIdTuples() {
+        return netConnect.getRelatedList();
     }
 
     // =========== Filtered Person List Accessors

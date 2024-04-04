@@ -22,8 +22,11 @@ import seedu.address.model.NetConnect;
 import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.filter.NetConnectPredicate;
+import seedu.address.model.util.IdTuple;
+import seedu.address.model.util.RelatedList;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -170,6 +173,16 @@ public class AddCommandTest {
         }
 
         @Override
+        public int countPersonsWithName(Name name) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Person getPersonByName(Name name) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void deletePerson(Person target) {
             throw new AssertionError("This method should not be called.");
         }
@@ -201,6 +214,24 @@ public class AddCommandTest {
 
         @Override
         public String printFilters() {
+            throw new AssertionError("This method should not be called.");
+        }
+        public boolean hasRelatedIdTuple(IdTuple idTuple) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addRelatedIdTuple(IdTuple idTuple) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public RelatedList getRelatedIdTuples() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean removeRelatedIdTuple(IdTuple idTuple) {
             throw new AssertionError("This method should not be called.");
         }
     }
