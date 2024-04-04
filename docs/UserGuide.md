@@ -181,44 +181,40 @@ Examples:
 
 ## Locating persons by name: `find [n/NAME] [t/TAG] [p/PHONE] [role/] [r/REMARK]`
 
-Finds persons whose names contain any of the given name keywords.
+Finds persons whose names contain any of the given name keywords. You can also find persons by tags, phone numbers, roles, and remarks.
 
 Format: `find NAME_KEYWORD [MORE_NAME_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`.
+* Only full words will be matched e.g. `Han` will not match `Hans` and `frien` will not match `friend`.
 * Persons matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
 * `find r/` will search for contacts with an empty remark. 
+* Full matches will be required for phone numbers and roles.
 
-Examples:
-* `find John` returns `john` and `John Doe`.
-* `find alex david` returns `Alex Yeoh`, `David Li`.<br>
+Examples: `n/`
+* `find n/John` returns `john` and `John Doe`.
+* `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
+
+Examples: `t/`
+* `find t/friend` returns all persons who have the tag `friend`.
+
+Examples: `p/`
+* `find p/98765432` returns `John Doe` who has the phone number `98765432`.
+
+Examples: `role/`
+* `find role/client` returns all persons who have the role `client`.
+* `find role/supplier role/clients` returns all persons who have the role `supplier` or `client`.
+
+Examples: `r/`
+* `find r/` returns all persons who have an empty remark.
+* `find r/has a dog` returns all persons who have the remark `has a dog`.
+* Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
+* `find r/marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-**Tip:** You can concatenate all the names you are interested in finding. E.g. If you are interested in listing Alice, Bob and Charles in your list, you can use the following command `find alice bob charles`.
-
-</section>
-
-<section id="findrem">
-
-## Locating persons by remark: `findrem`
-
-Finds persons who have remarks that matches the given keywords.
-
-Format: `find REMARK_KEYWORD [MORE_REMARK_KEYWORDS]`
-
-* The search is case-insensitive. e.g. `Friendly` will match `friendly`.
-* The order of the keywords does not matter. e.g. `fish supply` will match `supply fish`.
-* Only the remark is searched.
-* Only full words will be matched e.g. `fish` will not match `fishball`.
-* Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
-
-Examples:
-* `findrem unfriendly` returns all persons who have the remark `unfriendly`.
-* `findrem marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.<br>
+**Tip:** You can concatenate all the names you are interested in finding. E.g. If you are interested in listing Alice, Bob and Charles in your list, you can use the following command `find n/alice bob charles`.
 
 </section>
 
@@ -235,7 +231,6 @@ Format: `findrole ROLE_KEYWORD [MORE_ROLE_KEYWORDS]`
 
 Examples:
 * `findrole client` returns all persons who have the role `employee`.
-* `findrole supplier clients` returns all persons who have the role `supplier` or `client`.
 
 </section>
 
