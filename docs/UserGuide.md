@@ -21,13 +21,9 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Viewing help : `help`](#help)
   + [Adding a person: `add` ](#add)
   + [Deleting a person : `delete`](#delete)
-  + [Adding a Remark to a Person : `remark`](#remark)
   + [Listing all persons : `list`](#list)
   + [Editing a person : `edit`](#edit)
   + [Locating persons by name: `find`](#find)
-  + [Locating persons by remark: `findrem`](#findrem)
-  + [Locating persons by role: `findrole`](#findrole)
-  + [Locating persons by phone number: `findnum`](#findnum)
   + [Clearing all entries : `clear`](#clear)
   + [Create Relations between Profiles : `relate`](#relate)
   + [Show Relations Associated to a Person : `showrelated`](#showrelated)
@@ -62,7 +58,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
    * `delete i/3` : Deletes the contact with ID 3 from NetConnect.
 
-   * `clear` : Deletes all contacts.
+   * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample contacts provided.
 
    * `exit` : Exits the app.
 
@@ -111,17 +107,29 @@ Format: `help`
 
 ## Adding a person: `add`
 
-Adds a person (Client, Supplier or Employee) to the address book.
+Adds a person (Client, Supplier or Employee) to the address book. Note that each role (eg. Client, Supplier, Employee) has its own specific set of fields that can be added.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [dob/yyyy-mm-dd][t/TAG]…​`
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/client t/friend`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/supplier`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years prod/Laptop skills/Java`
+
+Examples (Employee):
+* Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years skills/Java`
+
+Examples (Client):
+* Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`
+* `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
+
+Examples (Supplier):
+* Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`
+* `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
 **Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
 </section>
-
 
 <section id="delete">
 
@@ -135,6 +143,7 @@ Format: `delete [n/NAME] [i/ID]`
 * If there are more than one person with the specified `NAME`, `ID` has to be used.
 * `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
+* Full name must be provided for `NAME`.
 
 Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
@@ -143,25 +152,6 @@ Examples:
 **Info:** Instead of completely deleting the profile from the database, NetConnect does a soft delete of the profile instead. What this means is that the profile still exists in the database, but is marked as inactive, and will not appear in your current list or searches.
 
 **Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
-</section>
-
-<section id="remark">
-
-## Adding a Remark to a Person : `remark`
-
-Adds a remark to a person in the address book.
-
-Format: `remark i/ID r/REMARK`
-
-* Adds a remark to the person with the specified `ID`.
-* `ID` refers to the unique identification number assigned to each person when first added to the list.
-* `ID` **must refer to a person that exist within NetConnect**.
-* You can remove a remark from a person by typing `remark i/ID` without specifying any remarks after it.
-
-Examples:
-* `remark i/2 r/John is a very good client` Adds a remark to the person with ID of 2.
-* `remark i/2` Removes the remark from the person with ID of 2.
-
 </section>
 
 <section id="list">
@@ -179,7 +169,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`
+Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
@@ -199,78 +189,44 @@ Examples:
 
 ## Locating persons by name: `find`
 
-Finds persons whose names contain any of the given name keywords.
+Finds persons whose names contain any of the given name keywords. You can also find persons by tags, phone numbers, roles, and remarks. You can also stack multiple characteristics to narrow down your search. Note that only one type of field is allowed for each search at one time.
 
-Format: `find NAME_KEYWORD [MORE_NAME_KEYWORDS]`
+Format: `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`.
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
+* Only partial matches are allowed for names e.g. `Ha` will match `Hans`. 
+* For all other fields, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`.
+* Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`.
+* `find r/` will search for contacts with an empty remark. 
+* Full matches will be required for phone numbers and roles.
 
-Examples:
-* `find John` returns `john` and `John Doe`.
-* `find alex david` returns `Alex Yeoh`, `David Li`.<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+Find by name example:
+* `find n/John` returns `john` and `John Doe`.
+* `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
+![result for 'find alex david'](images/findAlexDavidResult.png)
 
-**Tip:** You can concatenate all the names you are interested in finding. E.g. If you are interested in listing Alice, Bob and Charles in your list, you can use the following command `find alice bob charles`.
+Find by tag example:
+* `find t/friend` returns all persons who have the tag `friend`.
 
-</section>
+Find by phone number example:
+* `find p/98765432` returns `John Doe` who has the phone number `98765432`.
 
-<section id="findrem">
+Find by role example:
+* `find role/client` returns all persons who have the role `client`.
+* `find role/supplier role/client` returns all persons who have the role `supplier` or `client`.
 
-## Locating persons by remark: `findrem`
-
-Finds persons who have remarks that matches the given keywords.
-
-Format: `find REMARK_KEYWORD [MORE_REMARK_KEYWORDS]`
-
-* The search is case-insensitive. e.g. `Friendly` will match `friendly`.
-* The order of the keywords does not matter. e.g. `fish supply` will match `supply fish`.
-* Only the remark is searched.
-* Only full words will be matched e.g. `fish` will not match `fishball`.
+Find by remark example:
+* `find r/` returns all persons who have an empty remark.
+* `find r/has a dog` returns all persons who have the remark `has a dog`.
 * Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
+* `find r/marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.
 
-Examples:
-* `findrem unfriendly` returns all persons who have the remark `unfriendly`.
-* `findrem marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.<br>
-
-</section>
-
-<section id="findrole">
-
-## Locating persons by role: `findrole`
-
-Finds persons whose role matches the given role - Client, Supplier or Employee.
-
-Format: `findrole ROLE_KEYWORD [MORE_ROLE_KEYWORDS]`
-* The search is case-insensitive. e.g. `client` will match `Client`.
-* Only the role is searched.
-* the role must be an exact match of either `client`, `supplier` or `employee`.
-
-Examples:
-* `findrole client` returns all persons who have the role `employee`.
-* `findrole supplier clients` returns all persons who have the role `supplier` or `client`.
-
-</section>
-
-<section id="findnum">
-
-## Locating persons by phone number: `findnum`
-
-Finds persons whose phone number matches the given number.
-
-Format: `findnum CONTACT_NUMBER [CONTACT_NUMBERS]`
-
-* Only the full number is searched (i.e. no partial match). e.g. `83647382` or `8364` will not match `83641001`.
-* The search will return at most one person for each number since two people cannot share the same phone number.
-
-Examples:
-* `findnum 83647382` returns `John Doe` who has the phone number `83647382`.
+Find by name and tag example
+* `find n/John t/friend` returns all persons who have the name `John` and the tag `friend`.
 
 **Note:** NetConnect accepts phone numbers with three or more digits, to account for staff extensions in the company. This is not a bug.
+
 </section>
 
 <section id="clear">
@@ -291,7 +247,7 @@ Format: `clear`
 
 Creates a relation between two profiles in the address book.
 
-Format: `relate [i/ID][n/NAME] [i/ID][n/NAME]`
+Format: `relate i/ID i/ID`
 
 Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
 
@@ -305,7 +261,7 @@ Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 a
 
 Shows all the relations associated to a person in the address book.
 
-Format: `showrelated [i/ID][n/NAME]`
+Format: `showrelated i/ID`
 
 </section>
 
@@ -321,7 +277,7 @@ With every change to the command input, NetConnect saves and updates the command
 ## Export Current View to CSV File : `export`
 Retrieve information on a group of profiles at once with this function! This can be useful for consolidating all the emails or contact number at once, or to share information with third parties.
 
-**To export all profiles in the address book to a CSV file:**
+**To export _all_ profiles in the address book to a CSV file:**
 
 Step 1: `list`
 
@@ -329,12 +285,11 @@ Step 2: `export`
 
 * The `list` command in the first step is to pull all profiles into the current view.
 
-**To export a specific group of profiles to a CSV file:**
+**To export a _specific_ group of profiles to a CSV file:**
 
 Step 1: `find [KEYWORD]` or any other function that filters the profiles.
 
 Step 2: `export`
-
 
 * The first step is to filter the profiles you want to export into the current view.
 
@@ -406,21 +361,18 @@ Furthermore, certain edits can cause the NetConnect to behave in unexpected ways
 
 # Command summary
 
-| Action                   | Format                                                                                                                                                                                                                         | Examples                                                        |
-|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
-| **Help**                 | `help`                                                                                                                                                                                                                         | `help`                                                          |
-| **Add**                  | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]… [r/someremark] [dob/yyyy-mm-dd] [prod/allproducts] [dept/departments] [job/jobtitle] [tos/termsofservice] [skills/employeeskills] [pref/clientpreferences] ​ ` | `add n/pika p/98329432 e/chu@example.com a/Unova role/EMPLOYEE` |
-| **List**                 | `list`                                                                                                                                                                                                                         | `list`                                                          |
-| **Delete**               | `delete [i/ID] [n/NAME]`                                                                                                                                                                                                       | `delete i/123`, `delete n/John Doe`                             |
-| **Edit**                 | `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`                                                                                                                                              | `edit i/123 n/James Lee e/jameslee@example.com`                 |
-| **Remark**               | `remark i/ID r/REMARK`                                                                                                                                                                                                         | `remark i/1 r/Has a dog called Bob`                             |
-| **Tag**                  | `tag i/ID t/TAG…​`                                                                                                                                                                                                             | `tag i/123 t/friend t/colleague`                                |
-| **Find**                 | `find NAME_KEYWORD [MORE_NAME_KEYWORD]`                                                                                                                                                                                        | `find James Jake`                                               |
-| **Findrem**              | `findrem REMARK_KEYWORD [MORE_REMARK_KEYWORD]`                                                                                                                                                                                 | `findrem Has a dog called Bob`                                  |
-| **Findrole**             | `findrole ROLE [MORE_ROLES]`                                                                                                                                                                                                   | `findrole employee`                                             |
-| **Findnum**              | `findnum PHONE [MORE_PHONES]`                                                                                                                                                                                                  | `findnum 83647382 97823975`                                     |
-| **Clear**                | `clear`                                                                                                                                                                                                                        | `clear`                                                         |
-| **Relate Profiles**      | `relate [i/ID][n/NAME] [i/ID][n/NAME]`                                                                                                                                                                                         | `relate i/1 i/2`, `relate n/Alice i/2`                          |
-| **Show related Profile** | `showrelated [i/ID][n/NAME]`                                                                                                                                                                                                   | `showrelate i/33`, `showrelate n/Alice`                         |
-| **Export**               | `export [filename]`                                                                                                                                                                                                            | `export ClientInfo.csv`                                         |
-| **Exit**                 | `exit`                                                                                                                                                                                                                         | `exit`                                                          |
+| Action                   | Format                                                                                                                                                   | Examples                                                                                                                                                                                                                   |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Help**                 | `help`                                                                                                                                                   | `help`                                                                                                                                                                                                                     |
+| **Add (Employee)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]` | `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years skills/Java` |
+| **Add (Client)**         | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                            | `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`                                                                      |
+| **Add (Supplier)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                        | `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`                                                                              |
+| **List**                 | `list`                                                                                                                                                   | `list`                                                                                                                                                                                                                     |
+| **Delete**               | `delete [i/ID] [n/NAME]`                                                                                                                                 | `delete i/123`, `delete n/John Doe`                                                                                                                                                                                        |
+| **Edit**                 | `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`                                                                        | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
+| **Find**                 | `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`                                                                                                 | `find role/employee` , followed by `find n/Bob` to stack filters                                                                                                                                                           |
+| **Relate Profiles**      | `relate i/ID i/ID`                                                                                                                                       | `relate i/1 i/2`                                                                                                                                                                                                           |
+| **Show related Profile** | `showrelated i/ID`                                                                                                                                       | `showrelated i/2`                                                                                                                                                                                                          |
+| **Export**               | `export [filename]`                                                                                                                                      | `export ClientInfo.csv`                                                                                                                                                                                                    |
+| **Clear**                | `clear`                                                                                                                                                  | `clear`                                                                                                                                                                                                                    |
+| **Exit**                 | `exit`                                                                                                                                                   | `exit`                                                                                                                                                                                                                     |

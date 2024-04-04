@@ -22,7 +22,7 @@ public class UnrelateCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Unrelates the two specified persons in NetConnect using either their unique id, OR, name.\n"
             + "The unique IDs or names provided must exist.\n"
-            + "Parameters: [i/ID_1] [i/ID_2]\n"
+            + "Parameters: i/ID_1 i/ID_2\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
 
     private final IdContainsDigitsPredicate predicate;
