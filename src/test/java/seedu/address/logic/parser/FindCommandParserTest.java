@@ -13,7 +13,9 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
+import seedu.address.model.person.filter.PhoneMatchesDigitsPredicate;
 import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
 import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
@@ -37,6 +39,17 @@ public class FindCommandParserTest {
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n n/Alice \n \t n/Bob  \t", expectedFindCommand);
+    }
+
+    @Test
+    public void parse_validPhones_returnsFindCommand() {
+        // no leading and trailing whitespaces
+        FindCommand expectedFindCommand =
+                new FindCommand(new PhoneMatchesDigitsPredicate(Arrays.asList("123", "91234567")));
+        assertParseSuccess(parser, " p/123 p/91234567", expectedFindCommand);
+
+        // multiple whitespaces between keywords
+        assertParseSuccess(parser, " \n p/123 \n \t p/91234567  \t", expectedFindCommand);
     }
 
     @Test
@@ -99,6 +112,19 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_invalidPhones_throwsParseException() {
+        // empty phones
+        assertParseFailure(parser, " p/", String.format(Phone.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " p/ p/ p/", String.format(Phone.MESSAGE_CONSTRAINTS));
+
+        // invalid phones format
+        assertParseFailure(parser, " p/12", String.format(Phone.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " p/123a45", String.format(Phone.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " p/1234a56 p/91234567", String.format(Phone.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, " p/91234567 p/12", String.format(Phone.MESSAGE_CONSTRAINTS));
+    }
+
+    @Test
     public void parse_invalidTags_throwsParseException() {
         // empty tag
         assertParseFailure(parser, " t/", String.format(Tag.MESSAGE_CONSTRAINTS));
@@ -112,11 +138,11 @@ public class FindCommandParserTest {
 
     @Test
     public void parse_invalidRoles_throwsParseException() {
-        // empty tag
+        // empty role
         assertParseFailure(parser, " role/", String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
         assertParseFailure(parser, " role/ role/ role/", String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
 
-        // invalid tag format
+        // invalid role format
         assertParseFailure(parser, " role/clie",
                 String.format(Person.MESSAGE_ROLE_CONSTRAINTS));
         assertParseFailure(parser, " role/clie role/employees",
