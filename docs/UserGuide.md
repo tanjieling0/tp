@@ -62,7 +62,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
    * `delete i/3` : Deletes the contact with ID 3 from NetConnect.
 
-   * `clear` : Deletes all contacts.
+   * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample contacts provided.
 
    * `exit` : Exits the app.
 
@@ -111,13 +111,13 @@ Format: `help`
 
 ## Adding a person: `add`
 
-Adds a person (Client, Supplier or Employee) to the address book.
+Adds a person (Client, Supplier or Employee) to the address book. Each role (eg. Client, Supplier, Employee) has its own set of fields that can be added.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [dob/yyyy-mm-dd][t/TAG]…​`
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/client t/friend`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 r/supplier`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
 
 **Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
 </section>
@@ -135,6 +135,7 @@ Format: `delete [n/NAME] [i/ID]`
 * If there are more than one person with the specified `NAME`, `ID` has to be used.
 * `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
+* Full name must be provided for `NAME`.
 
 Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
@@ -147,9 +148,9 @@ Examples:
 
 <section id="remark">
 
-## Adding a Remark to a Person : `remark`
+## Adding or Updating a Remark to a Person : `remark`
 
-Adds a remark to a person in the address book.
+Adds or updates a remark to a person in the address book. Each person can only have one remark of any length.
 
 Format: `remark i/ID r/REMARK`
 
@@ -179,7 +180,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`
+Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
@@ -197,7 +198,7 @@ Examples:
 
 <section id="find">
 
-## Locating persons by name: `find`
+## Locating persons by name: `find [n/NAME] [t/TAG] [p/PHONE] [role/] [r/REMARK]`
 
 Finds persons whose names contain any of the given name keywords.
 
@@ -209,6 +210,7 @@ Format: `find NAME_KEYWORD [MORE_NAME_KEYWORDS]`
 * Only full words will be matched e.g. `Han` will not match `Hans`.
 * Persons matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
+* `find r/` will search for contacts with an empty remark. 
 
 Examples:
 * `find John` returns `john` and `John Doe`.
