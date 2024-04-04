@@ -4,6 +4,8 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalNetConnect;
 
+import java.util.Collections;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +14,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.filter.RoleContainsKeywordsPredicate;
+import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
 import seedu.address.testutil.SupplierBuilder;
@@ -68,21 +70,21 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_duplicateClient_throwsCommandException() {
-        model.stackFilters(new RoleContainsKeywordsPredicate("client"));
+        model.stackFilters(new RoleMatchesKeywordsPredicate(Collections.singletonList("client")));
         Person clientInList = model.getFilteredPersonList().get(0);
         assertCommandFailure(new AddCommand(clientInList), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
     public void execute_duplicateEmployee_throwsCommandException() {
-        model.stackFilters(new RoleContainsKeywordsPredicate("employee"));
+        model.stackFilters(new RoleMatchesKeywordsPredicate(Collections.singletonList("employee")));
         Person employeeInList = model.getFilteredPersonList().get(0);
         assertCommandFailure(new AddCommand(employeeInList), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
     public void execute_duplicateSupplier_throwsCommandException() {
-        model.stackFilters(new RoleContainsKeywordsPredicate("supplier"));
+        model.stackFilters(new RoleMatchesKeywordsPredicate(Collections.singletonList("supplier")));
         Person supplierInList = model.getFilteredPersonList().get(0);
         assertCommandFailure(new AddCommand(supplierInList), model, AddCommand.MESSAGE_DUPLICATE_PERSON);
     }

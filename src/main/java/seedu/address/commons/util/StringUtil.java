@@ -42,12 +42,12 @@ public class StringUtil {
 
     /**
      * Returns true if the {@code source} contains the {@code target}.
-     * Ignores case, and a partial match also returns true.
+     * Ignores case, and a partial match returns true.
      * <br>examples:<pre>
-     *       hasPartialMatchIgnoreCase("ABc def", "abc") == true
-     *       hasPartialMatchIgnoreCase("ABc def", "DEF") == true
+     *       hasPartialMatchIgnoreCase("abc", "ABc def") == true
+     *       hasPartialMatchIgnoreCase("DEF", "ABc def") == true
      *       // partial match, compared to return false in {@link #containsWordIgnoreCase(String, String)}
-     *       hasPartialMatchIgnoreCase("ABc def", "AB") == true
+     *       hasPartialMatchIgnoreCase("AB", "ABc def") == true
      *       </pre>
      *
      * @param target cannot be null, cannot be empty

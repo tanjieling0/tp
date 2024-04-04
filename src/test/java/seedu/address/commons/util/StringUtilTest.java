@@ -210,7 +210,7 @@ public class StringUtilTest {
         assertTrue(StringUtil.hasPartialMatchIgnoreCase("bB CCc@1",
                 "aaa bBb ccc@1")); // Last characters (boundary case)
         assertTrue(StringUtil.hasPartialMatchIgnoreCase("aaa",
-                "  AAA   bBb   ccc  ")); // Sentence has extra spaces
+                "  AAA   bBb   ccc  ")); // Source has extra spaces
         assertTrue(StringUtil.hasPartialMatchIgnoreCase("aaa",
                 "Aaa")); // One word in source and target (boundary case)
 
