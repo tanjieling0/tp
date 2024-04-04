@@ -21,7 +21,6 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Viewing help : `help`](#help)
   + [Adding a person: `add` ](#add)
   + [Deleting a person : `delete`](#delete)
-  + [Adding a Remark to a Person : `remark`](#remark)
   + [Listing all persons : `list`](#list)
   + [Editing a person : `edit`](#edit)
   + [Locating persons by name: `find`](#find)
@@ -146,25 +145,6 @@ Examples:
 **Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 </section>
 
-<section id="remark">
-
-## Adding or Updating a Remark to a Person : `remark`
-
-Adds or updates a remark to a person in the address book. Each person can only have one remark of any length.
-
-Format: `remark i/ID r/REMARK`
-
-* Adds a remark to the person with the specified `ID`.
-* `ID` refers to the unique identification number assigned to each person when first added to the list.
-* `ID` **must refer to a person that exist within NetConnect**.
-* You can remove a remark from a person by typing `remark i/ID` without specifying any remarks after it.
-
-Examples:
-* `remark i/2 r/John is a very good client` Adds a remark to the person with ID of 2.
-* `remark i/2` Removes the remark from the person with ID of 2.
-
-</section>
-
 <section id="list">
 
 ## Listing all persons : `list`
@@ -188,6 +168,7 @@ Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]â
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * You can remove all the personâ€™s tags by typing `t/` without specifying any tags after it.
+* You can remove a remark from a person by typing `remark i/ID` without specifying any remarks after it.
 * You cannot edit a field that is invalid to the current person type.
 
 Examples:
@@ -293,7 +274,7 @@ Format: `clear`
 
 Creates a relation between two profiles in the address book.
 
-Format: `relate [i/ID][n/NAME] [i/ID][n/NAME]`
+Format: `relate i/ID i/ID`
 
 Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
 
@@ -307,7 +288,7 @@ Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 a
 
 Shows all the relations associated to a person in the address book.
 
-Format: `showrelated [i/ID][n/NAME]`
+Format: `showrelated i/ID`
 
 </section>
 
