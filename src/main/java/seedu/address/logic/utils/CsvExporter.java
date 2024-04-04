@@ -57,7 +57,7 @@ public class CsvExporter {
      *
      * @return A list of string arrays representing the data to be exported.
      */
-    private List<String[]> createDataList() {
+    protected List<String[]> createDataList() {
         List<String[]> dataList = new ArrayList<>();
         String[] fieldNames = {"ID", "Name", "Phone", "Email", "Address", "Remark", "Tags", "Department",
             "Job Title", "Skills", "Products", "Preferences", "Terms of Service"};
@@ -86,7 +86,7 @@ public class CsvExporter {
         personStringArray[3] = person.getEmail().toString();
         personStringArray[4] = "\"" + person.getAddress().toString() + "\"";
         personStringArray[5] = (person.getRemark() != null) ? person.getRemark().toString() : "";
-        personStringArray[6] = "\"" + person.getTagsAsString() + "\"";
+        personStringArray[6] = !person.getTags().isEmpty() ? "\"" + person.getTagsAsString() + "\"" : "";
         if (person instanceof Employee) {
             Employee employee = (Employee) person;
             personStringArray[7] = employee.getDepartment().toString();
