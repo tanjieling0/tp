@@ -24,8 +24,6 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Listing all persons : `list`](#list)
   + [Editing a person : `edit`](#edit)
   + [Locating persons by name: `find`](#find)
-  + [Locating persons by remark: `findrem`](#findrem)
-  + [Locating persons by role: `findrole`](#findrole)
   + [Locating persons by phone number: `findnum`](#findnum)
   + [Clearing all entries : `clear`](#clear)
   + [Create Relations between Profiles : `relate`](#relate)
@@ -190,12 +188,14 @@ Format: `find NAME_KEYWORD [MORE_NAME_KEYWORDS]`
 * Only full words will be matched e.g. `Han` will not match `Hans` and `frien` will not match `friend`.
 * Persons matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
+* Only the full phone number is searched (i.e. no partial match). e.g. `83647382` or `8364` will not match `83641001`.
 * `find r/` will search for contacts with an empty remark. 
 * Full matches will be required for phone numbers and roles.
 
 Examples: `n/`
 * `find n/John` returns `john` and `John Doe`.
 * `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
+![result for 'find alex david'](images/findAlexDavidResult.png)
 
 Examples: `t/`
 * `find t/friend` returns all persons who have the tag `friend`.
@@ -212,43 +212,9 @@ Examples: `r/`
 * `find r/has a dog` returns all persons who have the remark `has a dog`.
 * Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
 * `find r/marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
-
-**Tip:** You can concatenate all the names you are interested in finding. E.g. If you are interested in listing Alice, Bob and Charles in your list, you can use the following command `find n/alice bob charles`.
-
-</section>
-
-<section id="findrole">
-
-## Locating persons by role: `findrole`
-
-Finds persons whose role matches the given role - Client, Supplier or Employee.
-
-Format: `findrole ROLE_KEYWORD [MORE_ROLE_KEYWORDS]`
-* The search is case-insensitive. e.g. `client` will match `Client`.
-* Only the role is searched.
-* the role must be an exact match of either `client`, `supplier` or `employee`.
-
-Examples:
-* `findrole client` returns all persons who have the role `employee`.
-
-</section>
-
-<section id="findnum">
-
-## Locating persons by phone number: `findnum`
-
-Finds persons whose phone number matches the given number.
-
-Format: `findnum CONTACT_NUMBER [CONTACT_NUMBERS]`
-
-* Only the full number is searched (i.e. no partial match). e.g. `83647382` or `8364` will not match `83641001`.
-* The search will return at most one person for each number since two people cannot share the same phone number.
-
-Examples:
-* `findnum 83647382` returns `John Doe` who has the phone number `83647382`.
 
 **Note:** NetConnect accepts phone numbers with three or more digits, to account for staff extensions in the company. This is not a bug.
+
 </section>
 
 <section id="clear">
@@ -299,7 +265,7 @@ With every change to the command input, NetConnect saves and updates the command
 ## Export Current View to CSV File : `export`
 Retrieve information on a group of profiles at once with this function! This can be useful for consolidating all the emails or contact number at once, or to share information with third parties.
 
-**To export all profiles in the address book to a CSV file:**
+**To export _all_ profiles in the address book to a CSV file:**
 
 Step 1: `list`
 
@@ -307,12 +273,11 @@ Step 2: `export`
 
 * The `list` command in the first step is to pull all profiles into the current view.
 
-**To export a specific group of profiles to a CSV file:**
+**To export a _specific_ group of profiles to a CSV file:**
 
 Step 1: `find [KEYWORD]` or any other function that filters the profiles.
 
 Step 2: `export`
-
 
 * The first step is to filter the profiles you want to export into the current view.
 
