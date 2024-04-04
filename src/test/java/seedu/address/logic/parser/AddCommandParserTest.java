@@ -25,6 +25,7 @@ import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CLIENT;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_EMPLOYEE;
+import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_SUPPLIER;
 import static seedu.address.logic.commands.CommandTestUtil.SKILLS_DESC_COMMUNICATION;
 import static seedu.address.logic.commands.CommandTestUtil.SKILLS_DESC_NEGOTIATION;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
@@ -215,24 +216,38 @@ public class AddCommandParserTest {
     @Test
     public void parse_missingRequiredFields_failure() {
         // Missing name
-        assertParseFailure(parser, "p/12345678 e/johndoe@example.com a/123, Main Street",
+        assertParseFailure(parser, " p/12345678 e/johndoe@example.com a/123, Main Street",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         // Missing phone
-        assertParseFailure(parser, "n/John Doe e/johndoe@example.com a/123, Main Street",
+        assertParseFailure(parser, " n/John Doe e/johndoe@example.com a/123, Main Street",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         // Missing email
-        assertParseFailure(parser, "n/John Doe p/12345678 a/123, Main Street",
+        assertParseFailure(parser, " n/John Doe p/12345678 a/123, Main Street",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         // Missing address
-        assertParseFailure(parser, "n/John Doe p/12345678 e/johndoe@example.com",
+        assertParseFailure(parser, " n/John Doe p/12345678 e/johndoe@example.com",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         // Missing role
-        assertParseFailure(parser, "n/John Doe p/12345678 e/johndoe@example.com a/123, Main Street r/",
+        assertParseFailure(parser, " n/John Doe p/12345678 e/johndoe@example.com a/123, Main Street r/",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
+    @Test
+    public void parse_invalidRoleSpecificFields_failure() {
+        // client with job title
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + EMAIL_DESC_BOB
+                + ROLE_DESC_CLIENT + JOB_TITLE_DESC_BOB, Messages.MESSAGE_INVALID_CLIENT_PROPERTY);
+
+        // employee with products
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + EMAIL_DESC_BOB
+                + ROLE_DESC_EMPLOYEE + PRODUCTS_DESC_LAPTOP, Messages.MESSAGE_INVALID_EMPLOYEE_PROPERTY);
+
+        // supplier with preferences
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + EMAIL_DESC_BOB
+                + ROLE_DESC_SUPPLIER + PREFERENCE_DESC_AMY, Messages.MESSAGE_INVALID_SUPPLIER_PROPERTY);
+    }
 }
