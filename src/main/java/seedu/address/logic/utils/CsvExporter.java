@@ -6,11 +6,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.model.person.Client;
 import seedu.address.model.person.Employee;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Supplier;
-import seedu.address.model.person.UniquePersonList;
 
 /**
  * A utility class for exporting data from an address book to a CSV file.
@@ -22,7 +22,7 @@ public class CsvExporter {
 
     private boolean isSuccessful = false;
 
-    private final UniquePersonList persons;
+    private final FilteredList<Person> persons;
 
     /**
      * Constructs a CSVExporter object with the specified list of persons and filename.
@@ -30,7 +30,7 @@ public class CsvExporter {
      * @param persons  The list of persons to be exported to CSV.
      * @param filename The filename for the CSV file to be created.
      */
-    public CsvExporter(UniquePersonList persons, String filename) {
+    public CsvExporter(FilteredList<Person> persons, String filename) {
         this.persons = persons;
         this.filename = filename;
     }
@@ -57,7 +57,7 @@ public class CsvExporter {
      *
      * @return A list of string arrays representing the data to be exported.
      */
-    private List<String[]> createDataList() {
+    protected List<String[]> createDataList() {
         List<String[]> dataList = new ArrayList<>();
         String[] fieldNames = {"ID", "Name", "Phone", "Email", "Address", "Remark", "Tags", "Department",
             "Job Title", "Skills", "Products", "Preferences", "Terms of Service"};
@@ -86,12 +86,12 @@ public class CsvExporter {
         personStringArray[3] = person.getEmail().toString();
         personStringArray[4] = "\"" + person.getAddress().toString() + "\"";
         personStringArray[5] = (person.getRemark() != null) ? person.getRemark().toString() : "";
-        personStringArray[6] = "\"" + person.getTagsAsString() + "\"";
+        personStringArray[6] = !person.getTags().isEmpty() ? "\"" + person.getTagsAsString() + "\"" : "";
         if (person instanceof Employee) {
             Employee employee = (Employee) person;
             personStringArray[7] = employee.getDepartment().toString();
             personStringArray[8] = employee.getJobTitle().toString();
-            personStringArray[9] = employee.getSkills().toString();
+            personStringArray[9] = employee.getSkills().toString().replace("[", "").replace("]", "");
             personStringArray[10] = "";
             personStringArray[11] = "";
             personStringArray[12] = "";

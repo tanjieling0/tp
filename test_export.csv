@@ -1,0 +1,6 @@
+ID,Name,Phone,Email,Address,Remark,Tags,Department,Job Title,Skills,Products,Preferences,Terms of Service
+1,Alice Pauline,94351253,alice@example.com,"123, Jurong West Ave 6, #08-111",some remarks,"friends",,,,Product1, Product2,Vegan,
+2,Benson Meier,98765432,johnd@example.com,"311, Clementi Ave 2, #02-25",some remarks,"owesMoney, friends",,,,Product3,Gluten-Free,
+3,Daniel Meier,87652533,cornelia@example.com,"10th street",some remarks,"friends",Marketing,Manager,Digital Marketing, Public Speaking,,,
+4,Elle Meyer,9482224,werner@example.com,"michegan ave",some remarks,,IT,Developer,Java, C++,,,
+5,Fiona Kunz,9482427,lydia@example.com,"little tokyo",some remarks,,,,,Office Supplies, Furniture,,Delivery within 2 weeks
