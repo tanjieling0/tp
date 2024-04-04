@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.ALICE;
@@ -28,12 +27,10 @@ import seedu.address.logic.commands.FindNumCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RelateCommand;
-import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.commands.ShowRelatedCommand;
 import seedu.address.logic.commands.UnrelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.Remark;
 import seedu.address.model.person.filter.NameContainsKeywordsPredicate;
 import seedu.address.model.person.filter.PhoneContainsDigitsPredicate;
 import seedu.address.testutil.ClientBuilder;
@@ -105,14 +102,6 @@ public class NetConnectParserTest {
     public void parseCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
-    }
-
-    @Test
-    public void parseCommand_remark() throws Exception {
-        final Remark remark = new Remark("Some remark.");
-        RemarkCommand command = (RemarkCommand) parser.parseCommand(RemarkCommand.COMMAND_WORD + " "
-                + PREFIX_ID + "1 " + PREFIX_REMARK + remark.value);
-        assertEquals(new RemarkCommand(ID_FIRST_PERSON, remark), command);
     }
 
     @Test
