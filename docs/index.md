@@ -22,7 +22,7 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
 ## Getting Started
 
 - **Quick Start Guide:** Jump right in with our [User Guide](UserGuide.html#quick-start) and set up NetConnect in minutes.
-- **Download Now:** Ready to get started? [Download the latest version of NetConnect here](#).
+- **Download Now:** Ready to get started? [Download the latest version of NetConnect here](https://github.com/AY2324S2-CS2103T-F12-1/tp/releases).
 
 ## Features
 
