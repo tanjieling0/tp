@@ -14,15 +14,11 @@ public class ClearCommand extends Command {
     public static final String COMMAND_WORD = "clear";
     public static final String CLEAR_SUCCESS_MESSAGE = "Address book has been cleared!";
     public static final String CLEAR_CANCELLED_MESSAGE = "Clear command cancelled";
-    private static Model model;
     private static boolean doNotSkipConfirmation = true;
-
-
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        this.model = model;
 
         if (doNotSkipConfirmation) {
             boolean isConfirmed = handleDestructiveCommands(false, true);
