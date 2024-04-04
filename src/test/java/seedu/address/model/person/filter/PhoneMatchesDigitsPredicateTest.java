@@ -13,15 +13,15 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.ClientBuilder;
 
-public class PhoneContainsDigitsPredicateTest {
+public class PhoneMatchesDigitsPredicateTest {
 
     @Test
     public void formatFilter() {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 
-        PhoneContainsDigitsPredicate firstPredicate = new PhoneContainsDigitsPredicate(firstPredicateKeywordList);
-        PhoneContainsDigitsPredicate secondPredicate = new PhoneContainsDigitsPredicate(secondPredicateKeywordList);
+        PhoneMatchesDigitsPredicate firstPredicate = new PhoneMatchesDigitsPredicate(firstPredicateKeywordList);
+        PhoneMatchesDigitsPredicate secondPredicate = new PhoneMatchesDigitsPredicate(secondPredicateKeywordList);
 
         assertEquals("p/first", firstPredicate.formatFilter());
         assertEquals("p/first p/second", secondPredicate.formatFilter());
@@ -32,14 +32,14 @@ public class PhoneContainsDigitsPredicateTest {
         List<String> firstPredicateKeywordList = Collections.singletonList("94351253");
         List<String> secondPredicateKeywordList = Arrays.asList("94351253", "98765432");
 
-        PhoneContainsDigitsPredicate firstPredicate = new PhoneContainsDigitsPredicate(firstPredicateKeywordList);
-        PhoneContainsDigitsPredicate secondPredicate = new PhoneContainsDigitsPredicate(secondPredicateKeywordList);
+        PhoneMatchesDigitsPredicate firstPredicate = new PhoneMatchesDigitsPredicate(firstPredicateKeywordList);
+        PhoneMatchesDigitsPredicate secondPredicate = new PhoneMatchesDigitsPredicate(secondPredicateKeywordList);
 
         // same object -> returns true
         assertEquals(firstPredicate, firstPredicate);
 
         // same values -> returns true
-        PhoneContainsDigitsPredicate firstPredicateCopy = new PhoneContainsDigitsPredicate(firstPredicateKeywordList);
+        PhoneMatchesDigitsPredicate firstPredicateCopy = new PhoneMatchesDigitsPredicate(firstPredicateKeywordList);
         assertEquals(firstPredicate, firstPredicateCopy);
 
         // different types -> returns false
@@ -56,25 +56,25 @@ public class PhoneContainsDigitsPredicateTest {
     }
 
     @Test
-    public void test_numberContainsDigits_returnsTrue() {
+    public void test_numberMatchesDigits_returnsTrue() {
         // One keyword
-        PhoneContainsDigitsPredicate predicate =
-                new PhoneContainsDigitsPredicate(Collections.singletonList("94351253"));
+        PhoneMatchesDigitsPredicate predicate =
+                new PhoneMatchesDigitsPredicate(Collections.singletonList("94351253"));
         assertTrue(predicate.test(new ClientBuilder().withPhone("94351253").build()));
     }
 
     @Test
-    public void test_phoneDoesNotContainDigits_returnsFalse() {
+    public void test_phoneDoesNotMatchDigits_returnsFalse() {
         // Zero keywords
-        PhoneContainsDigitsPredicate predicate = new PhoneContainsDigitsPredicate(Collections.emptyList());
+        PhoneMatchesDigitsPredicate predicate = new PhoneMatchesDigitsPredicate(Collections.emptyList());
         assertFalse(predicate.test(new ClientBuilder().withPhone("94351253").build()));
 
         // Non-matching keyword
-        predicate = new PhoneContainsDigitsPredicate(List.of("95352563"));
+        predicate = new PhoneMatchesDigitsPredicate(List.of("95352563"));
         assertFalse(predicate.test(new ClientBuilder().withPhone("98765432").build()));
 
         // Keywords match name, email and address, but does not match phone
-        predicate = new PhoneContainsDigitsPredicate(Arrays.asList("Alice", "alice@email.com", "Main", "Street"));
+        predicate = new PhoneMatchesDigitsPredicate(Arrays.asList("Alice", "alice@email.com", "Main", "Street"));
         assertFalse(predicate.test(new ClientBuilder().withName("Alice").withPhone("12345")
                 .withEmail("alice@email.com").withAddress("Main Street").build()));
     }
@@ -82,9 +82,9 @@ public class PhoneContainsDigitsPredicateTest {
     @Test
     public void toStringMethod() {
         List<String> phones = List.of("94351253", "98765432");
-        PhoneContainsDigitsPredicate predicate = new PhoneContainsDigitsPredicate(phones);
+        PhoneMatchesDigitsPredicate predicate = new PhoneMatchesDigitsPredicate(phones);
 
-        String expected = PhoneContainsDigitsPredicate.class.getCanonicalName() + "{phones=" + phones + "}";
+        String expected = PhoneMatchesDigitsPredicate.class.getCanonicalName() + "{phones=" + phones + "}";
         assertEquals(expected, predicate.toString());
     }
 }

@@ -1,8 +1,6 @@
 package seedu.address.ui;
 
-import static seedu.address.storage.StateStorage.getFilePath;
-import static seedu.address.storage.StateStorage.getLastCommand;
-
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -15,7 +13,7 @@ import seedu.address.commons.exceptions.DataLoadingException;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.storage.StateStorage;
+import seedu.address.storage.TextStateStorage;
 
 /**
  * The UI component that is responsible for receiving user command inputs.
@@ -26,7 +24,7 @@ public class CommandBox extends UiPart<Region> {
     private static final String FXML = "CommandBox.fxml";
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
     private final CommandExecutor commandExecutor;
-
+    private final TextStateStorage stateStorage = new TextStateStorage();
     @FXML
     private TextField commandTextField;
 
@@ -38,17 +36,21 @@ public class CommandBox extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
 
         try {
-            commandTextField.setText(getLastCommand());
+            commandTextField.setText(stateStorage.readState());
             commandTextField.end();
         } catch (DataLoadingException e) {
-            logger.warning("State file at " + getFilePath() + " could not be loaded."
+            logger.warning("State file at " + stateStorage.getStateStorageFilePath() + " could not be loaded."
                     + " Starting with an empty command box.");
         }
 
 
         commandTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             setStyleToDefault();
-            StateStorage.writeState(newValue);
+            try {
+                stateStorage.saveState(newValue);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

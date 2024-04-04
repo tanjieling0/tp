@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.person.exceptions.DuplicateIdException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.IdModifiedException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
@@ -101,6 +102,7 @@ public class UniquePersonList implements Iterable<Person> {
      * Replaces the person {@code target} in the list with {@code editedPerson}.
      * {@code target} must exist in the list.
      * The person identity of {@code editedPerson} must not be the same as another existing person in the list.
+     * {@code target} and {@code editedPerson} must have the same id.
      */
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
@@ -114,8 +116,8 @@ public class UniquePersonList implements Iterable<Person> {
             throw new DuplicatePersonException();
         }
 
-        if (!target.hasSameId(editedPerson) && hasId(editedPerson.getId())) {
-            throw new DuplicateIdException();
+        if (!target.getId().equals(editedPerson.getId())) {
+            throw new IdModifiedException();
         }
 
         internalList.set(index, editedPerson);

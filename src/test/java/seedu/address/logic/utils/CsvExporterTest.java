@@ -6,31 +6,71 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import seedu.address.model.person.Client;
-import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.person.Person;
+import seedu.address.testutil.ClientBuilder;
+import seedu.address.testutil.EmployeeBuilder;
+import seedu.address.testutil.SupplierBuilder;
 import seedu.address.testutil.TypicalPersons;
-
 
 public class CsvExporterTest {
 
     private static final String TEST_FILENAME = "test_export.csv";
 
     private CsvExporter csvExporter;
-    private UniquePersonList persons;
+    private FilteredList<Person> persons;
 
     @BeforeEach
     public void setUp() {
-        UniquePersonList persons = new UniquePersonList();
-        persons.setPersons(Arrays.asList(
+        List<Person> personList = Arrays.asList(
                 TypicalPersons.ALICE, TypicalPersons.BENSON,
-                TypicalPersons.DANIEL, TypicalPersons.ELLE, TypicalPersons.FIONA
-        ));
-        this.persons = persons;
+                TypicalPersons.DANIEL, TypicalPersons.ELLE, TypicalPersons.FIONA);
+
+        ObservableList<Person> sourceList = FXCollections.observableArrayList(personList);
+
+        persons = new FilteredList<>(sourceList);
+
         csvExporter = new CsvExporter(persons, TEST_FILENAME);
+    }
+
+    @Test
+    public void createDataList_correctlyConstructedList() {
+        List<Person> persons = Arrays.asList(
+                new EmployeeBuilder().withId(1).withName("John Doe").withPhone("1234567890")
+                        .withEmail("john@example.com").withAddress("123 Main St").withDepartment("HR")
+                        .withJobTitle("Manager").withSkills("Java, SQL").build(),
+                new ClientBuilder().withId(2).withName("Jane Smith").withPhone("9876543210")
+                        .withEmail("jane@example.com")
+                        .withAddress("456 Elm St").withProducts("Product A").withPreferences("Likes discounts")
+                        .build(),
+                new SupplierBuilder().withId(3).withName("Acme Inc").withPhone("5555555555").withEmail("info@acme.com")
+                        .withAddress("789 Oak St").withProducts("Product X").withTermsOfService("30 days").build()
+        );
+        FilteredList<Person> filteredList = new FilteredList<>(FXCollections.observableArrayList(persons));
+        CsvExporter csvExporter = new CsvExporter(filteredList, "test.csv");
+
+        List<String[]> dataList = csvExporter.createDataList();
+
+        assertTrue(dataList != null);
+        assertTrue(dataList.size() == 4);
+
+        assertArrayEquals(new String[]{"ID", "Name", "Phone", "Email", "Address", "Remark", "Tags", "Department",
+            "Job Title", "Skills", "Products", "Preferences", "Terms of Service"}, dataList.get(0));
+
+        assertArrayEquals(new String[]{"1", "John Doe", "1234567890", "john@example.com", "\"123 Main St\"",
+            "some remarks", "", "HR", "Manager", "Java, SQL", "", "", ""}, dataList.get(1));
+        assertArrayEquals(new String[]{"2", "Jane Smith", "9876543210", "jane@example.com", "\"456 Elm St\"",
+            "some remarks", "", "", "", "", "Product A", "Likes discounts", ""}, dataList.get(2));
+        assertArrayEquals(new String[]{"3", "Acme Inc", "5555555555", "info@acme.com", "\"789 Oak St\"",
+            "some remarks", "", "", "", "", "Product X", "", "30 days"}, dataList.get(3));
     }
 
     @Test
@@ -69,5 +109,45 @@ public class CsvExporterTest {
             ""
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(person));
+    }
+
+    @Test
+    public void getIsSuccessful_afterSuccessfulExecution() {
+        csvExporter.execute();
+        assertTrue(csvExporter.getIsSuccessful());
+    }
+
+    @Test
+    public void getIsSuccessful_afterFailedExecution() {
+        csvExporter = new CsvExporter(persons, "");
+        csvExporter.execute();
+        assertFalse(csvExporter.getIsSuccessful());
+    }
+
+    @Test
+    public void convertPersonToStringArray_employee() {
+        String[] expectedArray = new String[]{
+            "3", "Daniel Meier", "87652533", "cornelia@example.com", "\"10th street\"", "some remarks",
+            "\"friends\"", "Marketing", "Manager", "Digital Marketing, Public Speaking", "", "", ""
+        };
+        assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.DANIEL));
+    }
+
+    @Test
+    public void convertPersonToStringArray_client() {
+        String[] expectedArray = new String[]{
+            "1", "Alice Pauline", "94351253", "alice@example.com", "\"123, Jurong West Ave 6, #08-111\"",
+            "some remarks", "\"friends\"", "", "", "", "Product1, Product2", "Vegan", ""
+        };
+        assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.ALICE));
+    }
+
+    @Test
+    public void convertPersonToStringArray_supplier() {
+        String[] expectedArray = new String[]{
+            "5", "Fiona Kunz", "9482427", "lydia@example.com", "\"little tokyo\"", "some remarks", "", "", "",
+            "", "Office Supplies, Furniture", "", "Delivery within 2 weeks"
+        };
+        assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.FIONA));
     }
 }

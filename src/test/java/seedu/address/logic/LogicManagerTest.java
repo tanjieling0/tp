@@ -3,12 +3,16 @@ package seedu.address.logic;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_ID;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.DeleteCommand.cleanUpAfterTesting;
+import static seedu.address.logic.commands.DeleteCommand.setUpForTesting;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -23,7 +27,9 @@ import seedu.address.model.ReadOnlyNetConnect;
 import seedu.address.model.UserPrefs;
 import seedu.address.storage.JsonNetConnectStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
+import seedu.address.storage.StateStorage;
 import seedu.address.storage.StorageManager;
+import seedu.address.storage.TextStateStorage;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
@@ -35,12 +41,23 @@ public class LogicManagerTest {
     private final Model model = new ModelManager();
     private Logic logic;
 
+    @BeforeAll
+    public static void setUpDelete() {
+        setUpForTesting();
+    }
+
+    @AfterAll
+    public static void close() {
+        cleanUpAfterTesting();
+    }
+
     @BeforeEach
     public void setUp() {
         JsonNetConnectStorage netConnectStorage = new JsonNetConnectStorage(
                 temporaryFolder.resolve("netConnect.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(netConnectStorage, userPrefsStorage);
+        StateStorage stateStorage = new TextStateStorage();
+        StorageManager storage = new StorageManager(netConnectStorage, userPrefsStorage, stateStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -89,7 +106,7 @@ public class LogicManagerTest {
      * @see #assertCommandFailure(String, Class, String, Model)
      */
     private void assertCommandSuccess(String inputCommand, String expectedMessage,
-            Model expectedModel) throws CommandException, ParseException {
+                                      Model expectedModel) throws CommandException, ParseException {
         CommandResult result = logic.execute(inputCommand);
         assertEquals(expectedMessage, result.getFeedbackToUser());
         assertEquals(expectedModel, model);
@@ -137,7 +154,7 @@ public class LogicManagerTest {
      * @see #assertCommandSuccess(String, String, Model)
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
-            String expectedMessage, Model expectedModel) {
+                                      String expectedMessage, Model expectedModel) {
         assertThrows(expectedException, expectedMessage, () -> logic.execute(inputCommand));
         assertEquals(expectedModel, model);
     }
@@ -165,8 +182,8 @@ public class LogicManagerTest {
 
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(
                 temporaryFolder.resolve("ExceptionUserPrefs.json"));
-
-        StorageManager storage = new StorageManager(netConnectStorage, userPrefsStorage);
+        StateStorage stateStorage = new TextStateStorage();
+        StorageManager storage = new StorageManager(netConnectStorage, userPrefsStorage, stateStorage);
 
         logic = new LogicManager(model, storage);
 

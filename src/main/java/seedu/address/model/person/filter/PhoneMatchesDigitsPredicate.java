@@ -3,17 +3,16 @@ package seedu.address.model.person.filter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Person;
 
 /**
  * Tests that a {@code Person}'s {@code Phone} matches any of the keywords given.
  */
-public class PhoneContainsDigitsPredicate extends NetConnectPredicate<Person> {
+public class PhoneMatchesDigitsPredicate extends NetConnectPredicate<Person> {
     private final List<String> phones;
 
-    public PhoneContainsDigitsPredicate(List<String> phones) {
+    public PhoneMatchesDigitsPredicate(List<String> phones) {
         this.phones = phones;
     }
 
@@ -24,8 +23,7 @@ public class PhoneContainsDigitsPredicate extends NetConnectPredicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        return phones.stream()
-                .anyMatch(phone -> StringUtil.containsWordIgnoreCase(person.getPhone().value, phone));
+        return phones.stream().anyMatch(person.getPhone().value::equals);
     }
 
     @Override
@@ -35,11 +33,11 @@ public class PhoneContainsDigitsPredicate extends NetConnectPredicate<Person> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof PhoneContainsDigitsPredicate)) {
+        if (!(other instanceof PhoneMatchesDigitsPredicate)) {
             return false;
         }
 
-        PhoneContainsDigitsPredicate otherNameContainsKeywordsPredicate = (PhoneContainsDigitsPredicate) other;
+        PhoneMatchesDigitsPredicate otherNameContainsKeywordsPredicate = (PhoneMatchesDigitsPredicate) other;
         return phones.equals(otherNameContainsKeywordsPredicate.phones);
     }
 
