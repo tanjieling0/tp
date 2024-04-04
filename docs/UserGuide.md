@@ -177,7 +177,6 @@ Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]â
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
 * You can remove all the personâ€™s tags by typing `t/` without specifying any tags after it.
-* You can remove a remark from a person by typing `remark i/ID` without specifying any remarks after it.
 * You cannot edit a field that is invalid to the current person type.
 
 Examples:
@@ -196,8 +195,9 @@ Format: `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`.
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only full words will be matched e.g. `Han` will not match `Hans` and `frien` will not match `friend`. Similarly, only the full phone number is searched (i.e. no partial match). e.g. `83647382` or `8364` will not match `83641001`.
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`.
+* Only partial matches are allowed for names e.g. `Ha` will match `Hans`. 
+* For all other fields, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`.
+* Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`.
 * `find r/` will search for contacts with an empty remark. 
 * Full matches will be required for phone numbers and roles.
 
