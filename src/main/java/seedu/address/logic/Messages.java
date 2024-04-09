@@ -17,13 +17,14 @@ public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
+    public static final String MESSAGE_RELATE_SUCCESS = "Related the following persons with ids %1$s and %2$s!";
     public static final String MESSAGE_CANNOT_RELATE_ITSELF = "Cannot relate a person to his/herself.";
     public static final String MESSAGE_RELATION_EXISTS = "This relation already exists.";
     public static final String MESSAGE_RELATION_NOT_EXISTS = "This relation does not exist.";
     public static final String MESSAGE_CANNOT_UNRELATE_ITSELF = "Cannot unrelate a person from his/herself.";
-    public static final String MESSAGE_UNRELATION_SUCCESS = "Unrelated the following persons: %1$s";
-    public static final String MESSAGE_INVALID_PERSON_ID = "There is no person with id %1$d";
-    public static final String MESSAGE_INVALID_PERSON_NAME = "There is no person with name %1$s";
+    public static final String MESSAGE_UNRELATION_SUCCESS = "Unrelated the following persons with ids %1$s and %2$s!";
+    public static final String MESSAGE_INVALID_PERSON_ID = "There is no person with id %1$d.";
+    public static final String MESSAGE_INVALID_PERSON_NAME = "There is no person with name %1$s.";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
             "Multiple values specified for the following single-valued field(s): ";

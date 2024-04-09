@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -18,10 +19,10 @@ public class RelateCommand extends Command {
     public static final String COMMAND_WORD = "relate";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": relates strictly two existing persons in NetConnect "
-            + "using either their unique id, OR, name.\n"
-            + "The unique IDs or names provided must exist.\n"
+            + "using their unique id.\n"
+            + "Both unique IDs must exist.\n"
             + "Parameters: i/ID_1 i/ID_2\n"
-            + "Example: " + COMMAND_WORD + " i/4 i/12";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_ID + "4 " + PREFIX_ID + "12";
 
     private final IdContainsDigitsPredicate predicate;
 
@@ -60,8 +61,8 @@ public class RelateCommand extends Command {
             model.addRelatedIdTuple(tuple);
         }
 
-        return new CommandResult(
-            String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+        return new CommandResult(String.format(Messages.MESSAGE_RELATE_SUCCESS,
+                tuple.getFirstPersonId(), tuple.getSecondPersonId()));
     }
 
     @Override

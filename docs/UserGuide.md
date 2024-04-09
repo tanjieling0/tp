@@ -251,8 +251,6 @@ Format: `relate i/ID i/ID`
 
 Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
 
-**Info:** The relation is stored in a field within Person object, which contains the IDs of any suppliers or clients that they are connected to.
-
 </section>
 
 <section id="showrelated">
@@ -262,6 +260,8 @@ Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 a
 Shows all the relations associated to a person in the address book.
 
 Format: `showrelated i/ID`
+
+Example: `showrelated i/1` shows all relations between the profile with ID 1 and all other contacts.
 
 </section>
 

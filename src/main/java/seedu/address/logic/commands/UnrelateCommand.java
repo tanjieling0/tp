@@ -62,7 +62,8 @@ public class UnrelateCommand extends Command {
             model.removeRelatedIdTuple(tuple);
         }
 
-        return new CommandResult(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, tuple));
+        return new CommandResult(String.format(Messages.MESSAGE_UNRELATION_SUCCESS,
+                tuple.getFirstPersonId(), tuple.getSecondPersonId()));
     }
 
     @Override
