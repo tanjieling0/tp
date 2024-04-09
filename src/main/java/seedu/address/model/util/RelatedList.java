@@ -151,7 +151,8 @@ public class RelatedList implements Iterable<IdTuple> {
      */
     public void removeId(Id id) {
         requireNonNull(id);
-        relatedPersons.removeIf(idTuple -> idTuple.getFirstPersonId().equals(id) || idTuple.getSecondPersonId().equals(id));
+        relatedPersons.removeIf(idTuple ->
+                idTuple.getFirstPersonId().equals(id) || idTuple.getSecondPersonId().equals(id));
     }
 
     public ObservableList<IdTuple> asUnmodifiableObservableList() {

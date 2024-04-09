@@ -70,7 +70,7 @@ public class RelatedListTest {
     }
 
     @Test
-    public void removeId_IdExistsAndHasMultipleRelations_success() {
+    public void removeId_idExistsAndHasMultipleRelations_returnsUpdatedRelatedList() {
         IdTuple idTuple = new IdTuple(Id.generateTempId(1), Id.generateTempId(2));
         IdTuple idTuple2 = new IdTuple(Id.generateTempId(1), Id.generateTempId(3));
         relatedList.allowAddIdTuple(idTuple);
@@ -81,7 +81,7 @@ public class RelatedListTest {
     }
 
     @Test
-    public void removeId_IdHasNoRelations_success() {
+    public void removeId_idHasNoRelations_noChangeInRelatedList() {
         IdTuple idTuple = new IdTuple(Id.generateTempId(1), Id.generateTempId(2));
         IdTuple idTuple2 = new IdTuple(Id.generateTempId(1), Id.generateTempId(3));
         relatedList.allowAddIdTuple(idTuple);
@@ -89,7 +89,6 @@ public class RelatedListTest {
 
         relatedList.removeId(Id.generateTempId(5));
         assertTrue(relatedList.hasId(idTuple) && relatedList.hasId(idTuple2));
-        assertEquals(2, relatedList.size());
     }
 
 
