@@ -42,7 +42,7 @@ public class RelateCommandTest {
         RelateCommand command = new RelateCommand(predicate);
         CommandResult commandResult = command.execute(model);
 
-        assertEquals(String.format(Messages.MESSAGE_RELATE_SUCCESS, ID_FIRST_PERSON.value, ID_SECOND_PERSON.value),
+        assertEquals(String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, 2),
                 commandResult.getFeedbackToUser());
         assertTrue(model.hasRelatedIdTuple(new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON)));
     }

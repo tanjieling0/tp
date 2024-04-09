@@ -38,7 +38,7 @@ public class UnrelateCommandTest {
         UnrelateCommand command = new UnrelateCommand(predicate);
         CommandResult commandResult = command.execute(model);
 
-        assertEquals(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, ID_FIRST_PERSON, ID_SECOND_PERSON),
+        assertEquals(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON)),
                 commandResult.getFeedbackToUser());
         assertFalse(model.hasRelatedIdTuple(new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON)));
     }
