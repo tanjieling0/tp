@@ -143,8 +143,7 @@ Examples (Supplier):
 **Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
 
 **Constraints:**
-Constraints for each field
-Here are the constraints for each field in the application:
+Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long.
@@ -212,6 +211,22 @@ Format: `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [role/ROLE] [
 Examples:
 * `edit i/1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the person with ID of 1 to be `91234567` and `johndoe@example.com` respectively.
 * `edit i/2 n/Betsy Crower t/` Edits the name of the person with ID of 2 to be `Betsy Crower` and clears all existing tags.
+
+**Constraints:**
+Constraints for each field. Here are the constraints for each field in the application:
+
+* `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
+* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long.
+* `EMAIL`: Emails should be of the format `local-part@domain`
+* `ADDRESS`: Addresses can take any format, and it should not be blank.
+* `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
+* `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
+* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces, and it should not be blank.
+* `JOB`: Job titles should only contain alphanumeric characters and spaces, and it should not be blank.
+* `SKILLS`: Skills should only contain alphanumeric characters and spaces, and it should not be blank.
+* `PREFERENCES`: Preferences can take any format, and it should not be blank.
+* `TERMS OF SERVICE`: Terms of service can take any format, and it should not be blank.
+* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces, and it should not be blank.
 
 </section>
 
