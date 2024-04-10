@@ -115,8 +115,8 @@ public class AddCommandParser implements Parser<AddCommand> {
             Optional<List<String>> optionalSkills = Optional.ofNullable(argMultimap.getAllValues(PREFIX_SKILLS));
             Department department = optionalDepartment
                     .map(Department::new)
-                    .orElseGet(() -> new Department("-"));
-            JobTitle jobTitle = optionalJobTitle.map(JobTitle::new).orElseGet(() -> new JobTitle("-"));
+                    .orElseGet(() -> new Department(" "));
+            JobTitle jobTitle = optionalJobTitle.map(JobTitle::new).orElseGet(() -> new JobTitle(" "));
             Skills skills = ParserUtil.parseSkills(optionalSkills.orElse(Collections.emptyList()));
             return new Employee(name, phone, email, address, remark, tagList, department, jobTitle, skills);
         case "supplier":
@@ -131,7 +131,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     .orElse(Collections.emptyList()));
             TermsOfService termsOfService = optionalTermsOfService
                     .map(TermsOfService::new)
-                    .orElseGet(() -> new TermsOfService("-"));
+                    .orElseGet(() -> new TermsOfService(" "));
             return new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
         default:
             throw new ParseException("Invalid role specified. Must be one of: client, employee, supplier.");

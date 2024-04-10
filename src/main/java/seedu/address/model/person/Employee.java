@@ -66,6 +66,15 @@ public class Employee extends Person {
         return this.skills;
     }
 
+    /**
+     * Returns the skills of the employee.
+     *
+     * @return The skills of the employee as a string.
+     */
+    public String getSkillsAsString() {
+        return String.join(", ", skills.getSkills());
+    }
+
     public String getRole() {
         return "Employee";
     }

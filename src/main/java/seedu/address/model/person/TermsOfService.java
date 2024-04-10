@@ -14,7 +14,7 @@ public class TermsOfService {
      * Represents the terms of service of an organization.
      */
     public TermsOfService() {
-        terms = "-";
+        terms = "";
     }
 
     /**

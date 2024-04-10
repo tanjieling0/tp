@@ -19,7 +19,7 @@ public class JobTitle {
      * Represents a job title in an organization.
      */
     public JobTitle() {
-        title = "-";
+        title = "";
     }
 
     /**

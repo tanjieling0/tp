@@ -46,6 +46,15 @@ public class Supplier extends Person {
     }
 
     /**
+     * Returns the products preferred by the client.
+     *
+     * @return The products preferred by the client as a String.
+     */
+    public String getProductsAsString() {
+        return String.join(", ", products.getProducts());
+    }
+
+    /**
      * Returns the terms of service provided by the supplier.
      *
      * @return The terms of service provided by the supplier.

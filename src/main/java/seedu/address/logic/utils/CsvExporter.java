@@ -1,5 +1,6 @@
 package seedu.address.logic.utils;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -41,7 +42,7 @@ public class CsvExporter {
      */
     public void execute() {
         List<String[]> data = createDataList();
-        try (Writer writer = new FileWriter(this.filename)) {
+        try (Writer writer = new FileWriter(getJarDirectory() + File.separator + filename)) {
             for (String[] row : data) {
                 writer.write(String.join(",", row) + System.lineSeparator());
             }
@@ -86,12 +87,12 @@ public class CsvExporter {
         personStringArray[3] = person.getEmail().toString();
         personStringArray[4] = "\"" + person.getAddress().toString() + "\"";
         personStringArray[5] = (person.getRemark() != null) ? person.getRemark().toString() : "";
-        personStringArray[6] = !person.getTags().isEmpty() ? "\"" + person.getTagsAsString() + "\"" : "";
+        personStringArray[6] = "\"" + person.getTagsAsString() + "\"";
         if (person instanceof Employee) {
             Employee employee = (Employee) person;
             personStringArray[7] = employee.getDepartment().toString();
             personStringArray[8] = employee.getJobTitle().toString();
-            personStringArray[9] = employee.getSkills().toString().replace("[", "").replace("]", "");
+            personStringArray[9] = "\"" + employee.getSkillsAsString() + "\"";
             personStringArray[10] = "";
             personStringArray[11] = "";
             personStringArray[12] = "";
@@ -100,7 +101,7 @@ public class CsvExporter {
             personStringArray[7] = "";
             personStringArray[8] = "";
             personStringArray[9] = "";
-            personStringArray[10] = client.getProducts().toString();
+            personStringArray[10] = "\"" + client.getProductsAsString() + "\"";
             personStringArray[11] = client.getPreferences();
             personStringArray[12] = "";
         } else if (person instanceof Supplier) {
@@ -108,7 +109,7 @@ public class CsvExporter {
             personStringArray[7] = "";
             personStringArray[8] = "";
             personStringArray[9] = "";
-            personStringArray[10] = supplier.getProducts().toString();
+            personStringArray[10] = "\"" + supplier.getProductsAsString() + "\"";
             personStringArray[11] = "";
             personStringArray[12] = supplier.getTermsOfService().toString();
         }
@@ -118,5 +119,14 @@ public class CsvExporter {
 
     public boolean getIsSuccessful() {
         return isSuccessful;
+    }
+
+    private String getJarDirectory() {
+        try {
+            return new File(CsvExporter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

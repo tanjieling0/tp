@@ -13,7 +13,7 @@ public class TermsOfServiceTest {
     public void constructor_noArgs_success() {
         TermsOfService termsOfService = new TermsOfService();
         assertNotNull(termsOfService);
-        assertEquals("-", termsOfService.getTerms());
+        assertEquals(" ", termsOfService.getTerms());
     }
 
     @Test

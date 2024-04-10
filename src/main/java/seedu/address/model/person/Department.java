@@ -24,7 +24,7 @@ public class Department {
      * Represents a department in an organization.
      */
     public Department() {
-        departmentName = "-";
+        departmentName = "";
     }
 
     /**
