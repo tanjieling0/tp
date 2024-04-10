@@ -125,7 +125,6 @@ public class CsvExporter {
         try {
             return new File(CsvExporter.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
