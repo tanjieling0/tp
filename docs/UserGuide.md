@@ -146,7 +146,7 @@ Examples (Supplier):
 Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long.
+* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be 8 digits long.
 * `EMAIL`: Emails should be of the format `local-part@domain`
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
@@ -216,7 +216,7 @@ Examples:
 Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long.
+* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be 8 digits long.
 * `EMAIL`: Emails should be of the format `local-part@domain`
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
