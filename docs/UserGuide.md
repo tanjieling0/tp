@@ -29,7 +29,6 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Show Relations Associated to a Person : `showrelated`](#showrelated)
   + [Open on Last State](#open-on-last-state)
   + [Export Current View to CSV File : `export`](#export)
-  + [Never Miss a Birthday!](#birthday)
   + [Exiting the program : `exit`](#exit-program)
   + [Saving the data](#saving-the-data)
   + [Editing the data file](#editing-the-data-file)
@@ -109,7 +108,7 @@ Format: `help`
 
 Adds a person (Client, Supplier or Employee) to the address book. Note that each role (eg. Client, Supplier, Employee) has its own specific set of fields that can be added.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [dob/yyyy-mm-dd][t/TAG]…​` (other fields specific to the role)
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role)
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
@@ -292,13 +291,6 @@ Step 1: `find [KEYWORD]` or any other function that filters the profiles.
 Step 2: `export`
 
 * The first step is to filter the profiles you want to export into the current view.
-
-</section>
-
-<section id="birthday">
-
-## Never Miss a Birthday!
-Celebrate your employees' birthdays to show that you care. NetConnect will remind you of the birthdays of your employees, so you never have to miss a birthday again!
 
 </section>
 
