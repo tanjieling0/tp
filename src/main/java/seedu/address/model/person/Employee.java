@@ -72,7 +72,11 @@ public class Employee extends Person {
      * @return The skills of the employee as a string.
      */
     public String getSkillsAsString() {
-        return String.join(", ", skills.getSkills());
+        String result = String.join(", ", skills.getSkills());
+        if (result.isEmpty()) {
+            return result;
+        }
+        return "\"" + result + "\"";
     }
 
     public String getRole() {

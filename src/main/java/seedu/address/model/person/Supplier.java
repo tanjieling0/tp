@@ -51,7 +51,11 @@ public class Supplier extends Person {
      * @return The products preferred by the client as a String.
      */
     public String getProductsAsString() {
-        return String.join(", ", products.getProducts());
+        String result = String.join(", ", products.getProducts());
+        if (result.isEmpty()) {
+            return result;
+        }
+        return "\"" + result + "\"";
     }
 
     /**

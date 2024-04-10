@@ -87,12 +87,12 @@ public class CsvExporter {
         personStringArray[3] = person.getEmail().toString();
         personStringArray[4] = "\"" + person.getAddress().toString() + "\"";
         personStringArray[5] = (person.getRemark() != null) ? person.getRemark().toString() : "";
-        personStringArray[6] = "\"" + person.getTagsAsString() + "\"";
+        personStringArray[6] = person.getTagsAsString();
         if (person instanceof Employee) {
             Employee employee = (Employee) person;
             personStringArray[7] = employee.getDepartment().toString();
             personStringArray[8] = employee.getJobTitle().toString();
-            personStringArray[9] = "\"" + employee.getSkillsAsString() + "\"";
+            personStringArray[9] = employee.getSkillsAsString();
             personStringArray[10] = "";
             personStringArray[11] = "";
             personStringArray[12] = "";
@@ -101,7 +101,7 @@ public class CsvExporter {
             personStringArray[7] = "";
             personStringArray[8] = "";
             personStringArray[9] = "";
-            personStringArray[10] = "\"" + client.getProductsAsString() + "\"";
+            personStringArray[10] = client.getProductsAsString();
             personStringArray[11] = client.getPreferences();
             personStringArray[12] = "";
         } else if (person instanceof Supplier) {
@@ -109,7 +109,7 @@ public class CsvExporter {
             personStringArray[7] = "";
             personStringArray[8] = "";
             personStringArray[9] = "";
-            personStringArray[10] = "\"" + supplier.getProductsAsString() + "\"";
+            personStringArray[10] = supplier.getProductsAsString();
             personStringArray[11] = "";
             personStringArray[12] = supplier.getTermsOfService().toString();
         }
