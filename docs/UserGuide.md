@@ -109,7 +109,7 @@ Format: `help`
 
 Adds a person (Client, Supplier or Employee) to the address book. Note that each role (eg. Client, Supplier, Employee) has its own specific set of fields that can be added.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [dob/yyyy-mm-dd][t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [dob/yyyy-mm-dd][t/TAG]…​` (other fields specific to the role)
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
@@ -169,7 +169,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​` (other fields specific to the role)
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
