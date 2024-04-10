@@ -117,7 +117,7 @@ public class RemarkContainsKeywordsPredicateTest {
         // Keywords match name, phone, email and address, but does not match remark
         predicate = new RemarkContainsKeywordsPredicate(
                 Arrays.asList("Alice", "alice@email.com", "Main", "Street", "12345"));
-        assertFalse(predicate.test(new SupplierBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new SupplierBuilder().withName("Alice").withPhone("12345678")
                 .withEmail("alice@email.com").withAddress("Main Street").withRemark("biscuit").build()));
 
         // Non-empty remark with empty keyword
