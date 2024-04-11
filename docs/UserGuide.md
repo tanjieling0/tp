@@ -26,6 +26,7 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Locating persons by name: `find`](#find)
   + [Clearing all entries : `clear`](#clear)
   + [Create Relations between Profiles : `relate`](#relate)
+  + [Remove Relations between Profiles : `unrelate`](#unrelate)
   + [Show Relations Associated to a Person : `showrelated`](#showrelated)
   + [Open on Last State](#open-on-last-state)
   + [Export Current View to CSV File : `export`](#export)
@@ -255,6 +256,18 @@ Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 a
 
 </section>
 
+<section id="unrelate">
+
+## Remove Relations between Profiles : `unrelate`
+
+Removes a relation between two profiles in the address book.
+
+Format: `unrelate i/ID i/ID`
+
+Example: `unrelate i/1 i/2` removes a relation between the profiles with ID of 1 and 2.
+
+</section>
+
 <section id="showrelated">
 
 ## Show Relations Associated to a Person : `showrelated`
@@ -330,7 +343,6 @@ NetConnect data are saved automatically as a JSON file `[JAR file location]/data
 If your changes to the data file makes its format invalid, NetConnect will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the NetConnect to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
-</section>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -372,6 +384,7 @@ Furthermore, certain edits can cause the NetConnect to behave in unexpected ways
 | **Edit**                 | `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG]…​`                                                                        | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
 | **Find**                 | `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`                                                                                                 | `find role/employee` , followed by `find n/Bob` to stack filters                                                                                                                                                           |
 | **Relate Profiles**      | `relate i/ID i/ID`                                                                                                                                       | `relate i/1 i/2`                                                                                                                                                                                                           |
+| **Unrelate Profiles**    | `unrelate i/ID i/ID`                                                                                                                                     | `relate i/1 i/2`                                                                                                                                                                                                           |
 | **Show related Profile** | `showrelated i/ID`                                                                                                                                       | `showrelated i/2`                                                                                                                                                                                                          |
 | **Export**               | `export [filename]`                                                                                                                                      | `export ClientInfo.csv`                                                                                                                                                                                                    |
 | **Clear**                | `clear`                                                                                                                                                  | `clear`                                                                                                                                                                                                                    |
