@@ -16,26 +16,28 @@ If you relate to this problem we identified, then NetConnect might be just right
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-* [Quick start](#quick-start)
-* [Features](#features)
-  + [Viewing help : `help`](#help)
-  + [Adding a person: `add` ](#add)
-  + [Deleting a person : `delete`](#delete)
-  + [Listing all persons : `list`](#list)
-  + [Editing a person : `edit`](#edit)
-  + [Locating persons by name: `find`](#find)
-  + [Clearing all entries : `clear`](#clear)
-  + [Create Relations between Profiles : `relate`](#relate)
-  + [Remove Relations between Profiles : `unrelate`](#unrelate)
-  + [Show Relations Associated to a Person : `showrelated`](#showrelated)
-  + [Open on Last State](#open-on-last-state)
-  + [Export Current View to CSV File : `export`](#export)
-  + [Exiting the program : `exit`](#exit-program)
-  + [Saving the data](#saving-the-data)
-  + [Editing the data file](#editing-the-data-file)
-* [FAQ](#faq)
-* [Known issues](#known-issues)
-* [Command summary](#command-summary)
+- [NetConnect User Guide](#netconnect-user-guide)
+- [Table of Contents](#table-of-contents)
+- [Quick start](#quick-start)
+- [Features](#features)
+  - [Viewing help : `help`](#viewing-help--help)
+  - [Adding a person: `add`](#adding-a-person-add)
+  - [Deleting a person : `delete`](#deleting-a-person--delete)
+  - [Listing all persons : `list`](#listing-all-persons--list)
+  - [Editing a person : `edit`](#editing-a-person--edit)
+  - [Locating persons by name: `find`](#locating-persons-by-name-find)
+  - [Clearing all entries : `clear`](#clearing-all-entries--clear)
+  - [Create Relations between Profiles : `relate`](#create-relations-between-profiles--relate)
+  - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
+  - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
+  - [Open on Last State](#open-on-last-state)
+  - [Export Current View to CSV File : `export`](#export-current-view-to-csv-file--export)
+  - [Exiting the program : `exit`](#exiting-the-program--exit)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+- [Command summary](#command-summary)
 
 # Quick start
 
@@ -128,7 +130,10 @@ Examples (Supplier):
 * Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`
 * `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
-**Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
+<div markdown="block" class="alert alert-info">
+**Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.<br>
+</div>
+
 </section>
 
 <section id="delete">
