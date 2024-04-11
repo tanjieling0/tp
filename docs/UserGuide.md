@@ -332,6 +332,11 @@ Furthermore, certain edits can cause the NetConnect to behave in unexpected ways
 
 </section>
 
+# Future Implementations
+
+## Truncate text in GUI
+Current implementation of NetConnect GUI is able to accommodate input of approximately 120 characters in fullscreen. Additional text are represented by ellipsis. Future implementations will include a feature to truncate text responsively according to the screen size in the GUI to prevent overflow.
+
 --------------------------------------------------------------------------------------------------------------------
 
 # FAQ
