@@ -54,7 +54,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 r/employee` : Adds an employee named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/employee` : Adds an employee named `John Doe` to the Address Book.
 
    * `delete i/3` : Deletes the contact with ID 3 from NetConnect.
 
