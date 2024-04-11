@@ -30,7 +30,6 @@ If you relate to this problem we identified, then NetConnect might be just right
   + [Show Relations Associated to a Person : `showrelated`](#showrelated)
   + [Open on Last State](#open-on-last-state)
   + [Export Current View to CSV File : `export`](#export)
-  + [Never Miss a Birthday!](#birthday)
   + [Exiting the program : `exit`](#exit-program)
   + [Saving the data](#saving-the-data)
   + [Editing the data file](#editing-the-data-file)
@@ -304,13 +303,6 @@ Step 1: `find [KEYWORD]` or any other function that filters the profiles.
 Step 2: `export`
 
 * The first step is to filter the profiles you want to export into the current view.
-
-</section>
-
-<section id="birthday">
-
-## Never Miss a Birthday!
-Celebrate your employees' birthdays to show that you care. NetConnect will remind you of the birthdays of your employees, so you never have to miss a birthday again!
 
 </section>
 
