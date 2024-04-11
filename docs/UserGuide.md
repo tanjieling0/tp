@@ -205,7 +205,6 @@ Format: `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
 * `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
-![result for 'find alex david'](images/findAlexDavidResult.png)
 
 Find by tag example:
 * `find t/friend` returns all persons who have the tag `friend`.
