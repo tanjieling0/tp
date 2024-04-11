@@ -131,7 +131,7 @@ Examples (Supplier):
 * `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
 <div markdown="block" class="alert alert-info">
-**Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.<br>
+<strong>Info:</strong> NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.<br>
 </div>
 
 </section>
