@@ -26,25 +26,26 @@ public class RelateCommandParser implements Parser<RelateCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         }
 
-        String[] providedIds = trimmedArgs.split("\\s+");
+        System.out.println(trimmedArgs);
 
-        if (providedIds.length != 2) {
+
+        String[] providedIds = trimmedArgs.split("i/");
+
+        //remove leading and trailing whitespaces in indexes
+        for (int i = 0; i < providedIds.length; i++) {
+            providedIds[i] = providedIds[i].trim();
+        }
+
+        if (providedIds.length != 3 || !providedIds[0].isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         }
 
         String[] pureIds = new String[2];
 
-        for (int i = 0; i < providedIds.length; i++) {
-            String[] flagAndId = providedIds[i].split("/");
-            // find and validate flag
-            if (flagAndId[0].equals("i")) {
-                ParserUtil.parseId(flagAndId[1]);
-                pureIds[i] = flagAndId[1];
-            } else {
-                throw new ParseException(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
-            }
+        for (int i = 1; i < providedIds.length; i++) {
+            ParserUtil.parseId(providedIds[i]);
+            pureIds[i - 1] = providedIds[i];
         }
 
         Integer[] providedIdsAsInt = Arrays.stream(pureIds).map(Integer::parseInt).toArray(Integer[]::new);
