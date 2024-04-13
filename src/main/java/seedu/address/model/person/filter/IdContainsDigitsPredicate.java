@@ -16,10 +16,6 @@ public class IdContainsDigitsPredicate extends NetConnectPredicate<Person> {
         this.ids = ids;
     }
 
-    public List<Integer> getIds() {
-        return ids;
-    }
-
     public int getFirstId() {
         return ids.get(0);
     }
@@ -58,6 +54,8 @@ public class IdContainsDigitsPredicate extends NetConnectPredicate<Person> {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("IDs", ids.stream().map(i -> Integer.toString(i))).toString();
+                .add("ids", ids)
+                .toString();
     }
+
 }

@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.showAllPersons;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
@@ -56,7 +58,8 @@ public class RelateCommandTest {
                 ID_SECOND_PERSON.value));
         RelateCommand command = new RelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_FIRST_PERSON.value));
     }
 
     @Test
@@ -68,7 +71,37 @@ public class RelateCommandTest {
                 ID_SECOND_PERSON.value));
         RelateCommand command = new RelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_SECOND_PERSON.value));
+    }
+
+    @Test
+    public void execute_samePersonId_throwsCommandException() {
+        Person person = new ClientBuilder().withId(ID_FIRST_PERSON.value).build();
+        model.addPerson(person);
+
+        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
+                ID_FIRST_PERSON.value));
+        RelateCommand command = new RelateCommand(predicate);
+        Model expectedModel = new ModelManager(model.getNetConnect(), model.getUserPrefs());
+        showAllPersons(expectedModel);
+
+        assertCommandFailure(command, model, Messages.MESSAGE_CANNOT_RELATE_ITSELF, expectedModel);
+    }
+
+    @Test
+    public void execute_existingRelatedIdTuple_throwsCommandException() {
+        Person firstPerson = new ClientBuilder().withName("one").withId(ID_FIRST_PERSON.value).build();
+        Person secondPerson = new ClientBuilder().withName("two").withId(ID_SECOND_PERSON.value).build();
+        model.addPerson(firstPerson);
+        model.addPerson(secondPerson);
+        model.addRelatedIdTuple(new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON));
+
+        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
+                ID_SECOND_PERSON.value));
+        RelateCommand command = new RelateCommand(predicate);
+
+        assertCommandFailure(command, model, Messages.MESSAGE_RELATION_EXISTS);
     }
 
     @Test
@@ -80,6 +113,7 @@ public class RelateCommandTest {
         RelateCommand command1 = new RelateCommand(predicate1);
         RelateCommand command2 = new RelateCommand(predicate1);
         RelateCommand command3 = new RelateCommand(predicate2);
+        AddCommand addCommand = new AddCommand(new ClientBuilder().build());
 
         // same object -> returns true
         assertEquals(command1, command1);
@@ -95,5 +129,17 @@ public class RelateCommandTest {
 
         // different predicate -> returns false
         assertNotEquals(command1, command3);
+
+        // different command -> returns false
+        assertNotEquals(command1, addCommand);
+    }
+
+    @Test
+    public void toStringMethod() {
+        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
+                ID_SECOND_PERSON.value));
+        RelateCommand relateCommand = new RelateCommand(predicate);
+        String expected = RelateCommand.class.getCanonicalName() + "{predicate=" + predicate.toString() + "}";
+        assertEquals(expected, relateCommand.toString());
     }
 }
