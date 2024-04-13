@@ -235,19 +235,20 @@ Constraints for each field. Here are the constraints for each field in the appli
 
 ## Locating persons by name: `find`
 
-Finds persons whose information matches any of the specified parameters. You can find persons by names, phone numbers, tags, roles, and remarks. You can also stack multiple `find`s to narrow down your search.
+Finds persons whose information matches any of the specified parameters. You can find persons by names, phone numbers, tags, roles, and remarks. To search via different fields, you can stack multiple `find`-type commands to narrow down your search.
 
 Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMARK]...`
 
-* The search is case-insensitive. e.g. `hans` will match `Hans`.
-* Partial matches are allowed for names e.g. `Ha` will match `Hans`.
-* For all other fields, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`.
-* Find by remark requires full word match that is contained in the remark sentence, and require all words given to be contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`, `find r/has dog` will match `r/he has a dog`, `find r/has cute dog` will not match ` r/he has a dog`.
-* Find by remark allows unordered search, e.g. `find r/dog has` will match `r/he has a dog`.
-* `find r/` will search for contacts with an empty remark.
-* `list` is required to remove the stacked filters.
 * Only one type of field is allowed for each `find` command.
 * Multiple parameters of the same field can be provided, showing persons who match any of the field in that command, e.g. `find n/alex n/david` will show all persons with either `alex` or `david` in their names.
+* `list` is required to remove the stacked filters.
+* Searches are case-insensitive, e.g. `hans` will match `Hans`.
+* Partial matches are allowed for names, e.g. `Ha` will match `Hans`.
+* Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`, `find r/has dog` will match `r/he has a dog`, `find r/market` will **not** match `r/marketing`.
+* Find by remark requires all words given to be contained in the remark sentence, e.g. `find r/has cute dog` will **not** match ` r/he has a dog`.
+* Find by remark allows unordered search, e.g. `find r/dog has` will match `r/he has a dog`.
+* `find r/` will search for contacts with an empty remark.
+* For phone numbers, tags and role, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`, `find t/fri` will not match contacts with tag `friends`, `find role/clie` will not match contacts with role `client`.
 
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
@@ -267,6 +268,8 @@ Find by role example:
 Find by remark example:
 * `find r/` returns all persons who have an empty remark.
 * `find r/has a dog` returns all persons who have the remark `has a dog`.
+* `find r/dog` returns all persons who have the remark `has a dog`.
+* `find r/a has` returns all persons who have the remark `has a dog`.
 
 Stacking find by name and tag example
 * `find n/John` returns all persons who have the name `John`.
