@@ -63,11 +63,11 @@ public class CsvExporterTest {
 
         assertArrayEquals(new String[]{"ID", "Name", "Phone", "Email", "Address", "Remark", "Tags", "Department",
             "Job Title", "Skills", "Products", "Preferences", "Terms of Service"}, dataList.get(0));
-        assertArrayEquals(new String[]{"1", "John Doe", "1234567890", "john@example.com", "\"123 Main St\"",
+        assertArrayEquals(new String[]{"1", "John Doe", "12345678", "john@example.com", "\"123 Main St\"",
             "some remarks", "", "HR", "Manager", "\"Java, SQL\"", "", "", ""}, dataList.get(1));
-        assertArrayEquals(new String[]{"2", "Jane Smith", "9876543210", "jane@example.com", "\"456 Elm St\"",
+        assertArrayEquals(new String[]{"2", "Jane Smith", "98765432", "jane@example.com", "\"456 Elm St\"",
             "some remarks", "", "", "", "", "\"Product A\"", "Likes discounts", ""}, dataList.get(2));
-        assertArrayEquals(new String[]{"3", "Acme Inc", "5555555555", "info@acme.com", "\"789 Oak St\"",
+        assertArrayEquals(new String[]{"3", "Acme Inc", "55555555", "info@acme.com", "\"789 Oak St\"",
             "some remarks", "", "", "", "", "\"Product X\"", "", "30 days"}, dataList.get(3));
     }
 
@@ -141,7 +141,7 @@ public class CsvExporterTest {
     @Test
     public void convertPersonToStringArray_supplier() {
         String[] expectedArray = new String[]{
-            "5", "Fiona Kunz", "9482427", "lydia@example.com", "\"little tokyo\"", "some remarks", "", "", "",
+            "5", "Fiona Kunz", "94824271", "lydia@example.com", "\"little tokyo\"", "some remarks", "", "", "",
             "", "\"Office Supplies, Furniture\"", "", "Delivery within 2 weeks"
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.FIONA));
