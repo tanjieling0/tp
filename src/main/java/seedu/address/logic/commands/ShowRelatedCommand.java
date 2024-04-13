@@ -34,10 +34,14 @@ public class ShowRelatedCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
         RelatedList relatedList = model.getRelatedIdTuples();
 
         List<Integer> relatedIds = relatedList.getAllRelatedIds(relatedList, id);
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(relatedIds);
+
+        // reset user view from any previous commands
+        model.clearFilter();
 
         model.stackFilters(predicate);
         return new CommandResult(
