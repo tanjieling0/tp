@@ -39,6 +39,7 @@ you in maximising the capabilities of this product, freeing time for more pressi
     + [Exiting the program : `exit`](#exit-program)
     + [Saving the data](#saving-the-data)
     + [Editing the data file](#editing-the-data-file)
+* [Future Implementations](#future-implementations)
 * [FAQ](#faq)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
@@ -308,6 +309,8 @@ Format: `showrelated i/ID`
 
 Example: `showrelated i/1` shows all relations between the profile with ID 1 and all other contacts.
 
+**Info:** If there are no persons related to the provided ID, the interface will show `0 persons listed`.
+
 </section>
 
 <section id="open-on-last-state">
@@ -377,6 +380,9 @@ If your changes to the data file makes its format invalid, NetConnect will disca
 </section>
 
 # Future Implementations
+The NetConnect team is working on new features and fixes for you, but they are unfortunately unavailable in this current implementation. We intend to have future fixes for these occurences below!
+
+1. When invoking showrelated on a id that does not exist, the error message will be `Contact not found` instead of `0 persons listed`.
 
 ## Truncate text in GUI
 Current implementation of NetConnect GUI is able to accommodate input of approximately 120 characters for the profile fields (name, tags, etc.) in fullscreen mode. Additional text are represented by ellipsis. Future implementations will include a feature to truncate text responsively according to the screen size in the GUI to prevent overflow.
