@@ -16,10 +16,6 @@ public class IdContainsDigitsPredicate extends NetConnectPredicate<Person> {
         this.ids = ids;
     }
 
-    public List<Integer> getIds() {
-        return ids;
-    }
-
     public int getFirstId() {
         return ids.get(0);
     }

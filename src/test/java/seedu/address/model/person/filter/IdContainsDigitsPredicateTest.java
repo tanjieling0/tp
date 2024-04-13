@@ -12,13 +12,6 @@ import org.junit.jupiter.api.Test;
 public class IdContainsDigitsPredicateTest {
 
     @Test
-    public void getIds_test_success() {
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        assertEquals(List.of(ID_FIRST_PERSON.value, ID_SECOND_PERSON.value), predicate.getIds());
-    }
-
-    @Test
     public void formatFilter_success() {
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
                 ID_SECOND_PERSON.value));

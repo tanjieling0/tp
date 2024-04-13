@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.showAllPersons;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
@@ -56,7 +58,8 @@ public class RelateCommandTest {
                 ID_SECOND_PERSON.value));
         RelateCommand command = new RelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_FIRST_PERSON.value));
     }
 
     @Test
@@ -68,7 +71,8 @@ public class RelateCommandTest {
                 ID_SECOND_PERSON.value));
         RelateCommand command = new RelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_SECOND_PERSON.value));
     }
 
     @Test
@@ -79,7 +83,10 @@ public class RelateCommandTest {
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
                 ID_FIRST_PERSON.value));
         RelateCommand command = new RelateCommand(predicate);
-        assertThrows(CommandException.class, () -> command.execute(model));
+        Model expectedModel = new ModelManager(model.getNetConnect(), model.getUserPrefs());
+        showAllPersons(expectedModel);
+
+        assertCommandFailure(command, model, Messages.MESSAGE_CANNOT_RELATE_ITSELF, expectedModel);
     }
 
     @Test
@@ -94,7 +101,7 @@ public class RelateCommandTest {
                 ID_SECOND_PERSON.value));
         RelateCommand command = new RelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model, Messages.MESSAGE_RELATION_EXISTS);
     }
 
     @Test

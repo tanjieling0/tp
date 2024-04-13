@@ -3,7 +3,8 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.showAllPersons;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
 
@@ -52,7 +53,8 @@ public class UnrelateCommandTest {
                 ID_SECOND_PERSON.value));
         UnrelateCommand command = new UnrelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_FIRST_PERSON.value));
     }
 
     @Test
@@ -64,7 +66,8 @@ public class UnrelateCommandTest {
                 ID_SECOND_PERSON.value));
         UnrelateCommand command = new UnrelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_SECOND_PERSON.value));
     }
 
     @Test
@@ -75,8 +78,10 @@ public class UnrelateCommandTest {
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
                 ID_FIRST_PERSON.value));
         UnrelateCommand command = new UnrelateCommand(predicate);
+        Model expectedModel = new ModelManager(model.getNetConnect(), model.getUserPrefs());
+        showAllPersons(expectedModel);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model, Messages.MESSAGE_CANNOT_UNRELATE_ITSELF, expectedModel);
     }
 
     @Test
@@ -90,7 +95,7 @@ public class UnrelateCommandTest {
                 ID_SECOND_PERSON.value));
         UnrelateCommand command = new UnrelateCommand(predicate);
 
-        assertThrows(CommandException.class, () -> command.execute(model));
+        assertCommandFailure(command, model, Messages.MESSAGE_RELATION_NOT_EXISTS);
     }
 
     @Test
