@@ -179,8 +179,6 @@ Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
 * `delete n/John Doe` deletes the person with the name John Doe (if no one else have the same name).
 
-**Info:** Instead of completely deleting the profile from the database, NetConnect does a soft delete of the profile instead. What this means is that the profile still exists in the database, but is marked as inactive, and will not appear in your current list or searches.
-
 **Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 </section>
 
