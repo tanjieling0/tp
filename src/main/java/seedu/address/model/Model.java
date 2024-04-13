@@ -84,7 +84,7 @@ public interface Model {
     Person getPersonByName(Name name);
 
     /**
-     * Deletes the given person.
+     * Deletes the given person including any of its relations.
      * The person must exist in the address book.
      */
     void deletePerson(Person target);

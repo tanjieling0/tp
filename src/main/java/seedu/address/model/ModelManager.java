@@ -172,7 +172,7 @@ public class ModelManager implements Model {
     @Override
     public boolean removeRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
-        return netConnect.removeRelatedId(idTuple);
+        return netConnect.removeRelatedIdTuple(idTuple);
     }
 
     @Override
