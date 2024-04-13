@@ -48,12 +48,9 @@ public class ExportCommandParser implements Parser<ExportCommand> {
             return false;
         }
 
-        // Check for special characters
-        String restrictedChars = "<>:\"/\\|?*";
-        for (char c : restrictedChars.toCharArray()) {
-            if (filename.indexOf(c) != -1) {
-                return false;
-            }
+        //Only Alphanumerical, underscores, hyphens and periods are allowed
+        if (!filename.matches("[a-zA-Z0-9_\\-.]*")) {
+            return false;
         }
 
         return true;
