@@ -235,25 +235,27 @@ Constraints for each field. Here are the constraints for each field in the appli
 
 ## Locating persons by name: `find`
 
-Finds persons whose names contain any of the given name keywords. You can also find persons by tags, phone numbers, roles, and remarks. You can also stack multiple characteristics to narrow down your search. Note that only one type of field is allowed for each search at one time.
+Finds persons whose information matches any of the specified parameters. You can find persons by names, phone numbers, tags, roles, and remarks. You can also stack multiple `find`s to narrow down your search.
 
-Format: `find [n/NAME] [t/TAG] [p/PHONE_NUMBER] [role/ROLE] [r/REMARK]`
+Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMARK]...`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`.
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only partial matches are allowed for names e.g. `Ha` will match `Hans`.
+* Partial matches are allowed for names e.g. `Ha` will match `Hans`.
 * For all other fields, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`.
-* Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`.
+* Find by remark requires full word match that is contained in the remark sentence, and require all words given to be contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`, `find r/has dog` will match `r/he has a dog`, `find r/has cute dog` will not match ` r/he has a dog`.
+* Find by remark allows unordered search, e.g. `find r/dog has` will match `r/he has a dog`.
 * `find r/` will search for contacts with an empty remark.
-* Full matches will be required for phone numbers and roles.
+* `list` is required to remove the stacked filters.
+* Only one type of field is allowed for each `find` command.
+* Multiple parameters of the same field can be provided, showing persons who match any of the field in that command, e.g. `find n/alex n/david` will show all persons with either `alex` or `david` in their names.
 
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
-* `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
+* `find n/alex n/david` returns `Alex Yeoh`, `David Li`.<br>
 ![result for 'find alex david'](images/findAlexDavidResult.png)
 
 Find by tag example:
-* `find t/friend` returns all persons who have the tag `friend`.
+* `find t/friends` returns all persons who have the tag `friends`.
 
 Find by phone number example:
 * `find p/98765432` returns `John Doe` who has the phone number `98765432`.
@@ -265,13 +267,15 @@ Find by role example:
 Find by remark example:
 * `find r/` returns all persons who have an empty remark.
 * `find r/has a dog` returns all persons who have the remark `has a dog`.
-* Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
-* `find r/marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.
 
-Find by name and tag example
-* `find n/John t/friend` returns all persons who have the name `John` and the tag `friend`.
+Stacking find by name and tag example
+* `find n/John` returns all persons who have the name `John`.
 
-**Note:** NetConnect accepts phone numbers with three or more digits, to account for staff extensions in the company. This is not a bug.
+[insert screenshot]
+
+* Followed by `find t/friends`, returns all persons who have the name `John` and the tag `friends`.
+
+[insert screenshot]
 
 </section>
 
