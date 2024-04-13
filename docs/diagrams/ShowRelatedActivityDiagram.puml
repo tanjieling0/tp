@@ -8,14 +8,15 @@ title Activity: showrelated command
 start
 :User executes showrelated command;
 
-'Since the beta syntax does not support placing the condition outside the
-'diamond we place it as the true branch instead.
 
-switch ()
-case ([One valid number (Integer and greater than 0) provided])
-    :Return list of related profiles;
-case ([Else])
-    :Return error message;
-endswitch
+if () then ([else])
+    :Display error message;
+else ([One valid number (Integer and greater than 0) provided])
+    if () then ([has related profiles])
+        :Display list of related profiles;
+    else ([else])
+        :Display empty list;
+    endif
+endif
 stop
 @enduml
