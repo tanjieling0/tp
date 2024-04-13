@@ -40,11 +40,7 @@ public class RelateCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        // reset user view from any previous commands
-        model.clearFilter();
 
-        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.stackFilters(predicate);
         if (firstPersonId.equals(secondPersonId)) {
             model.clearFilter();
             throw new CommandException(Messages.MESSAGE_CANNOT_RELATE_ITSELF);
@@ -63,6 +59,12 @@ public class RelateCommand extends Command {
         } else {
             model.addRelatedIdTuple(tuple);
         }
+
+        // reset user view from any previous commands
+        model.clearFilter();
+
+        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
+        model.stackFilters(predicate);
 
         return new CommandResult(
             String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
