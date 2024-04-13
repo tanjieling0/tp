@@ -90,6 +90,7 @@ public class RelateCommandTest {
         RelateCommand command1 = new RelateCommand(predicate1);
         RelateCommand command2 = new RelateCommand(predicate1);
         RelateCommand command3 = new RelateCommand(predicate2);
+        AddCommand addCommand = new AddCommand(new ClientBuilder().build());
 
         // same object -> returns true
         assertEquals(command1, command1);
@@ -105,5 +106,17 @@ public class RelateCommandTest {
 
         // different predicate -> returns false
         assertNotEquals(command1, command3);
+
+        // different command -> returns false
+        assertNotEquals(command1, addCommand);
+    }
+
+    @Test
+    public void toStringMethod() {
+        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
+                ID_SECOND_PERSON.value));
+        RelateCommand relateCommand = new RelateCommand(predicate);
+        String expected = RelateCommand.class.getCanonicalName() + "{predicate=" + predicate.toString() + "}";
+        assertEquals(expected, relateCommand.toString());
     }
 }

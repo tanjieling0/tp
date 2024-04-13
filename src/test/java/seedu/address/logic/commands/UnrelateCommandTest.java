@@ -73,7 +73,7 @@ public class UnrelateCommandTest {
         model.addPerson(person);
 
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
+                ID_FIRST_PERSON.value));
         UnrelateCommand command = new UnrelateCommand(predicate);
 
         assertThrows(CommandException.class, () -> command.execute(model));
@@ -118,5 +118,14 @@ public class UnrelateCommandTest {
 
         // different predicate -> returns false
         assertNotEquals(command1, command3);
+    }
+
+    @Test
+    public void toStringMethod() {
+        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
+                ID_SECOND_PERSON.value));
+        UnrelateCommand command = new UnrelateCommand(predicate);
+        String expected = UnrelateCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        assertEquals(expected, command.toString());
     }
 }

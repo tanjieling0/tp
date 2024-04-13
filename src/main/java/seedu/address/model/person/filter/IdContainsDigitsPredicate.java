@@ -58,6 +58,8 @@ public class IdContainsDigitsPredicate extends NetConnectPredicate<Person> {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("IDs", ids.stream().map(i -> Integer.toString(i))).toString();
+                .add("ids", ids)
+                .toString();
     }
+
 }
