@@ -12,7 +12,7 @@ start
 if () then ([else])
     :Display error message;
 else ([One valid number (Integer and greater than 0) provided])
-    if () then ([has related profiles])
+    if () then ([has related profile(s)])
         :Display list of related profiles;
     else ([else])
         :Display empty list;
