@@ -43,14 +43,14 @@ public class CsvExporterTest {
     @Test
     public void createDataList_correctlyConstructedList() {
         List<Person> persons = Arrays.asList(
-                new EmployeeBuilder().withId(1).withName("John Doe").withPhone("1234567890")
+                new EmployeeBuilder().withId(1).withName("John Doe").withPhone("12345678")
                         .withEmail("john@example.com").withAddress("123 Main St").withDepartment("HR")
                         .withJobTitle("Manager").withSkills("Java, SQL").build(),
-                new ClientBuilder().withId(2).withName("Jane Smith").withPhone("9876543210")
+                new ClientBuilder().withId(2).withName("Jane Smith").withPhone("98765432")
                         .withEmail("jane@example.com")
                         .withAddress("456 Elm St").withProducts("Product A").withPreferences("Likes discounts")
                         .build(),
-                new SupplierBuilder().withId(3).withName("Acme Inc").withPhone("5555555555").withEmail("info@acme.com")
+                new SupplierBuilder().withId(3).withName("Acme Inc").withPhone("55555555").withEmail("info@acme.com")
                         .withAddress("789 Oak St").withProducts("Product X").withTermsOfService("30 days").build()
         );
         FilteredList<Person> filteredList = new FilteredList<>(FXCollections.observableArrayList(persons));
@@ -63,7 +63,6 @@ public class CsvExporterTest {
 
         assertArrayEquals(new String[]{"ID", "Name", "Phone", "Email", "Address", "Remark", "Tags", "Department",
             "Job Title", "Skills", "Products", "Preferences", "Terms of Service"}, dataList.get(0));
-
         assertArrayEquals(new String[]{"1", "John Doe", "1234567890", "john@example.com", "\"123 Main St\"",
             "some remarks", "", "HR", "Manager", "\"Java, SQL\"", "", "", ""}, dataList.get(1));
         assertArrayEquals(new String[]{"2", "Jane Smith", "9876543210", "jane@example.com", "\"456 Elm St\"",

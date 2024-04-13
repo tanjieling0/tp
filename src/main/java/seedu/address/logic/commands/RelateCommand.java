@@ -18,8 +18,8 @@ public class RelateCommand extends Command {
     public static final String COMMAND_WORD = "relate";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": relates strictly two existing persons in NetConnect "
-            + "using either their unique id, OR, name.\n"
-            + "The unique IDs or names provided must exist.\n"
+            + "using their unique id.\n"
+            + "Both unique IDs must exist.\n"
             + "Parameters: i/ID_1 i/ID_2\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
 

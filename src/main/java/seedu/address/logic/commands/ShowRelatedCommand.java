@@ -23,7 +23,7 @@ public class ShowRelatedCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Finds all persons related to person with the specified id.\n"
             + "Parameters: i/ID\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_ID + "/1";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_ID + "1";
 
     private final Id id;
 

@@ -75,7 +75,7 @@ public class PhoneMatchesDigitsPredicateTest {
 
         // Keywords match name, email and address, but does not match phone
         predicate = new PhoneMatchesDigitsPredicate(Arrays.asList("Alice", "alice@email.com", "Main", "Street"));
-        assertFalse(predicate.test(new ClientBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new ClientBuilder().withName("Alice").withPhone("12345678")
                 .withEmail("alice@email.com").withAddress("Main Street").build()));
     }
 
