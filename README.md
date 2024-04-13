@@ -18,9 +18,10 @@ NetConnect is a desktop app for food business managers managing contacts in SMEs
 
 2. Category Management
     * Roles: Categorize your profiles into *Employees, Clients, or Suppliers*.
-    * Tailored profile information: Each of the roles have their own set of information to be filled in (Employees have the field `Department`, while Supplier have `Product`).
+    * Tailored profile information: Each of the roles have their own set of information to be filled in, e.g. Employees have the field `Department`, while Supplier have `Product`.
 
 3. Search
+
 The searches can be stacked and allows you to find a profile based on the following criteria:
     * Search by name: Find a profile by their name.
     * Search by contact: Find a profile by their contact number.
