@@ -72,6 +72,16 @@ public class RelateCommandTest {
     }
 
     @Test
+    public void execute_samePersonId_throwsCommandException() {
+        Person firstPerson = new ClientBuilder().withName("one").withId(ID_FIRST_PERSON.value).build();
+        model.addPerson(firstPerson);
+        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
+                ID_FIRST_PERSON.value));
+        RelateCommand command = new RelateCommand(predicate);
+        assertThrows(CommandException.class, () -> command.execute(model));
+    }
+
+    @Test
     public void equals() {
         IdContainsDigitsPredicate predicate1 = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
                 ID_SECOND_PERSON.value));
