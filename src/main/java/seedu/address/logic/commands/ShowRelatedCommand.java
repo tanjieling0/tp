@@ -40,10 +40,7 @@ public class ShowRelatedCommand extends Command {
         List<Integer> relatedIds = relatedList.getAllRelatedIds(relatedList, id);
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(relatedIds);
 
-        // reset user view from any previous commands
-        model.clearFilter();
-
-        model.stackFilters(predicate);
+        model.updateFilteredList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }

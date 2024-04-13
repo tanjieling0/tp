@@ -62,11 +62,7 @@ public class UnrelateCommand extends Command {
             model.removeRelatedIdTuple(tuple);
         }
 
-        // reset user view from any previous commands
-        model.clearFilter();
-
-        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.stackFilters(predicate);
+        model.updateFilteredList(predicate);
 
         return new CommandResult(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, tuple));
     }
