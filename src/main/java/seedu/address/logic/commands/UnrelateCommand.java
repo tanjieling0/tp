@@ -42,9 +42,9 @@ public class UnrelateCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.stackFilters(predicate);
+
         if (firstPersonId.equals(secondPersonId)) {
+            model.clearFilter();
             throw new CommandException(Messages.MESSAGE_CANNOT_UNRELATE_ITSELF);
         }
         // actual execution occurs here
@@ -61,6 +61,12 @@ public class UnrelateCommand extends Command {
         } else {
             model.removeRelatedIdTuple(tuple);
         }
+
+        // reset user view from any previous commands
+        model.clearFilter();
+
+        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
+        model.stackFilters(predicate);
 
         return new CommandResult(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, tuple));
     }

@@ -91,10 +91,27 @@ public class RemarkContainsKeywordsPredicateTest {
 
     @Test
     public void test_remarkContainsKeywords_returnsTrue() {
+        // single word keywords
         RemarkContainsKeywordsPredicate predicate =
                 new RemarkContainsKeywordsPredicate(Arrays.asList("first", "second"));
         assertTrue(predicate.test(new ClientBuilder().withRemark("first").build()));
         assertTrue(predicate.test(new ClientBuilder().withRemark("second").build()));
+
+        // multiple words keywords
+        predicate = new RemarkContainsKeywordsPredicate(Collections.singletonList("the first"));
+        assertTrue(predicate.test(new ClientBuilder().withRemark("this is the first").build()));
+
+        // multiple keywords, separate by other characters in sentence
+        predicate = new RemarkContainsKeywordsPredicate(Collections.singletonList("the first"));
+        assertTrue(predicate.test(new ClientBuilder().withRemark("this is the very first").build()));
+
+        // reverse
+        predicate = new RemarkContainsKeywordsPredicate(Collections.singletonList("first the"));
+        assertTrue(predicate.test(new ClientBuilder().withRemark("this is the very first").build()));
+
+        // mix case
+        predicate = new RemarkContainsKeywordsPredicate(Collections.singletonList("fiRSt"));
+        assertTrue(predicate.test(new ClientBuilder().withRemark("First").build()));
     }
 
     @Test
@@ -117,12 +134,30 @@ public class RemarkContainsKeywordsPredicateTest {
         // Keywords match name, phone, email and address, but does not match remark
         predicate = new RemarkContainsKeywordsPredicate(
                 Arrays.asList("Alice", "alice@email.com", "Main", "Street", "12345"));
-        assertFalse(predicate.test(new SupplierBuilder().withName("Alice").withPhone("12345")
+        assertFalse(predicate.test(new SupplierBuilder().withName("Alice").withPhone("12345678")
                 .withEmail("alice@email.com").withAddress("Main Street").withRemark("biscuit").build()));
 
         // Non-empty remark with empty keyword
         predicate = new RemarkContainsKeywordsPredicate(Collections.singletonList(""));
         assertFalse(predicate.test(new ClientBuilder().withRemark("first").build()));
+    }
+
+    @Test
+    public void test_partialWordMatch_returnsFalse() {
+        RemarkContainsKeywordsPredicate predicate =
+                new RemarkContainsKeywordsPredicate(Collections.singletonList("fir"));
+        assertFalse(predicate.test(new ClientBuilder().withRemark("first").build()));
+    }
+
+    @Test
+    public void test_notAllWordsMatch_returnsFalse() {
+        RemarkContainsKeywordsPredicate predicate =
+                new RemarkContainsKeywordsPredicate(Collections.singletonList("the first"));
+        assertFalse(predicate.test(new ClientBuilder().withRemark("this is first").build()));
+
+        // some partial match
+        predicate = new RemarkContainsKeywordsPredicate(Collections.singletonList("the first"));
+        assertFalse(predicate.test(new ClientBuilder().withRemark("this is the firsty").build()));
     }
 
     @Test

@@ -103,12 +103,12 @@ public class RelatedList implements Iterable<IdTuple> {
     }
 
     /**
-     * Adds a related person to the list.
+     * Removes a idTuple from the RelatedList.
      *
-     * @param idTuple The related person to be added.
-     * @return True if the related person is added, false otherwise.
+     * @param idTuple The relation to be deleted.
+     * @return True if the relation is deleted, false otherwise.
      */
-    public boolean remove(IdTuple idTuple) {
+    public boolean removeTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
         if (relatedPersons.contains(idTuple)) {
             relatedPersons.remove(idTuple);
@@ -142,6 +142,17 @@ public class RelatedList implements Iterable<IdTuple> {
             }
         }
         return relatedIds;
+    }
+
+    /**
+     * Removes all tuples containing specified ID from the relatedList.
+     *
+     * @param id The ID to be removed.
+     */
+    public void removeId(Id id) {
+        requireNonNull(id);
+        relatedPersons.removeIf(idTuple ->
+                idTuple.getFirstPersonId().equals(id) || idTuple.getSecondPersonId().equals(id));
     }
 
     public ObservableList<IdTuple> asUnmodifiableObservableList() {

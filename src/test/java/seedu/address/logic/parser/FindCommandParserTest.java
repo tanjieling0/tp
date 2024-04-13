@@ -45,11 +45,11 @@ public class FindCommandParserTest {
     public void parse_validPhones_returnsFindCommand() {
         // no leading and trailing whitespaces
         FindCommand expectedFindCommand =
-                new FindCommand(new PhoneMatchesDigitsPredicate(Arrays.asList("123", "91234567")));
-        assertParseSuccess(parser, " p/123 p/91234567", expectedFindCommand);
+                new FindCommand(new PhoneMatchesDigitsPredicate(Arrays.asList("12345678", "91234567")));
+        assertParseSuccess(parser, " p/12345678 p/91234567", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n p/123 \n \t p/91234567  \t", expectedFindCommand);
+        assertParseSuccess(parser, " \n p/12345678 \n \t p/91234567  \t", expectedFindCommand);
     }
 
     @Test

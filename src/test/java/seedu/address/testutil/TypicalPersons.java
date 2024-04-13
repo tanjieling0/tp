@@ -54,24 +54,24 @@ public class TypicalPersons {
             .withSkills("Public Speaking", "Digital Marketing").build();
 
     public static final Employee ELLE = new EmployeeBuilder().withId(4).withName("Elle Meyer")
-            .withPhone("9482224").withEmail("werner@example.com").withAddress("michegan ave")
+            .withPhone("94822241").withEmail("werner@example.com").withAddress("michegan ave")
             .withDepartment("IT").withJobTitle("Developer").withSkills("Java", "C++").build();
 
     public static final Supplier FIONA = new SupplierBuilder().withId(5).withName("Fiona Kunz")
-            .withPhone("9482427").withEmail("lydia@example.com").withAddress("little tokyo")
+            .withPhone("94824271").withEmail("lydia@example.com").withAddress("little tokyo")
             .withProducts("Office Supplies", "Furniture").withTermsOfService("Delivery within 2 weeks").build();
 
     public static final Supplier GEORGE = new SupplierBuilder().withId(6).withName("George Best")
-            .withPhone("9482442").withEmail("anna@example.com").withAddress("4th street")
+            .withPhone("94824421").withEmail("anna@example.com").withAddress("4th street")
             .withProducts("Electronics", "Gadgets").withTermsOfService("Warranty for 1 year").build();
 
     // Manually added
-    public static final Employee HOON = new EmployeeBuilder().withId(9).withName("Hoon Meier").withPhone("8482424")
+    public static final Employee HOON = new EmployeeBuilder().withId(9).withName("Hoon Meier").withPhone("84824241")
             .withEmail("stefan@example.com").withAddress("little india")
             .withDepartment("Tech Support").withJobTitle("Technician")
             .withSkills("Technical Support", "Customer Service").build();
 
-    public static final Supplier IDA = new SupplierBuilder().withId(10).withName("Ida Mueller").withPhone("8482131")
+    public static final Supplier IDA = new SupplierBuilder().withId(10).withName("Ida Mueller").withPhone("84821311")
             .withEmail("hans@example.com").withAddress("chicago ave")
             .withProducts("Computer Hardware", "Printers").withTermsOfService("Returns within 30 days").build();
 
