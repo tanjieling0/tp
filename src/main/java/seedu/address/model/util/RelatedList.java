@@ -145,7 +145,7 @@ public class RelatedList implements Iterable<IdTuple> {
     }
 
     /**
-     * Removes the specified ID from the relatedList.
+     * Removes all tuples containing specified ID from the relatedList.
      *
      * @param id The ID to be removed.
      */
