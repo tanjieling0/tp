@@ -91,7 +91,7 @@ public class AddCommandParser implements Parser<AddCommand> {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
-    private static Person createPerson(
+    private static Person createPerson (
             String role, Name name, Phone phone, Email email,
             Address address, Remark remark, Set<Tag> tagList, ArgumentMultimap argMultimap)
             throws ParseException {

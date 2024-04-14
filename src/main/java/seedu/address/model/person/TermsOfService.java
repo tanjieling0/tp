@@ -1,6 +1,7 @@
 package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.util.TestCommandFormatUtil.checkArgumentContainSlash;
 
 /**
  * Represents a Terms of Service in the address book.
@@ -23,6 +24,7 @@ public class TermsOfService {
      */
     public TermsOfService(String terms) {
         requireNonNull(terms);
+        checkArgumentContainSlash(terms);
         this.terms = terms;
     }
 
