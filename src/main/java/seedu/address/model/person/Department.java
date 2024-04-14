@@ -24,7 +24,7 @@ public class Department {
      * Represents a department in an organization.
      */
     public Department() {
-        departmentName = "-";
+        departmentName = "";
     }
 
     /**
@@ -55,6 +55,9 @@ public class Department {
 
     @Override
     public String toString() {
+        if (departmentName == "-") {
+            return "";
+        }
         return departmentName;
     }
 

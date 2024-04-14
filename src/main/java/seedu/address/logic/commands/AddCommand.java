@@ -54,9 +54,6 @@ public class AddCommand extends Command {
             + PREFIX_ROLE + "employee "
             + PREFIX_DEPARTMENT + "HR "
             + PREFIX_JOBTITLE + "Manager "
-            + PREFIX_PREFERENCES + "Likes to work from home "
-            + PREFIX_TERMSOFSERVICE + "2 years "
-            + PREFIX_PRODUCTS + "Laptop "
             + PREFIX_SKILLS + "Java";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";

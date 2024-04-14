@@ -192,12 +192,12 @@ public class NetConnectTest {
 
     @Test
     public void removeRelatedId_nullId_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> netConnect.removeRelatedId(null));
+        assertThrows(NullPointerException.class, () -> netConnect.removeRelatedIdTuple(null));
     }
 
     @Test
     public void removeRelatedId_idNotInNetConnect_returnsFalse() {
-        assertFalse(netConnect.removeRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+        assertFalse(netConnect.removeRelatedIdTuple(new IdTuple(ALICE.getId(), BOB.getId())));
     }
 
     @Test
@@ -205,7 +205,7 @@ public class NetConnectTest {
         netConnect.addPerson(ALICE);
         netConnect.addPerson(BOB);
         netConnect.allowAddIdTuple(new IdTuple(ALICE.getId(), BOB.getId()));
-        assertTrue(netConnect.removeRelatedId(new IdTuple(ALICE.getId(), BOB.getId())));
+        assertTrue(netConnect.removeRelatedIdTuple(new IdTuple(ALICE.getId(), BOB.getId())));
     }
 
     /**

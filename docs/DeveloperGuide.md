@@ -244,25 +244,24 @@ The person can be categorized into three roles: `Client`, `Supplier`, and `Emplo
 
 ### Save state feature
 
-The save state feature is implemented using the `StateStorage`.`StateStorage` is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
+The save state feature is implemented using the `TextStateStorage` which implements `StateStorage` interface. It is responsible for saving the state of the command box. The state is saved in a file called `state.txt` in the data folder. The state is updated at each change in the input. Additionally, it implements the following operations:
 
-* `StateStorage#writeState(String state)` — Saves the current state of the command box into file.
-* `StateStorage#loadState()` — Reads the saved state of the command box from the file and returns the string.
-* `StateStorage#clearState()` — Clears the file storing the states.
-* `StateStorage#isStateStorageExists()` — Checks if the file storing the states exists.
-* `StateStorage#deleteStateStorage()` — Deletes the file storing the states.
-* `StateStorage#getLastCommand()` — Returns the last string that is present in the command box before it was last closed. If the file is found, the text in the file is loaded into the command box, else a new file is created and empty string is returned.
-* `StateStorage#getFilePath()` — Returns the file path of the file storing the states.
-* `StateStorage#getFilePathString()` — Returns the file path of the file storing the states as a string.
-* `StateStorage#getDirectoryPath()` — Returns the directory path of the file storing the states.
+* `TextStateStorage#saveState(String state)` — Saves the current state of the command box into file.
+* `TextStateStorage#readState()` — Reads the saved state of the command box from the file and returns the string.
+* `TextStateStorage#clearState()` — Clears the file storing the states.
+* `TextStateStorage#isStateStorageExists()` — Checks if the file storing the states exists.
+* `TextStateStorage#deleteStateStorage()` — Deletes the file storing the states.
+* `TextStateStorage#getStateStorageFilePath()` — Returns the file path of the file storing the states.
+* `TextStateStorage#getFilePathString()` — Returns the file path of the file storing the states as a string.
+* `TextStateStorage#getDirectoryPath()` — Returns the directory path of the file storing the states.
 
 Given below is an example usage scenario and how the save state feature behaves at each step.
 
-Step 1. The user launches the application. During set up, the presence of the state storage file is checked. If absent, a new storage file is created. When the command box is instantiated, it calls the `StateStorage#getLastCommand()` method to get the last command that was present in the command box before it was last closed. The text in the file is retrieved via `StateStorage#loadState()` and loaded into the command box.
+Step 1. The user launches the application. During set up, the presence of the state storage file is checked. If absent, a new storage file is created. When the command box is instantiated, it calls the `TextStateStorage#readState()` method to get the last command that was present in the command box before it was last closed. The text in the file is retrieved and loaded into the command box using `TextField#setText`.
 
 **Note:** If the storage file is not found a new empty file is created.
 
-Step 2. The user changes the input in the command box. The `StateStorage#writeState(String state)` method is called to save the current state of the command box into the file.
+Step 2. The user changes the input in the command box. The `TextStateStorage#saveState(String state)` method is called to save the current state of the command box into the file.
 
 <puml src="diagrams/SaveStateActivityDiagram.puml" alt="SaveStateActivityDiagram" />
 
@@ -282,6 +281,33 @@ Step 2. The user changes the input in the command box. The `StateStorage#writeSt
 * **Alternative 3:** Update the storage file when there is a pause in typing.
   * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
   * Cons: May not save the state of the command box in case of a crash.
+
+### ShowRelated feature
+The `showrelated` command allows users to view all persons related to a specific person via their unique `ID`. Exceptional behavior:
+* If there are multiple `ID` provided by user, an error message is displayed.
+* If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
+
+<puml src="diagrams/ShowRelatedActivityDiagram.puml" alt="ShowRelatedActivityDiagram" />
+
+#### Current implementation
+Given a command `showrelated i/1`, the `NetConnectParser` recognises the `showrelated` command and first instantiates a `ShowRelatedCommandParser` object. It then passes the command string into `ShowRelatedCommandParser#parse(...)`, where the input `i/1` is validated for its format. Following which, `ShowRelatedCommandParser` instantiates a `ShowRelatedCommand` object.
+
+The`ShowRelatedCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. In the `execute(...)` command, we extract all the tuples that contain ID `1` and use it to instantiate a predicate called `IdContainsDigitsPredicate` which extracts all the `ID` of the related profiles (excluding itself of ID `1`). We will then require the `model#stackFilters(predicate)` method in the `model` object to update the filtered list of persons to only include persons related to the person with ID of `1`.
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `ShowRelatedCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the number of people listed.
+
+#### Design considerations
+
+**Aspect: How to extract the IDs of the related profiles**
+
+* **Alternative 1 (current choice)**: Extract all the tuples from storage and use regular expressions to check if either of the `ID` in the tuple is the specified `ID`, then extract the `ID` of the other related profile.
+    * Pros: This approach is straightforward and uses existing methods to extract the related profiles.
+    * Cons: Regular expressions can be difficult to understand and maintain.
+
+* **Alternative 2**: Extract only tuples that contain the specified `ID`, then extract the `ID` of the other related profile.
+    * Pros: Smaller chunk of data is extracted, reducing the amount of data to be processed as data is filtered out during read from storage.
+    * Cons: More complex implementation as the data is filtered out during read from storage, requiring filtering with String data instead of as IdTuple.
+
 
 ### Delete feature
 

@@ -310,7 +310,7 @@
 
     <module name="OperatorWrap">
       <!-- Checks that the non-assignment type operator is at the next line in a line wrap.
-           This includes "?", ":", "==", "!=", "/", "+", "-", "*", "%", ">>", ">>>",
+           This includes "?", ":", "==", "!=", "/", "+", " ", "*", "%", ">>", ">>>",
            ">=", ">", "<<", "<=", "<", "^", "|", "||", "&", "&&", "instanceof",
            "&" when used in a generic upper or lower bounds constraints,
              e.g. <T extends Foo & Bar>

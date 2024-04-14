@@ -131,7 +131,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     .orElse(Collections.emptyList()));
             TermsOfService termsOfService = optionalTermsOfService
                     .map(TermsOfService::new)
-                    .orElseGet(() -> new TermsOfService("-"));
+                    .orElseGet(() -> new TermsOfService(""));
             return new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
         default:
             throw new ParseException("Invalid role specified. Must be one of: client, employee, supplier.");
