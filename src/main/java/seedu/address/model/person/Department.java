@@ -10,13 +10,13 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Department {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Department names should only contain alphanumeric characters and spaces, and it should not be blank";
+            "Department names should only contain alphanumeric characters and spaces.";
 
     /*
      * The first character of the address must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}-][\\p{Alnum}- ]*";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum}- ]*";
 
     private final String departmentName;
 
