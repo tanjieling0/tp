@@ -33,4 +33,12 @@ public class UnrelateCommandParserTest {
         assertParseFailure(parser, " i/1 i/2 i/3 i/4 i/5",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_invalidArgumentLength_throwsParseException() {
+        assertParseFailure(parser, " i/1",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, " i/1 i/2 i/3",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+    }
 }

@@ -102,12 +102,9 @@ public class RelateCommandTest {
 
     @Test
     public void equals() {
-        IdContainsDigitsPredicate predicate1 = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        IdContainsDigitsPredicate predicate2 = new IdContainsDigitsPredicate(List.of(ID_SECOND_PERSON.value,
-                ID_THIRD_PERSON.value));
         RelateCommand relateFirstSecond = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         RelateCommand otherRelateFirstSecond = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        RelateCommand relateSecondFirst = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         RelateCommand relateSecondThird = new RelateCommand(ID_SECOND_PERSON, ID_THIRD_PERSON);
         AddCommand addCommand = new AddCommand(new ClientBuilder().build());
 
@@ -116,6 +113,9 @@ public class RelateCommandTest {
 
         // same values -> returns true
         assertTrue(relateFirstSecond.equals(otherRelateFirstSecond));
+
+        // same values, diff order -> returns true
+        assertTrue(relateFirstSecond.equals(relateSecondFirst));
 
         // different types -> returns false
         assertFalse(relateFirstSecond.equals(1));
