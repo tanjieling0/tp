@@ -16,9 +16,9 @@ public class DepartmentTest {
 
     @Test
     public void isValidDepartment_invalidDepartment_returnsFalse() {
-        assertFalse(Department.isValidDepartment("")); // empty string
-        assertFalse(Department.isValidDepartment(" ")); // whitespace
-        assertFalse(Department.isValidDepartment("Department!")); // contains special characters
+        assertFalse(Department.isValidDepartment(""));
+        assertFalse(Department.isValidDepartment(" "));
+        assertFalse(Department.isValidDepartment("Department!"));
     }
 
     @Test

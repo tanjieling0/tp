@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
