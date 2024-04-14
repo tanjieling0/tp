@@ -174,7 +174,7 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG] [r/REMARK] [dept/DEPARTMENT] [job/JOBTITLE] [skills/SKILLS] [prod/PRODUCTS] [tos/TERMSOFSERVICE] [pref/PREFERENCES]`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role)
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
@@ -339,6 +339,7 @@ NetConnect data are saved automatically as a JSON file `[JAR file location]/data
 If your changes to the data file makes its format invalid, NetConnect will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the NetConnect to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
+</section>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -377,7 +378,7 @@ Furthermore, certain edits can cause the NetConnect to behave in unexpected ways
 | **Add (Supplier)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Supplier [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                                                               | `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`                                                                              |
 | **List**                 | `list`                                                                                                                                                                                              | `list`                                                                                                                                                                                                                     |
 | **Delete**               | `delete [i/ID] [n/NAME]`                                                                                                                                                                            | `delete i/123`, `delete n/John Doe`                                                                                                                                                                                        |
-| **Edit**                 | `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [role/ROLE] [t/TAG] [r/REMARK] [dept/DEPARTMENT] [job/JOBTITLE] [skills/SKILLS] [prod/PRODUCTS] [tos/TERMSOFSERVICE] [pref/PREFERENCES]` | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
+| **Edit**                 | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role) | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
 | **Find**                 | `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`                                                                                                                                            | `find role/employee` , followed by `find n/Bob` to stack filters                                                                                                                                                           |
 | **Relate Profiles**      | `relate i/ID i/ID`                                                                                                                                                                                  | `relate i/1 i/2`                                                                                                                                                                                                           |
 | **Unrelate Profiles**    | `unrelate i/ID i/ID`                                                                                                                                                                                | `relate i/1 i/2`                                                                                                                                                                                                           |
