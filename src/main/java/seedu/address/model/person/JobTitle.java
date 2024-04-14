@@ -12,14 +12,14 @@ public class JobTitle {
 
     public static final String MESSAGE_CONSTRAINTS = "Job titles should only contain "
             + "alphanumeric characters and spaces, and it should not be blank";
-    public static final String VALIDATION_REGEX = "[\\p{Alpha}-][\\p{Alpha}- ]*";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum}-][\\p{Alnum}- ]*";
     private final String title;
 
     /**
      * Represents a job title in an organization.
      */
     public JobTitle() {
-        title = "-";
+        title = "";
     }
 
     /**
@@ -51,6 +51,9 @@ public class JobTitle {
 
     @Override
     public String toString() {
+        if (title == "-") {
+            return "";
+        }
         return title;
     }
 

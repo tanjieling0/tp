@@ -16,9 +16,9 @@ public class DepartmentTest {
 
     @Test
     public void isValidDepartment_invalidDepartment_returnsFalse() {
-        assertFalse(Department.isValidDepartment("")); // empty string
-        assertFalse(Department.isValidDepartment(" ")); // whitespace
-        assertFalse(Department.isValidDepartment("Department!")); // contains special characters
+        assertFalse(Department.isValidDepartment(""));
+        assertFalse(Department.isValidDepartment(" "));
+        assertFalse(Department.isValidDepartment("Department!"));
     }
 
     @Test
@@ -33,5 +33,17 @@ public class DepartmentTest {
         Department department1 = new Department("Sales");
         Department department2 = new Department("Marketing");
         assertFalse(department1.equals(department2));
+    }
+
+    @Test
+    public void testToStringWithNameHyphen() {
+        Department department = new Department("-");
+        assertTrue(department.toString().equals(""));
+    }
+
+    @Test
+    public void testToStringWithValidName() {
+        Department department = new Department("Tech");
+        assertTrue(department.toString().equals("Tech"));
     }
 }

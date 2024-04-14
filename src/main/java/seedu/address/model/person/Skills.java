@@ -63,6 +63,9 @@ public class Skills {
 
     @Override
     public String toString() {
+        if (skills.isEmpty()) {
+            return "";
+        }
         return skills.toString();
     }
 
