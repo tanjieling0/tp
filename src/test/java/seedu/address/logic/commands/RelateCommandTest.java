@@ -119,12 +119,6 @@ public class RelateCommandTest {
         // same values, diff order -> returns true
         assertTrue(relateFirstSecond.equals(relateSecondFirst));
 
-        // first same, second diff -> returns false
-        assertFalse(relateFirstSecond.equals(relateFirstThird));
-
-        // first diff, second same -> returns false
-        assertFalse(relateFirstSecond.equals(relateThirdSecond));
-
         // different types -> returns false
         assertFalse(relateFirstSecond.equals(1));
 
@@ -136,6 +130,12 @@ public class RelateCommandTest {
 
         // different command -> returns false
         assertFalse(relateFirstSecond.equals(addCommand));
+
+        // only one value match -> returns false
+        assertFalse(relateFirstSecond.equals(relateFirstThird));
+        assertFalse(relateFirstSecond.equals(relateThirdSecond));
+        assertFalse(relateFirstSecond.equals(relateSecondThird));
+        assertFalse(relateSecondThird.equals(relateFirstSecond));
     }
 
     @Test

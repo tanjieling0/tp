@@ -106,12 +106,6 @@ public class UnrelateCommandTest {
         // same values, diff order -> returns true
         assertTrue(unrelateFirstSecond.equals(unrelateSecondFirst));
 
-        // first same, second diff -> returns false
-        assertFalse(unrelateFirstSecond.equals(unrelateFirstThird));
-
-        // first diff, second same -> returns false
-        assertFalse(unrelateFirstSecond.equals(unrelateThirdSecond));
-
         // different types -> returns false
         assertFalse(unrelateFirstSecond.equals(1));
 
@@ -120,6 +114,12 @@ public class UnrelateCommandTest {
 
         // different values -> returns false
         assertFalse(unrelateFirstSecond.equals(unrelateSecondThird));
+
+        // only one value match -> returns false
+        assertFalse(unrelateFirstSecond.equals(unrelateFirstThird));
+        assertFalse(unrelateFirstSecond.equals(unrelateThirdSecond));
+        assertFalse(unrelateFirstSecond.equals(unrelateSecondThird));
+        assertFalse(unrelateSecondThird.equals(unrelateFirstSecond));
     }
 
     @Test
