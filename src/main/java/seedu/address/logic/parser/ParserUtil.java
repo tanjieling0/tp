@@ -56,7 +56,7 @@ public class ParserUtil {
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-        if (isContainSlash(trimmedName)){
+        if (isContainSlash(trimmedName)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         } else if (!Name.isValidName(trimmedName)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
@@ -73,7 +73,7 @@ public class ParserUtil {
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
         String trimmedPhone = phone.trim();
-        if (isContainSlash(trimmedPhone)){
+        if (isContainSlash(trimmedPhone)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         } else if (!Phone.isValidPhone(trimmedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
@@ -90,7 +90,7 @@ public class ParserUtil {
     public static Address parseAddress(String address) throws ParseException {
         requireNonNull(address);
         String trimmedAddress = address.trim();
-        if (isContainSlash(trimmedAddress)){
+        if (isContainSlash(trimmedAddress)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         } else if (!Address.isValidAddress(trimmedAddress)) {
             throw new ParseException(Address.MESSAGE_CONSTRAINTS);
@@ -107,7 +107,7 @@ public class ParserUtil {
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
         String trimmedEmail = email.trim();
-        if (isContainSlash(trimmedEmail)){
+        if (isContainSlash(trimmedEmail)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         } else if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
@@ -124,7 +124,7 @@ public class ParserUtil {
     public static Tag parseTag(String tag) throws ParseException {
         requireNonNull(tag);
         String trimmedTag = tag.trim();
-        if (isContainSlash(trimmedTag)){
+        if (isContainSlash(trimmedTag)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         } else if (!Tag.isValidTagName(trimmedTag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
