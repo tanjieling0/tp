@@ -14,7 +14,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
             + "Please ensure the filename does not contain leading, trailing spaces, or end with a period.";
 
     public static final String MESSAGE_NO_SPECIAL_CHARACTER = "Error: Invalid filename. "
-            + "Please ensure the filename does not contain any of the following characters: < > : \" / \\ | ? *";
+            + "Please ensure the filename only contain alphanumeric, underscores, periods and hyphens";
 
 
     /**
@@ -37,18 +37,26 @@ public class ExportCommandParser implements Parser<ExportCommand> {
         return new ExportCommand(trimmedArgs);
     }
 
-    private boolean isValidFilename(String filename) {
+    /**
+     * The isValidFilename function in Java checks if a given filename ends with ".csv", does not start or end with
+     *     spaces or a period, and only contains alphanumeric characters, underscores, hyphens, and periods.
+     * @param filename The `isValidFilename` method checks if a given filename is valid based on the following
+     *     criteria:
+     * @return The method `isValidFilename` returns a boolean value indicating whether the input filename is
+     *     considered valid based on the specified criteria. It returns `true` if the filename ends with ".csv", does
+     *     not start or end with spaces or end with a period, and only contains alphanumeric characters, underscores,
+     *     hyphens, and periods. If any of these conditions are not met, it returns `false`.
+     */
+    public boolean isValidFilename(String filename) {
         // Check if filename ends with ".csv"
         if (!filename.endsWith(".csv")) {
             return false;
         }
 
-        // Check for leading, trailing spaces, or period at the end of filename
         if (filename.startsWith(" ") || filename.endsWith(" ") || filename.endsWith(".")) {
             return false;
         }
 
-        //Only Alphanumerical, underscores, hyphens and periods are allowed
         if (!filename.matches("[a-zA-Z0-9_\\-.]*")) {
             return false;
         }
@@ -56,7 +64,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
         return true;
     }
 
-    private String getErrorMessage(String filename) {
+    public String getErrorMessage(String filename) {
         if (!filename.endsWith(".csv")) {
             return MESSAGE_NO_EXTENSION;
         }
@@ -65,11 +73,8 @@ public class ExportCommandParser implements Parser<ExportCommand> {
             return MESSAGE_SPACE_DETECTED;
         }
 
-        String restrictedChars = "<>:\"/\\|?*";
-        for (char c : restrictedChars.toCharArray()) {
-            if (filename.indexOf(c) != -1) {
-                return MESSAGE_NO_SPECIAL_CHARACTER;
-            }
+        if (!filename.matches("[a-zA-Z0-9_\\-.]*")) {
+            return MESSAGE_NO_SPECIAL_CHARACTER;
         }
 
         return null;

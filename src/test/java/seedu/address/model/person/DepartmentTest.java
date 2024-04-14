@@ -34,4 +34,16 @@ public class DepartmentTest {
         Department department2 = new Department("Marketing");
         assertFalse(department1.equals(department2));
     }
+
+    @Test
+    public void testToStringWithNameHyphen() {
+        Department department = new Department("-");
+        assertTrue(department.toString().equals(""));
+    }
+
+    @Test
+    public void testToStringWithValidName() {
+        Department department = new Department("Tech");
+        assertTrue(department.toString().equals("Tech"));
+    }
 }

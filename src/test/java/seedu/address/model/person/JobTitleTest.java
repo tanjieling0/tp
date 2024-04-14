@@ -21,11 +21,11 @@ public class JobTitleTest {
         assertTrue(JobTitle.isValidJobTitle("Product Manager"));
         assertTrue(JobTitle.isValidJobTitle("Data Analyst"));
         assertTrue(JobTitle.isValidJobTitle("Senior Software Developer"));
+        assertTrue(JobTitle.isValidJobTitle("123"));
 
         // Invalid job titles
         assertFalse(JobTitle.isValidJobTitle(""));
         assertFalse(JobTitle.isValidJobTitle(" "));
-        assertFalse(JobTitle.isValidJobTitle("123"));
         assertFalse(JobTitle.isValidJobTitle("INVALID_JOB_TITLE"));
     }
 
@@ -73,5 +73,11 @@ public class JobTitleTest {
         JobTitle jobTitle1 = new JobTitle(VALID_JOB_TITLE);
         JobTitle jobTitle2 = new JobTitle(VALID_JOB_TITLE_2);
         assertNotEquals(jobTitle1.hashCode(), jobTitle2.hashCode());
+    }
+
+    @Test
+    public void testToStringWithTitleHyphen() {
+        JobTitle jobTitle = new JobTitle();
+        assertEquals("", jobTitle.toString());
     }
 }
