@@ -6,16 +6,11 @@
 
 # NetConnect User Guide
 
-NetConnect is a desktop app for managing contacts in SMEs, optimized for use via a Command Line Interface (CLI) while
-still having the benefits of a Graphical User Interface (GUI). It enables HR and relations managers to efficiently
-manage their employees, clients, as well as suppliers, **all in one place** ☝🏻.
+NetConnect is a desktop app for managing contacts in SMEs, optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). It enables HR and relations managers to efficiently manage their employees, clients, as well as suppliers, **all in one place** ☝🏻.
 
-The inspiration behind NetConnect lies in solving a specific set of challenges faced by the food business managers
-demographic. Specifically, we aim to address the challenge of managing various contact types: clients, suppliers, and
-employees.
+The inspiration behind NetConnect lies in solving a specific set of challenges faced by the food business managers demographic. Specifically, we aim to address the challenge of managing various contact types: clients, suppliers, and employees.
 
-If you relate to this problem we identified, then NetConnect might be just right for you. This user guide will accompany
-you in maximising the capabilities of this product, freeing time for more pressing issues.
+If you relate to this problem we identified, then NetConnect might be just right for you. This user guide will accompany you in maximising the capabilities of this product, freeing time for more pressing issues.
 
 
 <div style="page-break-after: always;"></div>
@@ -95,12 +90,10 @@ you in maximising the capabilities of this product, freeing time for more pressi
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be
-  ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
-* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines
-  as space characters surrounding line-breaks may be omitted when copied over to the application.
+* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
   </box>
 
 <section id="help">
@@ -147,7 +140,7 @@ Examples (Supplier):
 Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be 8 digits long.
+* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
@@ -215,7 +208,7 @@ Examples:
 Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be 8 digits long.
+* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
