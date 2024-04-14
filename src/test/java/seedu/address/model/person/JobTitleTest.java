@@ -77,7 +77,7 @@ public class JobTitleTest {
 
     @Test
     public void testToStringWithTitleHyphen() {
-        JobTitle jobTitle = new JobTitle();
+        JobTitle jobTitle = new JobTitle("-");
         assertEquals("", jobTitle.toString());
     }
 }
