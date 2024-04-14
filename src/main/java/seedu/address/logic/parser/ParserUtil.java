@@ -21,6 +21,7 @@ import seedu.address.model.person.Remark;
 import seedu.address.model.person.Skills;
 import seedu.address.model.person.TermsOfService;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.util.TestCommandFormatUtil;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser
@@ -153,6 +154,8 @@ public class ParserUtil {
         String trimmedDepartment = department.trim();
         if (!Department.isValidDepartment(trimmedDepartment)) {
             throw new ParseException(Department.MESSAGE_CONSTRAINTS);
+        } else if (isContainSlash(trimmedDepartment)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         }
         return new Department(trimmedDepartment);
     }
@@ -168,6 +171,8 @@ public class ParserUtil {
         String trimmedJobTitle = jobTitle.trim();
         if (!JobTitle.isValidJobTitle(trimmedJobTitle)) {
             throw new ParseException(JobTitle.MESSAGE_CONSTRAINTS);
+        } else if (isContainSlash(trimmedJobTitle)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         }
         return new JobTitle(trimmedJobTitle);
     }
@@ -182,6 +187,8 @@ public class ParserUtil {
         requireNonNull(products);
         if (!Products.isValidProducts(products)) {
             throw new ParseException(Products.MESSAGE_CONSTRAINTS);
+        } else if (isContainSlash(products)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
         }
         return new Products(products);
     }
@@ -196,6 +203,8 @@ public class ParserUtil {
             String trimmedSkills = skill.trim();
             if (!Skills.isValidSkills(trimmedSkills)) {
                 throw new ParseException(Skills.MESSAGE_CONSTRAINTS);
+            } else if (isContainSlash(trimmedSkills)) {
+                throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
             }
             skillsSet.add(trimmedSkills);
         }
@@ -213,6 +222,8 @@ public class ParserUtil {
             String trimmedSkills = skill.trim();
             if (!Skills.isValidSkills(trimmedSkills)) {
                 throw new ParseException(Skills.MESSAGE_CONSTRAINTS);
+            } else if (isContainSlash(trimmedSkills)) {
+                throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
             }
             skillsSet.add(trimmedSkills);
         }
@@ -223,8 +234,11 @@ public class ParserUtil {
      * Parses a {@code String preferences} into a {@code String}.
      * Leading and trailing whitespaces will be trimmed.
      */
-    public static String parsePreferences(String preferences) {
+    public static String parsePreferences(String preferences) throws ParseException {
         requireNonNull(preferences);
+        if (isContainSlash(preferences)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        }
         return preferences;
     }
 
@@ -234,9 +248,36 @@ public class ParserUtil {
      * @param termsOfService The terms of service to be parsed.
      * @return The parsed terms of service.
      */
-    public static TermsOfService parseTermsOfService(String termsOfService) {
+    public static TermsOfService parseTermsOfService(String termsOfService) throws ParseException {
         requireNonNull(termsOfService);
+        if (isContainSlash(termsOfService)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        }
         return new TermsOfService(termsOfService);
     }
 
+    /**
+     * Checks if the given input string contains a slash ("/").
+     *
+     * @param input the input string to check
+     * @return true if the input string contains a slash, false otherwise
+     */
+    public static Boolean isContainSlash(String input) {
+        return input.contains("/");
+    }
+
+    /**
+     * Checks if any string in the given list contains a slash.
+     *
+     * @param input the list of strings to check
+     * @return true if any string in the list contains a slash, false otherwise
+     */
+    public static Boolean isContainSlash(List<String> input) {
+        for (String s : input) {
+            if (isContainSlash(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
