@@ -141,6 +141,7 @@ Constraints for each field. Here are the constraints for each field in the appli
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
+* `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
 * `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
@@ -207,13 +208,8 @@ Examples:
 Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-<<<<<<< HEAD
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
-* `EMAIL`: Emails should be of the format `local-part@domain`
-=======
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be 8 digits long.
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
->>>>>>> master
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
 * `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
