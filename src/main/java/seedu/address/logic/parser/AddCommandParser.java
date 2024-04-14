@@ -67,7 +67,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                 ? ParserUtil.parseRemark(argMultimap.getValue(PREFIX_REMARK).get())
                 : new Remark("");
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-        String role = argMultimap.getValue(PREFIX_ROLE).get();
+        String role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
         return new AddCommand(
                 createPerson(role, name, phone, email, address, remark, tagList, argMultimap));

@@ -154,6 +154,21 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String role} into a {@code Role}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code role} is invalid.
+     */
+    public static String parseRole(String role) throws ParseException {
+        requireNonNull(role);
+        String trimmedRole = role.trim();
+        if (isContainSlash(trimmedRole)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        }
+        return trimmedRole;
+    }
+
+    /**
      * Parses a {@code String department} into a {@code Department}.
      * Leading and trailing whitespaces will be trimmed.
      *
