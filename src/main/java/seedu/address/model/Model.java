@@ -124,6 +124,13 @@ public interface Model {
     void stackFilters(NetConnectPredicate<Person> predicate);
 
     /**
+     * Updates the existing view of the filtered person list with the given {@code predicate}.
+     *
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredList(NetConnectPredicate<Person> predicate);
+
+    /**
      * Returns the current filters applied in a user readable format.
      */
     String printFilters();

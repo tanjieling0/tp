@@ -141,7 +141,6 @@ Constraints for each field. Here are the constraints for each field in the appli
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
-* `EMAIL`: Emails should be of the format `local-part@domain`
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
 * `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
@@ -171,8 +170,6 @@ Format: `delete [n/NAME] [i/ID]`
 Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
 * `delete n/John Doe` deletes the person with the name John Doe (if no one else have the same name).
-
-**Info:** Instead of completely deleting the profile from the database, NetConnect does a soft delete of the profile instead. What this means is that the profile still exists in the database, but is marked as inactive, and will not appear in your current list or searches.
 
 **Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 </section>
@@ -210,8 +207,13 @@ Examples:
 Constraints for each field. Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
+<<<<<<< HEAD
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
 * `EMAIL`: Emails should be of the format `local-part@domain`
+=======
+* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be 8 digits long.
+* `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
+>>>>>>> master
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
 * `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
@@ -228,25 +230,28 @@ Constraints for each field. Here are the constraints for each field in the appli
 
 ## Locating persons by name: `find`
 
-Finds persons whose names contain any of the given name keywords. You can also find persons by tags, phone numbers, roles, and remarks. You can also stack multiple characteristics to narrow down your search. Note that only one type of field is allowed for each search at one time.
+Finds persons whose information matches any of the specified parameters. You can find persons by names, phone numbers, tags, roles, and remarks. To search via different fields, you can stack multiple `find`-type commands to narrow down your search.
 
-Format: `find [n/NAME] [t/TAG] [p/PHONE_NUMBER] [role/ROLE] [r/REMARK]`
+Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMARK]...`
 
-* The search is case-insensitive. e.g. `hans` will match `Hans`.
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
-* Only partial matches are allowed for names e.g. `Ha` will match `Hans`.
-* For all other fields, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`.
-* Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`.
+* Only one type of field is allowed for each `find` command.
+* Multiple parameters of the same field can be provided, showing persons who match any of the field in that command, e.g. `find n/alex n/david` will show all persons with either `alex` or `david` in their names.
+* `list` is required to remove the stacked filters.
+* Searches are case-insensitive, e.g. `hans` will match `Hans`.
+* Partial matches are allowed for names, e.g. `Ha` will match `Hans`.
+* Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`, `find r/has dog` will match `r/he has a dog`, `find r/market` will **not** match `r/marketing`.
+* Find by remark requires all words given to be contained in the remark sentence, e.g. `find r/has cute dog` will **not** match ` r/he has a dog`.
+* Find by remark allows unordered search, e.g. `find r/dog has` will match `r/he has a dog`.
 * `find r/` will search for contacts with an empty remark.
-* Full matches will be required for phone numbers and roles.
+* For phone numbers, tags and role, only exact matches are allowed, e.g. `83647382` or `8364` will not match `83641001`, `find t/fri` will not match contacts with tag `friends`, `find role/clie` will not match contacts with role `client`.
 
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
-* `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
+* `find n/alex n/david` returns `Alex Yeoh`, `David Li`.<br>
 ![result for 'find alex david'](images/findAlexDavidResult.png)
 
 Find by tag example:
-* `find t/friend` returns all persons who have the tag `friend`.
+* `find t/friends` returns all persons who have the tag `friends`.
 
 Find by phone number example:
 * `find p/98765432` returns `John Doe` who has the phone number `98765432`.
@@ -258,13 +263,17 @@ Find by role example:
 Find by remark example:
 * `find r/` returns all persons who have an empty remark.
 * `find r/has a dog` returns all persons who have the remark `has a dog`.
-* Persons with remarks matching at least one keyword will be returned (i.e. `OR` search).
-* `find r/marketing IC`  returns all persons who have the remark `publicity IC`, as well as persons who have the remark `marketing head`.
+* `find r/dog` returns all persons who have the remark `has a dog`.
+* `find r/a has` returns all persons who have the remark `has a dog`.
 
-Find by name and tag example
-* `find n/John t/friend` returns all persons who have the name `John` and the tag `friend`.
+Stacking find by name and tag example
+* `find n/John` returns all persons who have the name `John`.
 
-**Note:** NetConnect accepts phone numbers with three or more digits, to account for staff extensions in the company. This is not a bug.
+[insert screenshot]
+
+* Followed by `find t/friends`, returns all persons who have the name `John` and the tag `friends`.
+
+[insert screenshot]
 
 </section>
 

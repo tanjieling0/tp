@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -121,6 +123,36 @@ public class ClientTest {
         Client client2 = new Client(name2, phone2, email2, address2, remark2, tags2, products2, preferences2);
 
         assertNotEquals(client1, client2);
+    }
+
+    @Test
+    public void testGetProductsAsString() {
+        // Create products set
+        List<String> productsList = new ArrayList<>();
+        productsList.add("Product A");
+        productsList.add("Product B");
+        productsList.add("Product C");
+
+        // Create a Client object
+        Client client = new Client(new Name("John"), new Phone("12345678"), new Email("john@example.com"),
+                new Address("123 Street"), new Remark(""), new HashSet<>(),
+                new Products(productsList), "Preference");
+
+        // Test getProductsAsString() method
+        String expectedProductsString = "\"Product A, Product B, Product C\"";
+        String actualProductsString = client.getProductsAsString();
+        assertEquals(expectedProductsString, actualProductsString,
+                "Products string should be formatted correctly with double quotes and comma-separated values.");
+
+        // Test with empty products set
+        Client clientWithEmptyProducts = new Client(new Name("John"), new Phone("12345678"),
+                new Email("john@example.com"), new Address("123 Street"),
+                new Remark(""), new HashSet<>(), new Products(new ArrayList<>()),
+                "Preference");
+        String expectedEmptyProductsString = "";
+        String actualEmptyProductsString = clientWithEmptyProducts.getProductsAsString();
+        assertEquals(expectedEmptyProductsString, actualEmptyProductsString,
+                "Products string should be empty when products set is empty.");
     }
 
     @Test

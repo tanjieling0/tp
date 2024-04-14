@@ -113,7 +113,7 @@ public class DeleteCommand extends Command {
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_NAME, targetName.fullName));
             }
             if (count > 1) {
-                model.stackFilters(NetConnectPredicate.box(
+                model.updateFilteredList(NetConnectPredicate.box(
                         p -> p.getName().fullName.equalsIgnoreCase(targetName.fullName)));
                 throw new CommandException(String.format(MESSAGE_DUPLICATE_NAME_USAGE, count, targetName.fullName));
             }

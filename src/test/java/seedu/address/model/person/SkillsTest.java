@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -112,5 +113,19 @@ public class SkillsTest {
         Skills skills1 = new Skills("Java Python");
         Skills skills2 = new Skills("Java Python");
         assertEquals(skills1.hashCode(), skills2.hashCode());
+    }
+
+    @Test
+    public void testToStringWithNonEmptySkillsList() {
+        Set<String> skillsList = new HashSet<>(Arrays.asList("Java", "Python", "SQL"));
+        Skills skills = new Skills(skillsList);
+        assertTrue(skills.toString().equals("[Java, Python, SQL]"));
+    }
+
+    @Test
+    public void testToStringWithEmptySkillsList() {
+        Set<String> skillsList = new HashSet<>();
+        Skills skills = new Skills(skillsList);
+        assertTrue(skills.toString().equals(""));
     }
 }

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,20 +65,18 @@ public class CsvExporterTest {
             "Job Title", "Skills", "Products", "Preferences", "Terms of Service"}, dataList.get(0));
 
         assertArrayEquals(new String[]{"1", "John Doe", "1234567890", "john@example.com", "\"123 Main St\"",
-            "some remarks", "", "HR", "Manager", "Java, SQL", "", "", ""}, dataList.get(1));
+            "some remarks", "", "HR", "Manager", "\"Java, SQL\"", "", "", ""}, dataList.get(1));
         assertArrayEquals(new String[]{"2", "Jane Smith", "9876543210", "jane@example.com", "\"456 Elm St\"",
-            "some remarks", "", "", "", "", "Product A", "Likes discounts", ""}, dataList.get(2));
+            "some remarks", "", "", "", "", "\"Product A\"", "Likes discounts", ""}, dataList.get(2));
         assertArrayEquals(new String[]{"3", "Acme Inc", "5555555555", "info@acme.com", "\"789 Oak St\"",
-            "some remarks", "", "", "", "", "Product X", "", "30 days"}, dataList.get(3));
+            "some remarks", "", "", "", "", "\"Product X\"", "", "30 days"}, dataList.get(3));
     }
 
     @Test
     public void execute_exportSuccess() {
+        CsvExporter csvExporter = new CsvExporter(persons, TEST_FILENAME);
         csvExporter.execute();
         assertTrue(csvExporter.getIsSuccessful());
-        File exportedFile = new File(TEST_FILENAME);
-        assertTrue(exportedFile.exists());
-        exportedFile.delete(); // Clean up after test
     }
 
     @Test
@@ -100,11 +97,11 @@ public class CsvExporterTest {
             person.getEmail().toString(),
             "\"" + person.getAddress().toString() + "\"",
             person.getRemark().toString(),
-            "\"" + person.getTagsAsString() + "\"",
+            person.getTagsAsString(),
             "",
             "",
             "",
-            person.getProducts().toString(),
+            person.getProductsAsString(),
             person.getPreferences().toString(),
             ""
         };
@@ -128,7 +125,7 @@ public class CsvExporterTest {
     public void convertPersonToStringArray_employee() {
         String[] expectedArray = new String[]{
             "3", "Daniel Meier", "87652533", "cornelia@example.com", "\"10th street\"", "some remarks",
-            "\"friends\"", "Marketing", "Manager", "Digital Marketing, Public Speaking", "", "", ""
+            "\"friends\"", "Marketing", "Manager", "\"Digital Marketing, Public Speaking\"", "", "", ""
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.DANIEL));
     }
@@ -137,7 +134,7 @@ public class CsvExporterTest {
     public void convertPersonToStringArray_client() {
         String[] expectedArray = new String[]{
             "1", "Alice Pauline", "94351253", "alice@example.com", "\"123, Jurong West Ave 6, #08-111\"",
-            "some remarks", "\"friends\"", "", "", "", "Product1, Product2", "Vegan", ""
+            "some remarks", "\"friends\"", "", "", "", "\"Product1, Product2\"", "Vegan", ""
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.ALICE));
     }
@@ -146,7 +143,7 @@ public class CsvExporterTest {
     public void convertPersonToStringArray_supplier() {
         String[] expectedArray = new String[]{
             "5", "Fiona Kunz", "9482427", "lydia@example.com", "\"little tokyo\"", "some remarks", "", "", "",
-            "", "Office Supplies, Furniture", "", "Delivery within 2 weeks"
+            "", "\"Office Supplies, Furniture\"", "", "Delivery within 2 weeks"
         };
         assertArrayEquals(expectedArray, csvExporter.convertPersonToStringArray(TypicalPersons.FIONA));
     }

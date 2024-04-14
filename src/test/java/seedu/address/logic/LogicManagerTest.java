@@ -96,6 +96,22 @@ public class LogicManagerTest {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
     }
 
+    @Test
+    public void getNetConnect_success() {
+        assertEquals(model.getNetConnect(), logic.getNetConnect());
+    }
+
+    @Test
+    public void getNetConnectFilePath_success() {
+        assertEquals(model.getNetConnectFilePath(), logic.getNetConnectFilePath());
+    }
+
+    @Test
+    public void getGuiSettings_success() {
+        assertEquals(model.getGuiSettings(), logic.getGuiSettings());
+    }
+
+
     /**
      * Executes the command and confirms that
      * - no exceptions are thrown <br>
