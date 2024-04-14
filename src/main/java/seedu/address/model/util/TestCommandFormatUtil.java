@@ -6,7 +6,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Utility class for testing command format validation.
  */
 public class TestCommandFormatUtil {
-    public static final String MESSAGE_CONSTRAINTS = "Invalid command format! Invalid prefix has been detected.";
+    public static final String MESSAGE_CONSTRAINTS = "Invalid prefix has been detected.";
     private static final String VALIDATION_STRING = "[^/]*";
 
     /**

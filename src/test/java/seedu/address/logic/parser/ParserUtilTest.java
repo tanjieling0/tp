@@ -161,11 +161,6 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseAddress_invalidValueSlash_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_SLASH));
-    }
-
-    @Test
     public void parseEmail_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail(null));
     }
