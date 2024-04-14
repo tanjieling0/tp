@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -137,7 +138,8 @@ public class PersonCard extends UiPart<Region> {
             jobTitle.setText("Job Title: " + employee.getJobTitle().toString());
             skills.setVisible(true);
             skills.setManaged(true);
-            skills.setText("Skills: " + employee.getSkills().toString());
+            skills.setText("Skills: " + employee.getSkills().getSkills().stream()
+                    .sorted().collect(Collectors.joining(", ")));
         } else if (person instanceof Supplier) {
             Supplier supplier = (Supplier) person;
             role.getChildren().add(new Label("Supplier"));
