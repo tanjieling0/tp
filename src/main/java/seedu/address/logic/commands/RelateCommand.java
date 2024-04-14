@@ -60,11 +60,7 @@ public class RelateCommand extends Command {
             model.addRelatedIdTuple(tuple);
         }
 
-        // reset user view from any previous commands
-        model.clearFilter();
-
-        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.stackFilters(predicate);
+        model.updateFilteredList(predicate);
 
         return new CommandResult(
             String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));

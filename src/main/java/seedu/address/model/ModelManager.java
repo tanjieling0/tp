@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -204,6 +205,14 @@ public class ModelManager implements Model {
 
         filter = filter.add(predicate);
         filteredPersons.setPredicate(filter);
+    }
+
+    @Override
+    public void updateFilteredList(NetConnectPredicate<Person> predicate) {
+        requireNonNull(predicate);
+
+        filter = Filter.noFilter();
+        filteredPersons.setPredicate(Filter.of(Collections.singletonList(predicate)));
     }
 
     @Override
