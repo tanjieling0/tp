@@ -104,7 +104,7 @@ public class RelateCommandTest {
     public void equals() {
         RelateCommand relateFirstSecond = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         RelateCommand otherRelateFirstSecond = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
-        RelateCommand relateSecondFirst = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        RelateCommand relateSecondFirst = new RelateCommand(ID_SECOND_PERSON, ID_FIRST_PERSON);
         RelateCommand relateSecondThird = new RelateCommand(ID_SECOND_PERSON, ID_THIRD_PERSON);
         AddCommand addCommand = new AddCommand(new ClientBuilder().build());
 
