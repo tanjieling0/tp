@@ -77,6 +77,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseId_invalidInputSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseId(INVALID_SLASH));
+    }
+
+    @Test
     public void parseName_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseName(null));
     }

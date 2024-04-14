@@ -37,7 +37,9 @@ public class ParserUtil {
      */
     public static Id parseId(String id) throws ParseException {
         String trimmedId = id.trim();
-        if (!(StringUtil.isNonZeroUnsignedInteger(trimmedId))) {
+        if (isContainSlash(trimmedId)) {
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!(StringUtil.isNonZeroUnsignedInteger(trimmedId))) {
             throw new ParseException(Id.MESSAGE_CONSTRAINTS);
         }
         int parsedId = Integer.parseInt(trimmedId);
@@ -90,9 +92,7 @@ public class ParserUtil {
     public static Address parseAddress(String address) throws ParseException {
         requireNonNull(address);
         String trimmedAddress = address.trim();
-        if (isContainSlash(trimmedAddress)) {
-            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
-        } else if (!Address.isValidAddress(trimmedAddress)) {
+        if (!Address.isValidAddress(trimmedAddress)) {
             throw new ParseException(Address.MESSAGE_CONSTRAINTS);
         }
         return new Address(trimmedAddress);
