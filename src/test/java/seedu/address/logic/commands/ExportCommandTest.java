@@ -33,7 +33,6 @@ public class ExportCommandTest {
     @Test
     public void execute_exportSuccess() throws CommandException {
         String filename = "test_export.csv";
-        Path filePath = Paths.get(filename);
 
         ExportCommand exportCommand = new ExportCommand(filename);
         String expectedMessage = ExportCommand.MESSAGE_SUCCESS + filename;
@@ -41,6 +40,7 @@ public class ExportCommandTest {
 
         Model expectedModel = new ModelManager(model.getNetConnect(), new UserPrefs());
         assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
+        Path filePath = Paths.get(System.getProperty("user.dir"), filename).getParent();
         assertTrue(filePath.toFile().exists());
 
         // Clean up

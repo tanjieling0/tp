@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a Terms of Service in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidTermsOfService(String)}
  */
 public class TermsOfService {
 
@@ -14,7 +13,7 @@ public class TermsOfService {
      * Represents the terms of service of an organization.
      */
     public TermsOfService() {
-        terms = "-";
+        terms = "";
     }
 
     /**

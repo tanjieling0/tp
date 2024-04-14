@@ -48,13 +48,13 @@ public class RelatedListTest {
     public void remove_relatedListContainsIdTuple_returnsTrue() {
         IdTuple idTuple = new IdTuple(Id.generateTempId(1), Id.generateTempId(2));
         relatedList.allowAddIdTuple(idTuple);
-        assertTrue(relatedList.remove(idTuple));
+        assertTrue(relatedList.removeTuple(idTuple));
     }
 
     @Test
     public void remove_relatedListDoesNotContainIdTuple_returnsFalse() {
         IdTuple idTuple = new IdTuple(Id.generateTempId(1), Id.generateTempId(2));
-        assertFalse(relatedList.remove(idTuple));
+        assertFalse(relatedList.removeTuple(idTuple));
     }
 
     @Test
@@ -68,6 +68,30 @@ public class RelatedListTest {
         assertEquals(2, relatedList.getAllRelatedIds(relatedList, Id.generateTempId(2)).size());
         assertEquals(1, relatedList.getAllRelatedIds(relatedList, Id.generateTempId(3)).size());
     }
+
+    @Test
+    public void removeId_idExistsAndHasMultipleRelations_returnsUpdatedRelatedList() {
+        IdTuple idTuple = new IdTuple(Id.generateTempId(1), Id.generateTempId(2));
+        IdTuple idTuple2 = new IdTuple(Id.generateTempId(1), Id.generateTempId(3));
+        relatedList.allowAddIdTuple(idTuple);
+        relatedList.allowAddIdTuple(idTuple2);
+
+        relatedList.removeId(Id.generateTempId(1));
+        assertTrue(relatedList.isEmpty());
+    }
+
+    @Test
+    public void removeId_idHasNoRelations_noChangeInRelatedList() {
+        IdTuple idTuple = new IdTuple(Id.generateTempId(1), Id.generateTempId(2));
+        IdTuple idTuple2 = new IdTuple(Id.generateTempId(1), Id.generateTempId(3));
+        relatedList.allowAddIdTuple(idTuple);
+        relatedList.allowAddIdTuple(idTuple2);
+
+        relatedList.removeId(Id.generateTempId(5));
+        assertTrue(relatedList.hasId(idTuple) && relatedList.hasId(idTuple2));
+    }
+
+
 
     @Test
     public void asUnmodifiableObservableList_returnsUnmodifiableList() {

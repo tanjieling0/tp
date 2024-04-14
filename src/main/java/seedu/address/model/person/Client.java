@@ -45,6 +45,19 @@ public class Client extends Person {
     }
 
     /**
+     * Returns the products preferred by the client.
+     *
+     * @return The products preferred by the client as a String.
+     */
+    public String getProductsAsString() {
+        String result = String.join(", ", products.getProducts());
+        if (result.isEmpty()) {
+            return result;
+        }
+        return "\"" + result + "\"";
+    }
+
+    /**
      * Returns the preferences of the client.
      *
      * @return The preferences of the client.

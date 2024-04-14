@@ -126,7 +126,7 @@ public class PersonCard extends UiPart<Region> {
             products.setVisible(true);
             products.setManaged(true);
             products.setText("Buying Products: "
-                    + client.getProducts().getProducts().stream().collect(Collectors.joining(", ")));
+                    + client.getProducts().toString());
         } else if (person instanceof Employee) {
             Employee employee = (Employee) person;
             role.getChildren().add(new Label("Employee"));
@@ -149,7 +149,7 @@ public class PersonCard extends UiPart<Region> {
             products.setVisible(true);
             products.setManaged(true);
             products.setText("Selling Products: "
-                    + supplier.getProducts().getProducts().stream().collect(Collectors.joining(", ")));
+                    + supplier.getProducts().toString());
         }
 
     }

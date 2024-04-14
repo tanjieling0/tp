@@ -28,3 +28,6 @@ docs/_markbind/logs/
 
 # VSCode configuration files
 .vscode/
+
+# NetConnect exported CSV files
+*.csv

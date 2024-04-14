@@ -2,6 +2,7 @@ package seedu.address.model.person.filter;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -36,7 +37,8 @@ public class RemarkContainsKeywordsPredicate extends NetConnectPredicate<Person>
     @Override
     public boolean test(Person person) {
         return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getRemark().value, keyword))
+                .anyMatch(keyword -> Arrays.stream(keyword.split("\\s+"))
+                        .allMatch(word -> StringUtil.containsWordIgnoreCase(person.getRemark().value, word)))
                 || (hasEmptyKeyword && person.getRemark().value.isBlank());
     }
 

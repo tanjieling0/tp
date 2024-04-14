@@ -23,7 +23,7 @@ public class ShowRelatedCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Finds all persons related to person with the specified id.\n"
             + "Parameters: i/ID\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_ID + "/1";
+            + "Example: " + COMMAND_WORD + " " + PREFIX_ID + "1";
 
     private final Id id;
 
@@ -34,12 +34,13 @@ public class ShowRelatedCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
         RelatedList relatedList = model.getRelatedIdTuples();
 
         List<Integer> relatedIds = relatedList.getAllRelatedIds(relatedList, id);
         IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(relatedIds);
 
-        model.stackFilters(predicate);
+        model.updateFilteredList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }

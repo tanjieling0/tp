@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -47,5 +48,36 @@ public class ExportCommandParserTest {
     public void parse_blankArgs_throwsParseException() {
         ExportCommand expectedExportCommand = new ExportCommand();
         assertParseSuccess(parser, "", expectedExportCommand);
+    }
+
+    @Test
+    public void testIsValidFilenameWithValidFilename() {
+        String validFilename = "test.csv";
+        ExportCommandParser exportCommandParser = new ExportCommandParser();
+        assertTrue(exportCommandParser.isValidFilename(validFilename));
+    }
+
+    @Test
+    public void testGetErrorMessageNoExtension() {
+        String filename = "test";
+        ExportCommandParser exportCommandParser = new ExportCommandParser();
+        assertTrue(exportCommandParser.getErrorMessage(filename).equals("Error: Invalid filename. "
+                + "Please provide a valid filename with the .csv extension."));
+    }
+
+    @Test
+    public void testGetErrorMessageSpaceDetected() {
+        String filename = " test.csv";
+        ExportCommandParser exportCommandParser = new ExportCommandParser();
+        assertTrue(exportCommandParser.getErrorMessage(filename).equals("Error: Invalid filename. "
+                + "Please ensure the filename does not contain leading, trailing spaces, or end with a period."));
+    }
+
+    @Test
+    public void testGetErrorMessageNoSpecialCharacter() {
+        String filename = "test@file.csv";
+        ExportCommandParser exportCommandParser = new ExportCommandParser();
+        assertTrue(exportCommandParser.getErrorMessage(filename).equals("Error: Invalid filename. "
+                + "Please ensure the filename only contain alphanumeric, underscores, periods and hyphens"));
     }
 }

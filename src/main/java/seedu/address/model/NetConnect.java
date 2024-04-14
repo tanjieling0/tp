@@ -96,7 +96,7 @@ public class NetConnect implements ReadOnlyNetConnect {
     }
 
     /**
-     * Returns true if the NetConnect has exactly one {@code Person}
+     * Returns count if the NetConnect has exactly one {@code Person}
      * with the specified name.
      */
     public int countPersonsWithName(Name name) {
@@ -139,6 +139,8 @@ public class NetConnect implements ReadOnlyNetConnect {
      */
     public void removePerson(Person key) {
         persons.remove(key);
+        Id id = key.getId();
+        relatedList.removeId(id);
     }
 
     //// related list operations
@@ -170,9 +172,9 @@ public class NetConnect implements ReadOnlyNetConnect {
      * @param idTuple The IdTuple to be removed.
      * @return true if the IdTuple is removed, false otherwise.
      */
-    public boolean removeRelatedId(IdTuple idTuple) {
+    public boolean removeRelatedIdTuple(IdTuple idTuple) {
         requireNonNull(idTuple);
-        return relatedList.remove(idTuple);
+        return relatedList.removeTuple(idTuple);
     }
 
     //// util methods

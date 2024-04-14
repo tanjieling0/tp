@@ -18,8 +18,8 @@ public class RelateCommand extends Command {
     public static final String COMMAND_WORD = "relate";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": relates strictly two existing persons in NetConnect "
-            + "using either their unique id, OR, name.\n"
-            + "The unique IDs or names provided must exist.\n"
+            + "using their unique id.\n"
+            + "Both unique IDs must exist.\n"
             + "Parameters: i/ID_1 i/ID_2\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
 
@@ -40,9 +40,9 @@ public class RelateCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.stackFilters(predicate);
+
         if (firstPersonId.equals(secondPersonId)) {
+            model.clearFilter();
             throw new CommandException(Messages.MESSAGE_CANNOT_RELATE_ITSELF);
         }
         // actual execution occurs here
@@ -59,6 +59,8 @@ public class RelateCommand extends Command {
         } else {
             model.addRelatedIdTuple(tuple);
         }
+
+        model.updateFilteredList(predicate);
 
         return new CommandResult(
             String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));

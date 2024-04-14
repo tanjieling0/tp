@@ -84,7 +84,7 @@ public interface Model {
     Person getPersonByName(Name name);
 
     /**
-     * Deletes the given person.
+     * Deletes the given person including any of its relations.
      * The person must exist in the address book.
      */
     void deletePerson(Person target);
@@ -122,6 +122,13 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void stackFilters(NetConnectPredicate<Person> predicate);
+
+    /**
+     * Updates the existing view of the filtered person list with the given {@code predicate}.
+     *
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredList(NetConnectPredicate<Person> predicate);
 
     /**
      * Returns the current filters applied in a user readable format.

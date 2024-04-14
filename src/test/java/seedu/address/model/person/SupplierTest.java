@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -57,6 +59,37 @@ public class SupplierTest {
                 validTag, validProducts, validTermsOfService);
 
         assertFalse(supplier1.isSamePerson(supplier2));
+    }
+
+    @Test
+    public void testGetProductsAsString() {
+        // Create products list
+        List<String> productsList = new ArrayList<>();
+        productsList.add("Product A");
+        productsList.add("Product B");
+        productsList.add("Product C");
+
+        // Create a Supplier object
+        Supplier supplier = new Supplier(new Name("Supplier Name"), new Phone("12345678"),
+                new Email("supplier@example.com"), new Address("123 Street"),
+                new Remark(""), new HashSet<>(), new Products(productsList),
+                new TermsOfService("Terms"));
+
+        // Test getProductsAsString() method
+        String expectedProductsString = "\"Product A, Product B, Product C\"";
+        String actualProductsString = supplier.getProductsAsString();
+        assertEquals(expectedProductsString, actualProductsString,
+                "Products string should be formatted correctly with double quotes and comma-separated values.");
+
+        // Test with empty products list
+        Supplier supplierWithEmptyProducts = new Supplier(new Name("Supplier Name"), new Phone("12345678"),
+                new Email("supplier@example.com"), new Address("123 Street"),
+                new Remark(""), new HashSet<>(), new Products(new ArrayList<>()),
+                new TermsOfService("Terms"));
+        String expectedEmptyProductsString = "";
+        String actualEmptyProductsString = supplierWithEmptyProducts.getProductsAsString();
+        assertEquals(expectedEmptyProductsString, actualEmptyProductsString,
+                "Products string should be empty when products list is empty.");
     }
 
     @Test
