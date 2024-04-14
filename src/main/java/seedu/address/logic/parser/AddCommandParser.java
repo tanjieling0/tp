@@ -103,7 +103,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             }
             Optional<String> optionalPreferences = argMultimap.getValue(PREFIX_PREFERENCES);
             Optional<List<String>> optionalProducts = Optional.ofNullable(argMultimap.getAllValues(PREFIX_PRODUCTS));
-            String preferences = optionalPreferences.orElse("-");
+            String preferences = optionalPreferences.orElse("");
             Products products = ParserUtil.parseProducts(optionalProducts.orElse(Collections.emptyList()));
             return new Client(name, phone, email, address, remark, tagList, products, preferences);
         case "employee":
@@ -131,7 +131,7 @@ public class AddCommandParser implements Parser<AddCommand> {
                     .orElse(Collections.emptyList()));
             TermsOfService termsOfService = optionalTermsOfService
                     .map(TermsOfService::new)
-                    .orElseGet(() -> new TermsOfService("-"));
+                    .orElseGet(() -> new TermsOfService(""));
             return new Supplier(name, phone, email, address, remark, tagList, supplierProducts, termsOfService);
         default:
             throw new ParseException("Invalid role specified. Must be one of: client, employee, supplier.");

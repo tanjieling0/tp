@@ -51,6 +51,9 @@ public class JobTitle {
 
     @Override
     public String toString() {
+        if (title == "-") {
+            return "";
+        }
         return title;
     }
 

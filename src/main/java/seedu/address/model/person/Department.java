@@ -55,6 +55,9 @@ public class Department {
 
     @Override
     public String toString() {
+        if (departmentName == "-") {
+            return "";
+        }
         return departmentName;
     }
 
