@@ -36,6 +36,7 @@ public class ParserUtilTest {
     private static final String INVALID_JOB_TITLE = "InvalidJobTitle&^";
     private static final String INVALID_PRODUCT = "Invalid Product!@#";
     private static final String INVALID_SKILLS = "Invalid Skills!@#";
+    private static final String INVALID_SLASH = "Invalid/Slash";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
@@ -99,6 +100,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseName_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseName(INVALID_SLASH));
+    }
+
+    @Test
     public void parsePhone_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parsePhone(null));
     }
@@ -119,6 +125,11 @@ public class ParserUtilTest {
         String phoneWithWhitespace = WHITESPACE + VALID_PHONE + WHITESPACE;
         Phone expectedPhone = new Phone(VALID_PHONE);
         assertEquals(expectedPhone, ParserUtil.parsePhone(phoneWithWhitespace));
+    }
+
+    @Test
+    public void parsePhone_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parsePhone(INVALID_SLASH));
     }
 
     @Test
@@ -145,6 +156,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseAddress_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_SLASH));
+    }
+
+    @Test
     public void parseEmail_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseEmail(null));
     }
@@ -168,6 +184,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseEmail_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseEmail(INVALID_SLASH));
+    }
+
+    @Test
     public void parseTag_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTag(null));
     }
@@ -188,6 +209,11 @@ public class ParserUtilTest {
         String tagWithWhitespace = WHITESPACE + VALID_TAG_1 + WHITESPACE;
         Tag expectedTag = new Tag(VALID_TAG_1);
         assertEquals(expectedTag, ParserUtil.parseTag(tagWithWhitespace));
+    }
+
+    @Test
+    public void parseTag_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTag(INVALID_SLASH));
     }
 
     @Test
@@ -237,6 +263,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseDepartment_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseDepartment(INVALID_SLASH));
+    }
+
+    @Test
     public void parseJobTitle_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseJobTitle(null));
     }
@@ -260,6 +291,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseJobTitle_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseJobTitle(INVALID_SLASH));
+    }
+
+    @Test
     public void parseProducts_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseProducts(null));
     }
@@ -276,6 +312,12 @@ public class ParserUtilTest {
                 VALID_PRODUCT_3_STRING);
         Products expectedProducts = new Products(validProducts);
         assertEquals(expectedProducts, ParserUtil.parseProducts(validProducts));
+    }
+
+    @Test
+    public void parseProducts_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseProducts(Arrays.asList(VALID_PRODUCT_1_STRING,
+                INVALID_SLASH, VALID_PRODUCT_2_STRING)));
     }
 
     @Test
@@ -337,6 +379,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseSkills_invalidValueSlash_throwsParseException() {
+        List<String> skillsList = Arrays.asList(VALID_SKILLS_1, INVALID_SLASH, VALID_SKILLS_2);
+        assertThrows(ParseException.class, () -> ParserUtil.parseSkills(skillsList));
+    }
+
+    @Test
     public void parsePreferences_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parsePreferences(null));
     }
@@ -344,6 +392,11 @@ public class ParserUtilTest {
     @Test
     public void parseTermsOfService_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTermsOfService(null));
+    }
+
+    @Test
+    public void parseTermsOfService_invalidValueSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTermsOfService(INVALID_SLASH));
     }
 
 }

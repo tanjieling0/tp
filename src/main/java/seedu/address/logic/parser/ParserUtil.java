@@ -56,7 +56,9 @@ public class ParserUtil {
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-        if (!Name.isValidName(trimmedName)) {
+        if (isContainSlash(trimmedName)){
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Name.isValidName(trimmedName)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
         return new Name(trimmedName);
@@ -71,7 +73,9 @@ public class ParserUtil {
     public static Phone parsePhone(String phone) throws ParseException {
         requireNonNull(phone);
         String trimmedPhone = phone.trim();
-        if (!Phone.isValidPhone(trimmedPhone)) {
+        if (isContainSlash(trimmedPhone)){
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Phone.isValidPhone(trimmedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
         return new Phone(trimmedPhone);
@@ -86,7 +90,9 @@ public class ParserUtil {
     public static Address parseAddress(String address) throws ParseException {
         requireNonNull(address);
         String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
+        if (isContainSlash(trimmedAddress)){
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Address.isValidAddress(trimmedAddress)) {
             throw new ParseException(Address.MESSAGE_CONSTRAINTS);
         }
         return new Address(trimmedAddress);
@@ -101,7 +107,9 @@ public class ParserUtil {
     public static Email parseEmail(String email) throws ParseException {
         requireNonNull(email);
         String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
+        if (isContainSlash(trimmedEmail)){
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
         return new Email(trimmedEmail);
@@ -116,7 +124,9 @@ public class ParserUtil {
     public static Tag parseTag(String tag) throws ParseException {
         requireNonNull(tag);
         String trimmedTag = tag.trim();
-        if (!Tag.isValidTagName(trimmedTag)) {
+        if (isContainSlash(trimmedTag)){
+            throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Tag.isValidTagName(trimmedTag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
         return new Tag(trimmedTag);
@@ -152,10 +162,10 @@ public class ParserUtil {
     public static Department parseDepartment(String department) throws ParseException {
         requireNonNull(department);
         String trimmedDepartment = department.trim();
-        if (!Department.isValidDepartment(trimmedDepartment)) {
-            throw new ParseException(Department.MESSAGE_CONSTRAINTS);
-        } else if (isContainSlash(trimmedDepartment)) {
+        if (isContainSlash(trimmedDepartment)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Department.isValidDepartment(trimmedDepartment)) {
+            throw new ParseException(Department.MESSAGE_CONSTRAINTS);
         }
         return new Department(trimmedDepartment);
     }
@@ -169,10 +179,10 @@ public class ParserUtil {
     public static JobTitle parseJobTitle(String jobTitle) throws ParseException {
         requireNonNull(jobTitle);
         String trimmedJobTitle = jobTitle.trim();
-        if (!JobTitle.isValidJobTitle(trimmedJobTitle)) {
-            throw new ParseException(JobTitle.MESSAGE_CONSTRAINTS);
-        } else if (isContainSlash(trimmedJobTitle)) {
+        if (isContainSlash(trimmedJobTitle)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!JobTitle.isValidJobTitle(trimmedJobTitle)) {
+            throw new ParseException(JobTitle.MESSAGE_CONSTRAINTS);
         }
         return new JobTitle(trimmedJobTitle);
     }
@@ -185,10 +195,10 @@ public class ParserUtil {
      */
     public static Products parseProducts(List<String> products) throws ParseException {
         requireNonNull(products);
-        if (!Products.isValidProducts(products)) {
-            throw new ParseException(Products.MESSAGE_CONSTRAINTS);
-        } else if (isContainSlash(products)) {
+        if (isContainSlash(products)) {
             throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        } else if (!Products.isValidProducts(products)) {
+            throw new ParseException(Products.MESSAGE_CONSTRAINTS);
         }
         return new Products(products);
     }
@@ -201,10 +211,10 @@ public class ParserUtil {
         final Set<String> skillsSet = new HashSet<>();
         for (String skill : skills) {
             String trimmedSkills = skill.trim();
-            if (!Skills.isValidSkills(trimmedSkills)) {
-                throw new ParseException(Skills.MESSAGE_CONSTRAINTS);
-            } else if (isContainSlash(trimmedSkills)) {
+            if (isContainSlash(trimmedSkills)) {
                 throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+            } else if (!Skills.isValidSkills(trimmedSkills)) {
+                throw new ParseException(Skills.MESSAGE_CONSTRAINTS);
             }
             skillsSet.add(trimmedSkills);
         }
@@ -220,10 +230,10 @@ public class ParserUtil {
         final Set<String> skillsSet = new HashSet<>();
         for (String skill : skills) {
             String trimmedSkills = skill.trim();
-            if (!Skills.isValidSkills(trimmedSkills)) {
-                throw new ParseException(Skills.MESSAGE_CONSTRAINTS);
-            } else if (isContainSlash(trimmedSkills)) {
+            if (isContainSlash(trimmedSkills)) {
                 throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+            } else if (!Skills.isValidSkills(trimmedSkills)) {
+                throw new ParseException(Skills.MESSAGE_CONSTRAINTS);
             }
             skillsSet.add(trimmedSkills);
         }
