@@ -2,13 +2,13 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showAllPersons;
 import static seedu.address.testutil.TypicalIds.ID_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
-
-import java.util.List;
+import static seedu.address.testutil.TypicalIds.ID_THIRD_PERSON;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.filter.IdContainsDigitsPredicate;
 import seedu.address.model.util.IdTuple;
 import seedu.address.testutil.ClientBuilder;
 import seedu.address.testutil.EmployeeBuilder;
@@ -32,16 +31,15 @@ public class UnrelateCommandTest {
         Person secondPerson = new ClientBuilder().withName("two").withId(ID_SECOND_PERSON.value).build();
         model.addPerson(firstPerson);
         model.addPerson(secondPerson);
-        model.addRelatedIdTuple(new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON));
+        IdTuple idTuple = new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        model.addRelatedIdTuple(idTuple);
 
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        UnrelateCommand command = new UnrelateCommand(predicate);
-        CommandResult commandResult = command.execute(model);
+        UnrelateCommand command = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        Model expectedModel = new ModelManager(model.getNetConnect(), model.getUserPrefs());
+        expectedModel.removeRelatedIdTuple(idTuple);
 
-        assertEquals(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON)),
-                commandResult.getFeedbackToUser());
-        assertFalse(model.hasRelatedIdTuple(new IdTuple(ID_FIRST_PERSON, ID_SECOND_PERSON)));
+        assertCommandSuccess(command, model,
+                String.format(Messages.MESSAGE_UNRELATION_SUCCESS, idTuple), expectedModel);
     }
 
     @Test
@@ -49,9 +47,7 @@ public class UnrelateCommandTest {
         Person secondPerson = new ClientBuilder().withId(ID_SECOND_PERSON.value).build();
         model.addPerson(secondPerson);
 
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        UnrelateCommand command = new UnrelateCommand(predicate);
+        UnrelateCommand command = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
 
         assertCommandFailure(command, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_FIRST_PERSON.value));
@@ -62,9 +58,7 @@ public class UnrelateCommandTest {
         Person firstPerson = new ClientBuilder().withId(ID_FIRST_PERSON.value).build();
         model.addPerson(firstPerson);
 
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        UnrelateCommand command = new UnrelateCommand(predicate);
+        UnrelateCommand command = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
 
         assertCommandFailure(command, model,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_SECOND_PERSON.value));
@@ -75,9 +69,7 @@ public class UnrelateCommandTest {
         Person person = new ClientBuilder().withId(ID_FIRST_PERSON.value).build();
         model.addPerson(person);
 
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_FIRST_PERSON.value));
-        UnrelateCommand command = new UnrelateCommand(predicate);
+        UnrelateCommand command = new UnrelateCommand(ID_FIRST_PERSON, ID_FIRST_PERSON);
         Model expectedModel = new ModelManager(model.getNetConnect(), model.getUserPrefs());
         showAllPersons(expectedModel);
 
@@ -91,46 +83,39 @@ public class UnrelateCommandTest {
         model.addPerson(firstPerson);
         model.addPerson(secondPerson);
 
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        UnrelateCommand command = new UnrelateCommand(predicate);
+        UnrelateCommand command = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
 
         assertCommandFailure(command, model, Messages.MESSAGE_RELATION_NOT_EXISTS);
     }
 
     @Test
     public void equals() {
-        IdContainsDigitsPredicate predicate1 = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        IdContainsDigitsPredicate predicate2 = new IdContainsDigitsPredicate(List.of(ID_SECOND_PERSON.value,
-                ID_FIRST_PERSON.value));
-
-        UnrelateCommand command1 = new UnrelateCommand(predicate1);
-        UnrelateCommand command2 = new UnrelateCommand(predicate1);
-        UnrelateCommand command3 = new UnrelateCommand(predicate2);
+        UnrelateCommand unrelateFirstSecond = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        UnrelateCommand otherUnrelateFirstSecond = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        UnrelateCommand unrelateSecondThird = new UnrelateCommand(ID_SECOND_PERSON, ID_THIRD_PERSON);
 
         // same object -> returns true
-        assertEquals(command1, command1);
+        assertTrue(unrelateFirstSecond.equals(unrelateFirstSecond));
 
         // same values -> returns true
-        assertEquals(command1, command2);
+        assertTrue(unrelateFirstSecond.equals(otherUnrelateFirstSecond));
 
         // different types -> returns false
-        assertNotEquals(5, command1);
+        assertFalse(unrelateFirstSecond.equals(1));
 
         // null -> returns false
-        assertNotEquals(null, command1);
+        assertFalse(unrelateFirstSecond.equals(null));
 
-        // different predicate -> returns false
-        assertNotEquals(command1, command3);
+        // different values -> returns false
+        assertFalse(unrelateFirstSecond.equals(unrelateSecondThird));
     }
 
     @Test
     public void toStringMethod() {
-        IdContainsDigitsPredicate predicate = new IdContainsDigitsPredicate(List.of(ID_FIRST_PERSON.value,
-                ID_SECOND_PERSON.value));
-        UnrelateCommand command = new UnrelateCommand(predicate);
-        String expected = UnrelateCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        UnrelateCommand command = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
+        String expected = UnrelateCommand.class.getCanonicalName()
+                + "{first id=" + ID_FIRST_PERSON.value
+                + ", second id=" + ID_SECOND_PERSON.value + "}";
         assertEquals(expected, command.toString());
     }
 }

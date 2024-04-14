@@ -1,6 +1,9 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
+import java.util.List;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -25,18 +28,17 @@ public class UnrelateCommand extends Command {
             + "Parameters: i/ID_1 i/ID_2\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
 
-    private final IdContainsDigitsPredicate predicate;
-
     private final Id firstPersonId;
     private final Id secondPersonId;
 
     /**
      * Creates a UnrelateCommand to unrelate the two specified {@code IdContainsDigitsPredicate}
      */
-    public UnrelateCommand(IdContainsDigitsPredicate predicate) {
-        this.predicate = predicate;
-        this.firstPersonId = Id.generateTempId(predicate.getFirstId());
-        this.secondPersonId = Id.generateTempId(predicate.getSecondId());
+    public UnrelateCommand(Id firstPersonId, Id secondPersonId) {
+        requireAllNonNull(firstPersonId, secondPersonId);
+
+        this.firstPersonId = firstPersonId;
+        this.secondPersonId = secondPersonId;
     }
 
     @Override
@@ -66,22 +68,34 @@ public class UnrelateCommand extends Command {
         model.clearFilter();
 
         // if ids are valid AND exists, model will display them, otherwise, it will be an empty list
-        model.stackFilters(predicate);
+        model.stackFilters(new IdContainsDigitsPredicate(List.of(firstPersonId.value, secondPersonId.value)));
 
         return new CommandResult(String.format(Messages.MESSAGE_UNRELATION_SUCCESS, tuple));
     }
 
     @Override
     public boolean equals(Object other) {
-        return other == this
-                || (other instanceof UnrelateCommand
-                && predicate.equals(((UnrelateCommand) other).predicate));
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof UnrelateCommand)) {
+            return false;
+        }
+
+        UnrelateCommand otherFindNumCommand = (UnrelateCommand) other;
+        return (this.firstPersonId.equals(otherFindNumCommand.firstPersonId)
+                && this.secondPersonId.equals(otherFindNumCommand.secondPersonId))
+                || (this.firstPersonId.equals(otherFindNumCommand.secondPersonId)
+                && this.secondPersonId.equals(otherFindNumCommand.firstPersonId));
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("predicate", predicate)
+                .add("first id", firstPersonId)
+                .add("second id", secondPersonId)
                 .toString();
     }
 }

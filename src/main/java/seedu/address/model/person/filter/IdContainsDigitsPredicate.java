@@ -16,14 +16,6 @@ public class IdContainsDigitsPredicate extends NetConnectPredicate<Person> {
         this.ids = ids;
     }
 
-    public int getFirstId() {
-        return ids.get(0);
-    }
-
-    public int getSecondId() {
-        return ids.get(1);
-    }
-
     @Override
     public String formatFilter() {
         return ids.stream()
