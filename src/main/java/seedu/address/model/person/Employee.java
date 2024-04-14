@@ -74,7 +74,7 @@ public class Employee extends Person {
     public String getSkillsAsString() {
         String result = String.join(", ", skills.getSkills());
         if (result.isEmpty()) {
-            return result;
+            return "-";
         }
         return "\"" + result + "\"";
     }

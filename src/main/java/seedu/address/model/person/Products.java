@@ -91,6 +91,9 @@ public class Products {
      */
     @Override
     public String toString() {
+        if (products.isEmpty()) {
+            return "-";
+        }
         return products.stream().map(Object::toString).collect(Collectors.joining(", "));
     }
 

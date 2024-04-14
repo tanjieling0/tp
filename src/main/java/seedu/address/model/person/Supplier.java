@@ -53,7 +53,7 @@ public class Supplier extends Person {
     public String getProductsAsString() {
         String result = String.join(", ", products.getProducts());
         if (result.isEmpty()) {
-            return result;
+            return "-";
         }
         return "\"" + result + "\"";
     }
