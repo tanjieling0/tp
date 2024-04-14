@@ -77,6 +77,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseId_invalidInputSlash_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseId(INVALID_SLASH));
+    }
+
+    @Test
     public void parseName_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseName(null));
     }
@@ -153,11 +158,6 @@ public class ParserUtilTest {
         String addressWithWhitespace = WHITESPACE + VALID_ADDRESS + WHITESPACE;
         Address expectedAddress = new Address(VALID_ADDRESS);
         assertEquals(expectedAddress, ParserUtil.parseAddress(addressWithWhitespace));
-    }
-
-    @Test
-    public void parseAddress_invalidValueSlash_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_SLASH));
     }
 
     @Test
