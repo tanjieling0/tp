@@ -93,6 +93,8 @@ public class UnrelateCommandTest {
         UnrelateCommand unrelateFirstSecond = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         UnrelateCommand otherUnrelateFirstSecond = new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         UnrelateCommand unrelateSecondFirst = new UnrelateCommand(ID_SECOND_PERSON, ID_FIRST_PERSON);
+        UnrelateCommand unrelateFirstThird = new UnrelateCommand(ID_FIRST_PERSON, ID_THIRD_PERSON);
+        UnrelateCommand unrelateThirdSecond = new UnrelateCommand(ID_THIRD_PERSON, ID_SECOND_PERSON);
         UnrelateCommand unrelateSecondThird = new UnrelateCommand(ID_SECOND_PERSON, ID_THIRD_PERSON);
 
         // same object -> returns true
@@ -103,6 +105,12 @@ public class UnrelateCommandTest {
 
         // same values, diff order -> returns true
         assertTrue(unrelateFirstSecond.equals(unrelateSecondFirst));
+
+        // first same, second diff -> returns false
+        assertFalse(unrelateFirstSecond.equals(unrelateFirstThird));
+
+        // first diff, second same -> returns false
+        assertFalse(unrelateFirstSecond.equals(unrelateThirdSecond));
 
         // different types -> returns false
         assertFalse(unrelateFirstSecond.equals(1));

@@ -105,6 +105,8 @@ public class RelateCommandTest {
         RelateCommand relateFirstSecond = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         RelateCommand otherRelateFirstSecond = new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON);
         RelateCommand relateSecondFirst = new RelateCommand(ID_SECOND_PERSON, ID_FIRST_PERSON);
+        RelateCommand relateFirstThird = new RelateCommand(ID_FIRST_PERSON, ID_THIRD_PERSON);
+        RelateCommand relateThirdSecond = new RelateCommand(ID_THIRD_PERSON, ID_SECOND_PERSON);
         RelateCommand relateSecondThird = new RelateCommand(ID_SECOND_PERSON, ID_THIRD_PERSON);
         AddCommand addCommand = new AddCommand(new ClientBuilder().build());
 
@@ -116,6 +118,12 @@ public class RelateCommandTest {
 
         // same values, diff order -> returns true
         assertTrue(relateFirstSecond.equals(relateSecondFirst));
+
+        // first same, second diff -> returns false
+        assertFalse(relateFirstSecond.equals(relateFirstThird));
+
+        // first diff, second same -> returns false
+        assertFalse(relateFirstSecond.equals(relateThirdSecond));
 
         // different types -> returns false
         assertFalse(relateFirstSecond.equals(1));
