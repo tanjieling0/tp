@@ -32,5 +32,7 @@ public class RelateCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         assertParseFailure(parser, " i/1 i/2 i/3 i/4 i/5",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, " n/John n/Roy",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
     }
 }
