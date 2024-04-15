@@ -8,6 +8,7 @@ import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.commands.UnrelateCommand;
 
 public class UnrelateCommandParserTest {
@@ -31,6 +32,8 @@ public class UnrelateCommandParserTest {
         assertParseFailure(parser, " i/1 i/2 i/3 i/4",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
         assertParseFailure(parser, " i/1 i/2 i/3 i/4 i/5",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, " n/John n/Roy",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
     }
 }
