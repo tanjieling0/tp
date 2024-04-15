@@ -627,6 +627,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | experienced user | export contact lists to a CSV file           | create backups or use the data in other applications                 |
 | `* *`    | experienced user | relate two profiles together                 | connect two contacts together                                        |
 | `* *`    | experienced user | view which contacts are related to a profile | assign tasks to my employees                                         |
+| `* *`    | experienced user | unrelate two profiles                        | disconnect two contacts                                              |
 | `* *`    | new user         | see usage instructions                       | refer to instructions when I forget how to use the App               |
 | `* *`    | new user         | clear all existing contacts                  | populate with my actual contacts                                     |
 
@@ -864,7 +865,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. The given ID or name does not exist.
+* 1a. The given ID does not exist.
 
     * 1a1. NetConnect shows an error message.
 
@@ -899,7 +900,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. The given ID or name does not exist.
+* 1a. The given ID does not exist.
 
     * 1a1. NetConnect shows an error message.
 
@@ -913,7 +914,42 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: UC15 - Clear all contact list**
+**Use case: UC15 - Unrelate two contacts**
+
+**MSS**
+
+1. User requests to unrelate Contact A with Contact B.
+2. NetConnect removes the relation between the two contacts.
+
+**Extensions**
+
+* 1a. The given ID does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1c. There is an ambiguous command.
+
+    * 1c1. NetConnect shows an error message requesting to fix ambiguity.
+
+      Use case ends.
+
+* 1c. User unrelates contact to the same contact.
+
+    * 1c1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC16 - Clear all contact list**
 
 **MSS**
 
