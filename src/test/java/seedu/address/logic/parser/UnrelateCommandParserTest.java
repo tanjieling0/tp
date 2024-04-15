@@ -8,7 +8,6 @@ import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.RelateCommand;
 import seedu.address.logic.commands.UnrelateCommand;
 
 public class UnrelateCommandParserTest {
