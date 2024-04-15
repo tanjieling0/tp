@@ -110,15 +110,17 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
+
 **API** : [`Model.java`](https://github.com/se-edu/netconnect-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+Here's a (partial) class diagram of the `Model` component:
 
+<puml src="diagrams/ModelClassDiagram.puml" width="450" alt="ModelClassDiagram"/>
 
 The `Model` component,
 
 * stores the netconnect data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change. This filtered list are further filtered by the Filter classes.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -126,15 +128,23 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `NetConnect`, which `Person` references. This allows `NetConnect` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="450" alt="BetterModelClassDiagram"/>
 
 </box>
+
+Here are the other classes in `Model` (omitted from the class diagram above) that are used for filtering the list that is displayed to users:
+
+<puml src="diagrams/FilterClasses.puml" width="300" alt="FilterClasses"/>
+
+How the filtering works:
+* `ModelManager` stores only one instance of `Filter` at any one time. The stored `Filter` instance in turn stores all the `XYZPredicate` objects currently applied to the filtered view.
+* `FilteredList#setPredicate(...)` is called with the `Filter` instance, and only shows all `Person` objects that satisfy **all** predicates in `Filter`.
 
 ### Storage component
 
 **API** : [`Storage.java`](https://github.com/se-edu/netconnect-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+<puml src="diagrams/StorageClassDiagram.puml" width="550" alt="StorageClassDiagram"/>
 
 The `Storage` component,
 * can save both netconnect data and user preference data in JSON format, and read them back into corresponding objects.
@@ -377,6 +387,47 @@ The unique id of `Person` is stored as a private field `Id` instance in `Person`
 <puml src="diagrams/IdClassDiagram.puml" alt="IdClassDiagram" />
 
 Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
+
+### `Find` feature
+
+#### Expected behaviour
+The `find` command allows users to filter the display to show `Person`s from NetConnect with fields matching certain values. The command allows finding by name, phone number, tag, role, remark. Parameters provided are subjected to its respective validity checks, and mentions of these checks will be omitted in this section.
+
+#### Current implementation
+
+The execution of `find` is facilitated by `Model#clearFilter()` and `Model#stackFilters(NetConnectPredicate)`. `Model` uses the `Filter` classes in the `Model` component to facilitate the implementation. `find` by each field uses its respective `XYZPredicate`:
+* `find` by name uses `NameContainsKeywordsPredicate`
+* `find` by tag uses `TagsContainsKeywordsPredicate`
+* `find` by phone number uses `PhoneMatchesDigitsPredicate`
+* `find` by role uses `RoleMatchesKeywordsPredicate`
+* `find` by remark uses `RemarkContainsKeywordsPredicate`
+
+The sequence diagram below shows the parsing of a `find n/John` command. The process is similar for `find` command with other parameters.
+
+<puml src="diagrams/FindParseSequenceDiagram.puml" alt="FindParseSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+The sequence diagram below shows the execution of the `find` command created from a `find n/John` command.
+
+<puml src="diagrams/FindExecuteSequenceDiagram.puml" alt="FindExecuteSequenceDiagram" />
+
+The `list` command, or any other command that alters the displayed view can be used to clear all existing filters. In these cases, the stored `Filter` object in `ModelManager` will be set to a `Filter` containing no predicates.
+
+#### Design considerations
+
+**Aspect: How the view of the displayed list is filtered**
+
+* **Alternative 1 (current choice)**: Create a new `Filter` class to store all the predicates.
+  * Pros: Allows retrieval of current predicates, and can be displayed to user.
+  * Cons: Require an additional private field in `ModelManager`.
+
+* **Alternative 2**: Stack the predicates using `FilteredList#setPredicate(...)`, `FilteredList#getPredicate()` and `Predicate#and(...), without explicitly storing the predicates.
+  * Pros: Simple implementation without additional classes or fields.
+  * Cons: Unable to retrieve the current predicates applied and hence unable to display to users the current filters applied.
 
 ### \[Proposed\] Undo/redo feature
 
