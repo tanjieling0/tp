@@ -194,17 +194,17 @@ The sequence diagram below illustrates the creation and execution of a `CsvExpor
 
 * **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
   * Pros:
-        1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
-    *Cons:
-        1. Reduces user flexibility in determining where the CSV file should be saved.
+      1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
+  * Cons:
+      1. Reduces user flexibility in determining where the CSV file should be saved.
 * **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
   * Pros:
-        1. Provides flexibility for users to save the CSV file wherever they prefer.
-    * Cons:
-        1. Additional error handling is required to manage invalid or inaccessible file paths.
+      1. Provides flexibility for users to save the CSV file wherever they prefer.
+  * Cons:
+      1. Additional error handling is required to manage invalid or inaccessible file paths.
 
 
-### Person Roles (Employee, Client, and Supplier)
+### Person Roles Feature
 
 #### Overview
 
@@ -255,24 +255,24 @@ The `Person` class is extended by three other classes, each with their own addit
 **Aspect: How to distinguish the person role:**
 
 * **Alternative 1 (current choice)**: Creation of subclasses `Supplier`, `Employee`, and `Client` that inherit from the `Person` class.
-   * **Pros**:
-       * Specialization: Allows for clear role-specific methods and properties, ensuring that objects have only the attributes and behaviors pertinent to their role.
-       * Extensibility: Easier to add new roles by creating additional subclasses.
-       * Polymorphism: Enables the use of a single interface to represent any person type, which simplifies code that interacts with these objects.
-   * **Cons**:
-       * Complexity: More complex class hierarchy which can become difficult to manage with a large number of roles.
-       * Redundancy: Potential for redundant code in subclasses if there is significant overlap in behavior or data.
-       * Rigid Hierarchy: Changing the class hierarchy can be challenging if the differentiation between roles changes over time.
+  * **Pros**:
+    1. Specialization: Allows for clear role-specific methods and properties, ensuring that objects have only the attributes and behaviors pertinent to their role.
+    1. Extensibility: Easier to add new roles by creating additional subclasses.
+    1. Polymorphism: Enables the use of a single interface to represent any person type, which simplifies code that interacts with these objects.
+  * **Cons**:
+    1. Complexity: More complex class hierarchy which can become difficult to manage with a large number of roles.
+    1. Redundancy: Potential for redundant code in subclasses if there is significant overlap in behavior or data.
+    1. Rigid Hierarchy: Changing the class hierarchy can be challenging if the differentiation between roles changes over time.
 
 * **Alternative 2**: Introducing a `type` field within the `Person` class to indicate the person's role and including all possible fields for all types.
-    * **Pros**:
-        * Simplicity: A flat structure with a single `Person` class could simplify the system.
-        * Flexibility: Easy to change a person’s role by updating the type field without the need to instantiate a new object.
-       * Single Table Storage: All person records can be stored in a single database table, which can simplify CRUD operations.
-    * **Cons**:
-       * Data Sparseness: The `Person` object will have redundant fields that are not applicable to all types, leading to wasted storage space and potential confusion.
-       * Increased Conditionals: The code will require conditional logic to handle behavior specific to each role, which can make the code more complex and harder to maintain.
-       * Loss of Type Safety: Without distinct classes, it's easier to mistakenly assign the wrong attributes or behaviors to a person object.
+  * **Pros**:
+    1. Simplicity: A flat structure with a single `Person` class could simplify the system.
+    1. Flexibility: Easy to change a person’s role by updating the type field without the need to instantiate a new object.
+    1. Single Table Storage: All person records can be stored in a single database table, which can simplify CRUD operations.
+  * **Cons**:
+    1. Data Sparseness: The `Person` object will have redundant fields that are not applicable to all types, leading to wasted storage space and potential confusion.
+    1. Increased Conditionals: The code will require conditional logic to handle behavior specific to each role, which can make the code more complex and harder to maintain.
+    1. Loss of Type Safety: Without distinct classes, it's easier to mistakenly assign the wrong attributes or behaviors to a person object.
 
 <puml src="diagrams/PersonClassDiagram.puml" width="650" alt="PersonClass"/>
 
