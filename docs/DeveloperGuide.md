@@ -182,11 +182,11 @@ A `ExportCommand` instance is created in the `ExportCommandParser#parse(...)` me
 
 The sequence diagram below illustrates the execution of a `ExportCommand`:
 
-<puml src="ExportCommandSequenceDiagram.puml" alt="ExportCommandSequenceDiagram" />
+<puml src="diagrams/ExportCommandSequenceDiagram.puml" alt="ExportCommandSequenceDiagram" />
 
 The sequence diagram below illustrates the creation and execution of a `CsvExporter`:
 
-<puml src="ExportCommandSequenceDiagram.puml" alt="CsvExporterSequenceDiagram" />
+<puml src="diagrams/ExportCommandSequenceDiagram.puml" alt="CsvExporterSequenceDiagram" />
 
 #### Design Considerations
 
