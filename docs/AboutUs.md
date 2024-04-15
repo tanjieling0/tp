@@ -7,7 +7,7 @@
 
 We are a team based in the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
-You can reach us at the email `seer[at]comp.nus.edu.sg`
+You can reach us at the email `support@netconnect.tech`
 
 ## Project team
 
@@ -19,7 +19,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/purivirakarin.md)]
 
 * Role: Developer
-* Responsibilities:
+* Responsibilities: Testing, Integration
 
 ### Rungrawin Chowiwattana
 
@@ -29,7 +29,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/nuyer.md)]
 
 * Role: Developer
-* Responsibilities:
+* Responsibilities: Documentation, Testing
 
 ### Sia Zhong Qing
 
@@ -39,7 +39,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/starsia.md)]
 
 * Role: Team Lead
-* Responsibilities:
+* Responsibilities: Scheduling and tracking, Deliverables and Deadlines
 
 ### Shaun Lee Xuan Wei
 
@@ -49,7 +49,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/shaunlxw.md)]
 
 * Role: Developer
-* Responsibilities:
+* Responsibilities: Scheduling and tracking, Testing
 
 ### Tan Jie Ling
 
@@ -59,4 +59,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[portfolio](team/tanjieling0.md)]
 
 * Role: Developer
-* Responsibilities: UI
+* Responsibilities: UI, Documentation, Deliverables and Deadlines
