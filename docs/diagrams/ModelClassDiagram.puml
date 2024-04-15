@@ -34,11 +34,10 @@ ModelManager --> "1" Filter
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 NetConnect *--> "1" UniquePersonList
-UniquePersonList -left-> "~* all" Person
+UniquePersonList --> "~* all" Person
 
-Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
 
-ModelManager --> "~* filtered" Person
+ModelManager -down-> "~* filtered" Person
 
 @enduml
