@@ -134,8 +134,7 @@ Format: `help`
 
 ## Adding a person: `add`
 
-Adds a person (Client, Supplier or Employee) to the address book. Note that each role (e.g. Client, Supplier, Employee) has its own specific set of fields that can be added.
-* The input for all fields should adhere to the [Data Constraints](#data-constraints).
+Adds a person (Client, Supplier or Employee) to the address book. Note that each role (e.g. Client, Supplier, Employee) has its own specific set of fields that can be added. The input for all fields should adhere to the [Data Constraints](#data-constraints).
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG]…​` (other fields specific to the role)
 
@@ -260,8 +259,8 @@ Find by role example:
 
 Find by remark example:
 * `find r/` returns all persons who have an empty remark.
-* `find r/has a dog` returns all persons who have the remark containing words `has a dog`.
-* 
+* `find r/has a dog` returns all persons who have the remark containing all these words ['has', 'a', 'dog']
+ 
 Stacking find by role and tag example
 * `find role/Employee` returns all persons who have the role `Employee`.
   
@@ -418,11 +417,11 @@ If your changes to the data file makes its format invalid, NetConnect will disca
 The NetConnect team is working on new features and fixes for you, but they are unfortunately unavailable in this current implementation. We intend to have future fixes for these occurences below!
 
 1. Improved error messages for `showrelated` command
-2. Improved command success messages for `relate` and `unrelate` commands
-3. Improved validity checks for `relate` and `unrelate` commands
-4. Truncate text in GUI to accommodate long text fields
-5. Handle situations where input entered is the same as the current value for `edit` command
-6. Data recovery
+1. Improved command success messages for `relate` and `unrelate` commands
+1. Improved validity checks for `relate` and `unrelate` commands
+1. Truncate text in GUI to accommodate long text fields
+1. Handle situations where input entered is the same as the current value for `edit` command
+1. Data recovery
 
 Further details on the planned enhancements can be found in the Developer Guide.
 
