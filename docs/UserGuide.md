@@ -419,7 +419,7 @@ The NetConnect team is working on new features and fixes for you, but they are u
 1. Improved error messages for `showrelated` command
 1. Improved command success messages for `relate` and `unrelate` commands
 1. Improved validity checks for `relate` and `unrelate` commands
-1. Truncate text in GUI to accommodate long text fields
+1. Wrap text instead of truncate in GUI to accommodate long text fields
 1. Handle situations where input entered is the same as the current value for `edit` command
 1. Data recovery
 
