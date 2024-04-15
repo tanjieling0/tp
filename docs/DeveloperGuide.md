@@ -113,15 +113,17 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
+
 **API** : [`Model.java`](https://github.com/se-edu/netconnect-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+Here's a (partial) class diagram of the `Model` component:
 
+<puml src="diagrams/ModelClassDiagram.puml" width="450" />
 
 The `Model` component,
 
 * stores the netconnect data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change. This filtered list are further filtered by the Filter classes.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -133,6 +135,13 @@ The `Model` component,
 
 </box>
 
+Here are the other classes in `Model` (omitted from the class diagram above) that are used for filtering the list that is displayed to users:
+
+<puml src="diagrams/FilterClasses.puml" width="300" />
+
+How the filtering works:
+* `ModelManager` stores only one instance of `Filter` at any one time. The stored `Filter` instance in turn stores all the `XYZPredicate` objects currently applied to the filtered view.
+* `FilteredList#setPredicate(...)` is called with the `Filter` instance, and only shows all `Person` objects that satisfy **all** predicates in `Filter`.
 
 ### Storage component
 
