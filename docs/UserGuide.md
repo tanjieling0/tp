@@ -31,7 +31,6 @@ If you relate to this problem we identified, then NetConnect might be just right
   - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
   - [Open on Last State](#open-on-last-state)
   - [Export Current View to CSV File : `export`](#export-current-view-to-csv-file--export)
-  - [Never Miss a Birthday!](#never-miss-a-birthday)
   - [Exiting the program : `exit`](#exiting-the-program--exit)
   - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
@@ -149,13 +148,13 @@ Constraints for each field. Here are the constraints for each field in the appli
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
-* `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
-* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `JOB`: Job titles should only contain alphanumeric characters and spaces, and it should not be blank.
-* `SKILLS`: Skills should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PREFERENCES`: Preferences can take any format, and it should not be blank.
-* `TERMS OF SERVICE`: Terms of service can take any format, and it should not be blank.
-* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces, and it should not be blank.
+* `TAG`: Tags should only contain alphanumeric characters and spaces.
+* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces.
+* `JOB`: Job titles should only contain alphanumeric characters and spaces.
+* `SKILLS`: Skills should only contain alphanumeric characters and spaces.
+* `PREFERENCES`: Preferences can take any format.
+* `TERMS OF SERVICE`: Terms of service can take any format.
+* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces.
 
 </section>
 
@@ -349,13 +348,6 @@ Step 1: `find [KEYWORD]` or any other function that filters the profiles.
 Step 2: `export`
 
 * The first step is to filter the profiles you want to export into the current view.
-
-</section>
-
-<section id="birthday">
-
-## Never Miss a Birthday!
-Celebrate your employees' birthdays to show that you care. NetConnect will remind you of the birthdays of your employees, so you never have to miss a birthday again!
 
 </section>
 
