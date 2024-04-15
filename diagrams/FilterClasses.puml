@@ -1,0 +1,21 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR_T4
+skinparam classBackgroundColor MODEL_COLOR
+
+package "Filter classes"{
+Class "{abstract}\nNetConnectPredicate" as NetConnectPredicate {
++ {abstract} formatFilter() : String
+}
+Class Filter
+Class XYZPredicate
+}
+
+Class HiddenOutside #FFFFFF
+HiddenOutside --> "1" Filter
+
+XYZPredicate --up|> NetConnectPredicate
+Filter --right|> NetConnectPredicate
+Filter --> "~* filters" XYZPredicate
+@enduml

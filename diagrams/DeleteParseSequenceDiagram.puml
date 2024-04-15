@@ -11,10 +11,6 @@ participant "DeleteCommand" as DeleteFactory << class >> LOGIC_COLOR
 participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
 end box
 
-box Model MODEL_COLOR_T1
-participant "m:Model" as Model MODEL_COLOR
-end box
-
 [-> LogicManager : execute("delete i/1")
 activate LogicManager
 
@@ -60,7 +56,7 @@ destroy DeleteCommandParser
 NetConnectParser --> LogicManager : d
 deactivate NetConnectParser
 
-ref over LogicManager, Model : execute delete command
+ref over LogicManager : execute delete command
 
 [<--LogicManager
 deactivate LogicManager
