@@ -12,13 +12,15 @@ public class DepartmentTest {
         assertTrue(Department.isValidDepartment("Sales"));
         assertTrue(Department.isValidDepartment("Marketing Department"));
         assertTrue(Department.isValidDepartment("123 Department"));
+        assertTrue(Department.isValidDepartment(""));
+        assertTrue(Department.isValidDepartment(" "));
     }
 
     @Test
     public void isValidDepartment_invalidDepartment_returnsFalse() {
-        assertFalse(Department.isValidDepartment(""));
-        assertFalse(Department.isValidDepartment(" "));
         assertFalse(Department.isValidDepartment("Department!"));
+        assertFalse(Department.isValidDepartment("Department@"));
+        assertFalse(Department.isValidDepartment("$&@*#"));
     }
 
     @Test

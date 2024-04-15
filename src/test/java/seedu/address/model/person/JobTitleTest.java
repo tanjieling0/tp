@@ -12,8 +12,6 @@ public class JobTitleTest {
     public static final String VALID_JOB_TITLE = "Software Engineer";
     public static final String VALID_JOB_TITLE_2 = "Product Manager";
 
-    public static final String INVALID_JOB_TITLE = "Software Engineer!";
-
     @Test
     public void isValidJobTitle() {
         // Valid job titles
@@ -22,11 +20,13 @@ public class JobTitleTest {
         assertTrue(JobTitle.isValidJobTitle("Data Analyst"));
         assertTrue(JobTitle.isValidJobTitle("Senior Software Developer"));
         assertTrue(JobTitle.isValidJobTitle("123"));
+        assertTrue(JobTitle.isValidJobTitle(""));
+        assertTrue(JobTitle.isValidJobTitle(" "));
 
         // Invalid job titles
-        assertFalse(JobTitle.isValidJobTitle(""));
-        assertFalse(JobTitle.isValidJobTitle(" "));
         assertFalse(JobTitle.isValidJobTitle("INVALID_JOB_TITLE"));
+        assertFalse(JobTitle.isValidJobTitle("Software Engineer!"));
+        assertFalse(JobTitle.isValidJobTitle("&$@*($#()@846!87@"));
     }
 
     @Test
