@@ -53,6 +53,9 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
 - **Create Relations between Profiles:** `relate`  
   Link contacts together to map out your network.
 
+- **Delete Relations between Profiles:** `unrelate`  
+  Unlink contacts to keep your network up-to-date.
+
 - **Show Relations Associated to a Person:** `showrelated`  
   View the network of connections for a specific contact.
 
