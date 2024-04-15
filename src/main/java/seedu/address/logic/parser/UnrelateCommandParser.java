@@ -1,12 +1,10 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ID;
-
-import java.util.List;
 
 import seedu.address.logic.commands.UnrelateCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Id;
 
 /**
  * Parses input arguments and creates a new RelateCommand object
@@ -20,12 +18,32 @@ public class UnrelateCommandParser implements Parser<UnrelateCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public UnrelateCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ID);
-        List<String> ids = argMultimap.getAllValues(PREFIX_ID);
-        if (ids.size() != 2) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
         }
 
-        return new UnrelateCommand(ParserUtil.parseId(ids.get(0)), ParserUtil.parseId(ids.get(1)));
+        String[] providedIds = trimmedArgs.split("\\s+");
+
+        if (providedIds.length != 2) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+        }
+
+        Id[] ids = new Id[2];
+
+        for (int i = 0; i < providedIds.length; i++) {
+            String[] flagAndId = providedIds[i].split("/");
+            // find and validate flag
+            if (flagAndId[0].equals("i")) {
+                ids[i] = ParserUtil.parseId(flagAndId[1]);
+            } else {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+            }
+        }
+
+        return new UnrelateCommand(ids[0], ids[1]);
     }
 }
