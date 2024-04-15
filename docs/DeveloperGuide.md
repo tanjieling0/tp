@@ -193,20 +193,23 @@ The sequence diagram below illustrates the creation and execution of a `CsvExpor
 **Aspect: Handling of file paths in the `export` command:**
 
 * **Alternative 1 (Current Choice):** Always save the CSV file to a fixed, pre-defined location without user input.
-  * Pros:
-        1. Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
-  * Cons:
-        1. Reduces user flexibility in determining where the CSV file should be saved.
+  * Pros: Simplifies the command's implementation by removing the need to parse and validate user-provided file paths.
+  * Cons: Reduces user flexibility in determining where the CSV file should be saved.
 * **Alternative 2:** Allow users to specify a file path, defaulting to a pre-defined location if not specified.
-  * Pros:
-        1. Provides flexibility for users to save the CSV file wherever they prefer.
-  * Cons:
-        1. Additional error handling is required to manage invalid or inaccessible file paths.
+  * Pros: Provides flexibility for users to save the CSV file wherever they prefer.
+  * Cons: Additional error handling is required to manage invalid or inaccessible file paths.
 
+### Person Roles Feature
 
-### Person Roles (Employee, Client, and Supplier)
+#### Overview
 
 The person can be categorized into three roles: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
+
+* **Client**: Represents a customer, associated with products and preferences.
+* **Supplier**: Represents a vendor, associated with products and terms of service.
+* **Employee**: Represents an employee, associated with a department, job title, and skills.
+
+#### Expected Behaviour
 
 The `Person` class is extended by three other classes, each with their own additional attributes:
 
@@ -215,12 +218,6 @@ The `Person` class is extended by three other classes, each with their own addit
 * `Supplier` Subclass contains `products` attribute of type `Products`, which lists the items supplied, and holds `termsOfService` of type `TermsOfService`, outlining the agreement with the supplier.
 
 * `Employee` Subclass includes a `department` attribute of type `Department`, signifying the department the employee belongs to, has a `jobTitle` attribute of type `JobTitle`, representing the employee's official title, and features `skills` of type `Skills`, indicating the competencies of the employee.
-
-#### Overview
-
-* **Client**: Represents a customer, associated with products and preferences.
-* **Supplier**: Represents a vendor, associated with products and terms of service.
-* **Employee**: Represents an employee, associated with a department, job title, and skills.
 
 #### Implementation
 
@@ -250,9 +247,27 @@ The `Person` class is extended by three other classes, each with their own addit
 
 #### Design Considerations
 
-* **Flexible Data Handling**: Fields not applicable to all roles are made optional within the `Person` class to enable a scalable and adaptable system architecture.
+**Aspect: How to distinguish the person role:**
 
-* **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
+* **Alternative 1 (current choice)**: Creation of subclasses `Supplier`, `Employee`, and `Client` that inherit from the `Person` class.
+  * **Pros**:
+    1. Specialization: Allows for clear role-specific methods and properties, ensuring that objects have only the attributes and behaviors pertinent to their role.
+    1. Extensibility: Easier to add new roles by creating additional subclasses.
+    1. Polymorphism: Enables the use of a single interface to represent any person type, which simplifies code that interacts with these objects.
+  * **Cons**:
+    1. Complexity: More complex class hierarchy which can become difficult to manage with a large number of roles.
+    1. Redundancy: Potential for redundant code in subclasses if there is significant overlap in behavior or data.
+    1. Rigid Hierarchy: Changing the class hierarchy can be challenging if the differentiation between roles changes over time.
+
+* **Alternative 2**: Introducing a `type` field within the `Person` class to indicate the person's role and including all possible fields for all types.
+  * **Pros**:
+    1. Simplicity: A flat structure with a single `Person` class could simplify the system.
+    1. Flexibility: Easy to change a person’s role by updating the type field without the need to instantiate a new object.
+    1. Single Table Storage: All person records can be stored in a single database table, which can simplify CRUD operations.
+  * **Cons**:
+    1. Data Sparseness: The `Person` object will have redundant fields that are not applicable to all types, leading to wasted storage space and potential confusion.
+    1. Increased Conditionals: The code will require conditional logic to handle behavior specific to each role, which can make the code more complex and harder to maintain.
+    1. Loss of Type Safety: Without distinct classes, it's easier to mistakenly assign the wrong attributes or behaviors to a person object.
 
 <puml src="diagrams/PersonClassDiagram.puml" width="650" alt="PersonClass"/>
 
