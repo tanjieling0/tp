@@ -12,7 +12,7 @@ Class NetConnect
 Class ModelManager
 Class UserPrefs
 
-package "Filter classes" as Filter {}
+package "Filter Classes" as Filter {}
 
 Class UniquePersonList
 Class Person
