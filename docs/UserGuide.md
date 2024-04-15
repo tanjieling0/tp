@@ -16,7 +16,6 @@ If you relate to this problem we identified, then NetConnect might be just right
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-
 * [Quick start](#quick-start)
 * [Features](#features)
     + [Viewing help : `help`](#help)
@@ -27,6 +26,7 @@ If you relate to this problem we identified, then NetConnect might be just right
     + [Locating persons by name: `find`](#find)
     + [Clearing all entries : `clear`](#clear)
     + [Create Relations between Profiles : `relate`](#relate)
+    + [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
     + [Show Relations Associated to a Person : `showrelated`](#showrelated)
     + [Open on Last State](#open-on-last-state)
     + [Export Current View to CSV File : `export`](#export)
@@ -34,7 +34,6 @@ If you relate to this problem we identified, then NetConnect might be just right
     + [Exiting the program : `exit`](#exit-program)
     + [Saving the data](#saving-the-data)
     + [Editing the data file](#editing-the-data-file)
-* [Future Implementations](#future-implementations)
 * [FAQ](#faq)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
@@ -119,11 +118,11 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (o
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
-* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years prod/Laptop skills/Java`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
 
 Examples (Employee):
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`
-* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years skills/Java`
+* Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2]`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
 
 Examples (Client):
 * Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`
@@ -242,8 +241,9 @@ Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMAR
 
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
-* `find n/alex n/david` returns `Alex Yeoh`, `David Li`.<br>
-![result for 'find alex david'](images/findAlexDavidResult.png)
+
+* `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
+
 
 Find by tag example:
 * `find t/friends` returns all persons who have the tag `friends`.
@@ -293,6 +293,18 @@ Creates a relation between two profiles in the address book.
 Format: `relate i/ID i/ID`
 
 Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
+
+</section>
+
+<section id="unrelate">
+
+## Remove Relations between Profiles : `unrelate`
+
+Removes a relation between two profiles in the address book.
+
+Format: `unrelate i/ID i/ID`
+
+Example: `unrelate i/1 i/2` removes a relation between the profiles with ID of 1 and 2.
 
 </section>
 
@@ -405,21 +417,19 @@ Current implementation of NetConnect GUI is able to accommodate input of approxi
 --------------------------------------------------------------------------------------------------------------------
 
 # Command summary
-
-
-| Action                   | Format                                                                                                                                                    | Examples                                                                                                                                                                                                                   |
-|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Help**                 | `help`                                                                                                                                                    | `help`                                                                                                                                                                                                                     |
-| **Add (Employee)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`  | `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years skills/Java` |
-| **Add (Client)**         | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                             | `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`                                                                      |
-| **Add (Supplier)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                         | `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`                                                                              |
-| **List**                 | `list`                                                                                                                                                    | `list`                                                                                                                                                                                                                     |
-| **Delete**               | `delete [i/ID] [n/NAME]`                                                                                                                                  | `delete i/123`, `delete n/John Doe`                                                                                                                                                                                        |
-| **Edit**                 | `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`                                                                                     | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
-| **Find**                 | `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`                                                                                                  | `find role/employee` , followed by `find n/Bob` to stack filters                                                                                                                                                           |
-| **Relate Profiles**      | `relate i/ID i/ID`                                                                                                                                        | `relate i/1 i/2`                                                                                                                                                                                                           |
-| **Show related Profile** | `showrelated i/ID`                                                                                                                                        | `showrelated i/2`                                                                                                                                                                                                          |
-| **Export**               | `export [filename]`                                                                                                                                       | `export ClientInfo.csv`                                                                                                                                                                                                    |
-| **Clear**                | `clear`                                                                                                                                                   | `clear`                                                                                                                                                                                                                    |
-| **Exit**                 | `exit`                                                                                                                                                    | `exit`                                                                                                                                                                                                                     |
- 
+| Action                   | Format                                                                                                                                                                                              | Examples                                                                                                                                                                                                                   |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Help**                 | `help`                                                                                                                                                                                              | `help`                                                                                                                                                                                                                     |
+| **Add (Employee)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Employee [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL1] [skills/SKILL2]  `                                                   | `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java` |
+| **Add (Client)**         | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Client [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                                                                     | `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`                                                                      |
+| **Add (Supplier)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Supplier [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                                                               | `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`                                                                              |
+| **List**                 | `list`                                                                                                                                                                                              | `list`                                                                                                                                                                                                                     |
+| **Delete**               | `delete [i/ID] [n/NAME]`                                                                                                                                                                            | `delete i/123`, `delete n/John Doe`                                                                                                                                                                                        |
+| **Edit**                 | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role) | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
+| **Find**                 | `find [n/NAME] [t/TAG] [p/PHONE] [role/ROLE] [r/REMARK]`                                                                                                                                            | `find role/employee` , followed by `find n/Bob` to stack filters                                                                                                                                                           |
+| **Relate Profiles**      | `relate i/ID i/ID`                                                                                                                                                                                  | `relate i/1 i/2`                                                                                                                                                                                                           |
+| **Unrelate Profiles**    | `unrelate i/ID i/ID`                                                                                                                                                                                | `relate i/1 i/2`                                                                                                                                                                                                           |
+| **Show related Profile** | `showrelated i/ID`                                                                                                                                                                                  | `showrelated i/2`                                                                                                                                                                                                          |
+| **Export**               | `export [filename]`                                                                                                                                                                                 | `export ClientInfo.csv`                                                                                                                                                                                                    |
+| **Clear**                | `clear`                                                                                                                                                                                             | `clear`                                                                                                                                                                                                                    |
+| **Exit**                 | `exit`                                                                                                                                                                                              | `exit`                                                                                                                                                                                                                     |
