@@ -21,19 +21,19 @@ If you relate to this problem we identified, then NetConnect might be just right
 - [Quick start](#quick-start)
 - [Features](#features)
   - [Data Constraints](#data-constraints)
-  - [Viewing help : `help`](#viewing-help--help)
+  - [Viewing help : `help`](#viewing-help-help)
   - [Adding a person: `add`](#adding-a-person-add)
-  - [Deleting a person : `delete`](#deleting-a-person--delete)
-  - [Listing all contacts : `list`](#listing-all-contacts--list)
-  - [Editing a person : `edit`](#editing-a-person--edit)
-  - [Locating Contacts : `find`](#locating-contacts--find)
-  - [Clearing all entries : `clear`](#clearing-all-entries--clear)
-  - [Create Relations between Profiles : `relate`](#create-relations-between-profiles--relate)
-  - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
-  - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
+  - [Deleting a person : `delete`](#deleting-a-person-delete)
+  - [Listing all contacts : `list`](#listing-all-contacts-list)
+  - [Editing a person : `edit`](#editing-a-person-edit)
+  - [Locating Contacts : `find`](#locating-contacts-find)
+  - [Clearing all entries : `clear`](#clearing-all-entries-clear)
+  - [Create Relations between Profiles : `relate`](#create-relations-between-profiles-relate)
+  - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles-unrelate)
+  - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person-showrelated)
   - [Open on Last State](#open-on-last-state)
-  - [Export view to CSV File : `export`](#export-view-to-csv-file--export)
-  - [Exiting the program : `exit`](#exiting-the-program--exit)
+  - [Export view to CSV File : `export`](#export-view-to-csv-file-export)
+  - [Exiting the program : `exit`](#exiting-the-program-exit)
   - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
 - [Future Implementations](#future-implementations)
@@ -86,8 +86,6 @@ If you relate to this problem we identified, then NetConnect might be just right
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
   </box>
 
-<section id="help">
-
 ## Data Constraints
 
 **Constraints:**
@@ -107,6 +105,7 @@ Here are the constraints for each field in the application:
 * `TERMS OF SERVICE`: Terms of service can take any format.
 * `PRODUCTS`: Product names should only contain alphanumeric characters and spaces.
 
+<section id="help"><br>
 
 ## Viewing help : `help`
 
@@ -258,7 +257,7 @@ Stacking find by role and tag example
 
 </section>
 
-<box id="clear">
+<section id="clear">
 
 ## Clearing all entries : `clear`
 
@@ -330,6 +329,7 @@ With every change to the command input, NetConnect saves and updates the command
 
 </section>
 
+
 <section id="export">
 
 ## Export view to CSV File : `export`
@@ -383,6 +383,7 @@ Format: `exit`
 
 </section>
 
+
 <section id="saving-the-data">
 
 ## Saving the data
@@ -390,6 +391,7 @@ Format: `exit`
 NetConnect data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 </section>
+
 
 <section id="editing-the-data-file">
 
@@ -401,6 +403,7 @@ NetConnect data are saved automatically as a JSON file `[JAR file location]/data
 If your changes to the data file makes its format invalid, NetConnect will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br> Furthermore, certain edits can cause the NetConnect to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 
 </section>
+--------------------------------------------------------------------------------------------------------------------
 
 # Planned Enhancements
 The NetConnect team is working on new features and fixes for you, but they are unfortunately unavailable in this current implementation. We intend to have future fixes for these occurences below!
