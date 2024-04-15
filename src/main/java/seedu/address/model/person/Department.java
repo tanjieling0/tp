@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
+import static seedu.address.model.util.TestCommandFormatUtil.checkArgumentContainSlash;
 
 /**
  * Represents a Person's department in the address book.
@@ -34,6 +35,7 @@ public class Department {
      */
     public Department(String departmentName) {
         requireNonNull(departmentName);
+        checkArgumentContainSlash(departmentName);
         checkArgument(isValidDepartment(departmentName), MESSAGE_CONSTRAINTS);
         this.departmentName = departmentName;
     }
