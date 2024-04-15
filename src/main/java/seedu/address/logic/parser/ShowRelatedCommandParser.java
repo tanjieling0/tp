@@ -28,8 +28,13 @@ public class ShowRelatedCommandParser implements Parser<ShowRelatedCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ShowRelatedCommand.MESSAGE_USAGE));
         }
 
-        Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
-        return new ShowRelatedCommand(id);
+        try {
+            Id id = ParserUtil.parseId(argMultimap.getValue(PREFIX_ID).get());
+            return new ShowRelatedCommand(id);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(
+                    MESSAGE_INVALID_COMMAND_FORMAT, ShowRelatedCommand.MESSAGE_USAGE), pe);
+        }
     }
 }
 
