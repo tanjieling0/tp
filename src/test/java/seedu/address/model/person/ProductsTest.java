@@ -15,10 +15,12 @@ public class ProductsTest {
 
     private static final List<String> PRODUCT_LIST = Arrays.asList("Product1", "Product2", "Product3");
     private static final List<String> EMPTY_LIST = List.of();
+    private static final List<String> EMPTY_STRING_PRODUCT_LIST = Arrays.asList("", " ", "  ");
     private static final String PRODUCT_STRING = "Product1 Product2 Product3";
     private static final String EMPTY_STRING = "";
 
     private Products products;
+    private Products emptyProducts;
 
     @BeforeEach
     public void setUp() {
@@ -34,6 +36,9 @@ public class ProductsTest {
     public void constructor_validList_success() {
         products = new Products(PRODUCT_LIST);
         assertEquals(PRODUCT_LIST, products.getProducts());
+
+        emptyProducts = new Products(EMPTY_STRING_PRODUCT_LIST);
+        assertEquals(EMPTY_STRING_PRODUCT_LIST, emptyProducts.getProducts());
     }
 
     @Test

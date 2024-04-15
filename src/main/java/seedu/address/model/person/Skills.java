@@ -10,7 +10,8 @@ import java.util.Set;
  */
 public class Skills {
 
-    public static final String MESSAGE_CONSTRAINTS = "Skills should only contain alphanumeric characters and spaces";
+    public static final String MESSAGE_CONSTRAINTS = "Skills should only contain alphanumeric characters "
+            + "+, #, -, and spaces";
 
     private final Set<String> skills;
 
@@ -42,7 +43,7 @@ public class Skills {
     }
 
     public static boolean isValidSkills(String test) {
-        return test.matches("[\\p{Alnum}+#\\- ]+");
+        return test.matches("[\\p{Alnum}+#\\- ]*");
     }
 
     public Set<String> getSkills() {

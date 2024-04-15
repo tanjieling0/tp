@@ -40,6 +40,9 @@ public class SkillsTest {
     @Test
     public void isValidSkills_validSkills_returnsTrue() {
         assertTrue(Skills.isValidSkills("Java Python"));
+        assertTrue(Skills.isValidSkills("123"));
+        assertTrue(Skills.isValidSkills(""));
+        assertTrue(Skills.isValidSkills(" "));
     }
 
     @Test
