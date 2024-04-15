@@ -42,6 +42,9 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
 - **Editing a person:** `edit`  
   Update contact details as needed.
 
+- **Exiting the program:** `exit`  
+  Close NetConnect safely and securely.
+
 ### Advanced Search
 - **Locating persons by name:** `find`  
   Quickly find contacts by their name, phone, remark, role, or tags.
@@ -59,16 +62,12 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
 - **Show Relations Associated to a Person:** `showrelated`  
   View the network of connections for a specific contact.
 
-- **Open on Last State**  
-  Pick up right where you left off in your last session.
-
 - **Export Current View to CSV File:** `export`  
   Export your contacts for use in other applications.
 
 ### Additional Features
-
-- **Exiting the program:** `exit`  
-  Close NetConnect safely and securely.
+- **Open on Last State**  
+  Pick up right where you left off in your last session.
 
 ### Data Handling
 - **Saving the data**  
