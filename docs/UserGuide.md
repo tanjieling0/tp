@@ -297,6 +297,8 @@ Format: `clear`
 
 <div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+
+![result for 'clear warning'](images/clearWarning.png)
 </section>
 
 
@@ -312,6 +314,8 @@ Format: `relate i/ID i/ID`
 
 Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
 
+![result for 'relate result'](images/relateResult.png)
+
 </section>
 
 <section id="showrelated">
@@ -325,6 +329,8 @@ Format: `showrelated i/ID`
 Example: `showrelated i/1` shows all relations between the profile with ID 1 and all other contacts.
 
 **Info:** If there are no persons related to the provided ID, the interface will show `0 persons listed`.
+
+![result for 'showrelated result'](images/showrelatedResult.png)
 
 </section>
 
@@ -347,6 +353,8 @@ Step 1: `list`
 Step 2: `export`
 
 * The `list` command in the first step is to pull all profiles into the current view.
+  
+![result for 'export all'](images/exportall.png)
 
 **To export a _specific_ group of profiles to a CSV file:**
 
@@ -355,6 +363,8 @@ Step 1: `find [KEYWORD]` or any other function that filters the profiles.
 Step 2: `export`
 
 * The first step is to filter the profiles you want to export into the current view.
+
+![result for 'export current view'](images/exportview.png)
 
 </section>
 
