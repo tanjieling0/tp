@@ -48,6 +48,10 @@ public class EditCommandParser implements Parser<EditCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_ID, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
 
+        if (argMultimap.getValue(PREFIX_ROLE).isPresent()) {
+            throw new ParseException("Role cannot be edited");
+        }
+
         if (argMultimap.getValue(PREFIX_ID).isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
