@@ -136,6 +136,8 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG
 </div>
 <br>
 
+</section id="fieldsConstraints"> </section>
+
 **Constraints:**
 Here are the constraints for each field in the application:
 
@@ -215,21 +217,7 @@ Examples:
 ![EditResultExample](images/editExample.png)
 * `edit i/2 n/Betsy Crower t/` Edits the name of the person with ID of 2 to be `Betsy Crower` and clears all existing tags.
 
-**Constraints:**Here are the constraints for each field in the application:
-
-* `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
-* `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
-* `ADDRESS`: Addresses can take any format, and it should not be blank.
-* `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
-* `TAG`: Tags should only contain alphanumeric characters and spaces.
-* `REMARK`: Remark can take any format.
-* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces.
-* `JOB`: Job titles should only contain alphanumeric characters and spaces.
-* `SKILLS`: Skills should only contain alphanumeric characters and spaces.
-* `PREFERENCES`: Preferences can take any format.
-* `TERMS OF SERVICE`: Terms of service can take any format.
-* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces.
+Please refer to the [constraints](#fieldsConstraints) for valid input.
 
 </section>
 
