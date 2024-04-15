@@ -20,6 +20,7 @@ import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
 import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.util.TestCommandFormatUtil;
 
 public class FindCommandParserTest {
 
@@ -172,5 +173,13 @@ public class FindCommandParserTest {
                 String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
         assertParseFailure(parser, " role/clie role/employ t/friends t/colleagues",
                 String.format(Messages.MESSAGE_NON_UNIQUE_FIELDS));
+    }
+
+    @Test
+    public void parse_invalidSlash_throwsParseException() {
+        assertParseFailure(parser, " n/invalid/slash", TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, " p/invalid/slash", TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, " role/invalid/slash", TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, " t/invalid/slash", TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
     }
 }
