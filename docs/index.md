@@ -63,8 +63,6 @@ title: "NetConnect: Your Ultimate Contact Management Solution"
   Export your contacts for use in other applications.
 
 ### Additional Features
-- **Never Miss a Birthday!**  
-  Keep track of important dates like birthdays.
 
 - **Exiting the program:** `exit`  
   Close NetConnect safely and securely.
