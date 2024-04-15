@@ -312,7 +312,7 @@ Creates a relation between two profiles in the address book.
 
 Format: `relate i/ID i/ID`
 
-Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
+Example: `relate i/1 i/3` creates a relation between the profiles with ID of 1 and 3.
 
 ![result for 'relate result'](images/relateResult.png)
 
@@ -348,23 +348,34 @@ Retrieve information on a group of profiles at once with this function! This can
 
 **To export _all_ profiles in the address book to a CSV file:**
 
+Format
 Step 1: `list`
-
-Step 2: `export`
+Step 2: `export [filename]`
 
 * The `list` command in the first step is to pull all profiles into the current view.
+* After entering `export`, you can choose the filename. The filename must end with `.csv`. If you do not specify a filename, it will be automatically named as `contact.csv`
+
+Example
+Step 1: `list` first returns the list of all contacts
+Step 2: `export` a CSV file containing all contacts to a folder on your laptop that is located within the same directory as the NetConnect application. 
   
 ![result for 'export all'](images/exportall.png)
 
 **To export a _specific_ group of profiles to a CSV file:**
 
-Step 1: `find [KEYWORD]` or any other function that filters the profiles.
-
-Step 2: `export`
+Format
+Step 1: returns all Client contacts 
+Step 2: `export [filename]`
 
 * The first step is to filter the profiles you want to export into the current view.
 
+Example
+Step 1: `find role/Client`  
+Step 2: `export client.csv` 
 ![result for 'export current view'](images/exportview.png)
+export a CSV file named clients.csv containing all client contacts to a folder on your laptop located within the same directory as the NetConnect application.
+![result for 'CSV file'](images/csvfile.png)
+
 
 </section>
 
