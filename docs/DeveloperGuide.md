@@ -297,6 +297,9 @@ Step 2. The user changes the input in the command box. The `TextStateStorage#sav
   * Cons: May not save the state of the command box in case of a crash.
 
 ### Relate feature
+
+#### Expected behaviour
+
 The `relate` command allows users to relate two persons via their unique `ID`. Exceptional behavior:
 * If the `ID` provided by user does not exist, an error message is displayed.
 * If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
@@ -327,6 +330,9 @@ Recalling that we also have a message box to inform the result of the actions ta
     * Cons: Unnecessary to user, and complicates UI. Also has a higher potential for bugs given that the entire contact list has to be searched and updated each time a relation is added and subsequently removed. 
 
 ### ShowRelated feature
+
+#### Expected behaviour
+
 The `showrelated` command allows users to view all persons related to a specific person via their unique `ID`. Exceptional behavior:
 * If there are multiple `ID` provided by user, an error message is displayed.
 * If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
@@ -353,6 +359,9 @@ Recalling that we also have a message box to inform the result of the actions ta
     * Cons: More complex implementation as the data is filtered out during read from storage, requiring filtering with String data instead of as IdTuple.
 
 ### Unrelate feature
+
+#### Expected behaviour
+
 The `unrelate` command allows users to unrelate two persons via their unique `ID`. Exceptional behavior:
 * If the `ID` provided by user does not exist, an error message is displayed.
 * If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
