@@ -31,7 +31,7 @@ If you relate to this problem we identified, then NetConnect might be just right
   - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
   - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
   - [Open on Last State](#open-on-last-state)
-  - [Export Current View to CSV File : `export`](#export-current-view-to-csv-file--export)
+  - [Export view to CSV File : `export`](#export-view-to-csv-file--export)
   - [Exiting the program : `exit`](#exiting-the-program--exit)
   - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
@@ -118,22 +118,17 @@ Adds a person (Client, Supplier or Employee) to the address book. Note that each
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role)
 
-Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
-* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
-
 Client:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [r/remark] [pref/PREFERENCES] [prod/PRODUCT]...`
 * Example: `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
 
 Employee:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [r/remark] [dept/DEPARTMENT] [job/JOB] [skills/SKILL]...`
 * Example: `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
 
 Supplier:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`
-* Example: `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [r/remark] [tos/TERMS OF SERVICE] [prod/PRODUCT]...`
+* Example: `add n/Fiona Kunz p/94824272 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
 ![Add Command Result](images/addExample.png)
 
@@ -151,6 +146,7 @@ Constraints for each field. Here are the constraints for each field in the appli
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
 * `TAG`: Tags should only contain alphanumeric characters and spaces.
+* `REMARK`: Remark can take any format.
 * `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces.
 * `JOB`: Job titles should only contain alphanumeric characters and spaces.
 * `SKILLS`: Skills should only contain alphanumeric characters and spaces.
@@ -228,13 +224,14 @@ Constraints for each field. Here are the constraints for each field in the appli
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
-* `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
-* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `JOB`: Job titles should only contain alphanumeric characters and spaces, and it should not be blank.
-* `SKILLS`: Skills should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PREFERENCES`: Preferences can take any format, and it should not be blank.
-* `TERMS OF SERVICE`: Terms of service can take any format, and it should not be blank.
-* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces, and it should not be blank.
+* `TAG`: Tags should only contain alphanumeric characters and spaces.
+* `REMARK`: Remark can take any format.
+* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces.
+* `JOB`: Job titles should only contain alphanumeric characters and spaces.
+* `SKILLS`: Skills should only contain alphanumeric characters and spaces.
+* `PREFERENCES`: Preferences can take any format.
+* `TERMS OF SERVICE`: Terms of service can take any format.
+* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces.
 
 </section>
 
@@ -298,7 +295,7 @@ Format: `clear`
 <div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 
-![result for 'clear warning'](images/clearWarning.png)
+![result for 'clear warning'](images/ClearWarning.png)
 </section>
 
 
@@ -358,7 +355,7 @@ With every change to the command input, NetConnect saves and updates the command
 
 <section id="export">
 
-## Export Current View to CSV File : `export`
+## Export view to CSV File : `export`
 Retrieve information on a group of profiles at once with this function! This can be useful for consolidating all the emails or contact number at once, or to share information with third parties.
 
 **To export _all_ profiles in the address book to a CSV file:**
