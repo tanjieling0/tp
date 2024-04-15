@@ -99,7 +99,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
 <section id="help">
 
-# Data Constraints
+## Data Constraints
 
 **Constraints:**
 Here are the constraints for each field in the application:
