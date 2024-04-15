@@ -16,29 +16,30 @@ If you relate to this problem we identified, then NetConnect might be just right
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-* [Quick start](#quick-start)
-* [Features](#features)
-    + [Viewing help : `help`](#help)
-    + [Adding a person: `add` ](#add)
-    + [Deleting a person : `delete`](#delete)
-    + [Listing all persons : `list`](#list)
-    + [Editing a person : `edit`](#edit)
-    + [Locating persons by name: `find`](#find)
-    + [Clearing all entries : `clear`](#clear)
-    + [Create Relations between Profiles : `relate`](#relate)
-    + [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
-    + [Show Relations Associated to a Person : `showrelated`](#showrelated)
-    + [Open on Last State](#open-on-last-state)
-    + [Export Current View to CSV File : `export`](#export)
-    + [Never Miss a Birthday!](#birthday)
-    + [Exiting the program : `exit`](#exit-program)
-    + [Saving the data](#saving-the-data)
-    + [Editing the data file](#editing-the-data-file)
-* [Future Implementations](#future-implementations)
-  * [Truncate text in GUI](#truncate-text-in-gui)
-* [FAQ](#faq)
-* [Known issues](#known-issues)
-* [Command summary](#command-summary)
+- [NetConnect User Guide](#netconnect-user-guide)
+- [Table of Contents](#table-of-contents)
+- [Quick start](#quick-start)
+- [Features](#features)
+  - [Viewing help : `help`](#viewing-help--help)
+  - [Adding a person: `add`](#adding-a-person-add)
+  - [Deleting a person : `delete`](#deleting-a-person--delete)
+  - [Listing all persons : `list`](#listing-all-persons--list)
+  - [Editing a person : `edit`](#editing-a-person--edit)
+  - [Locating persons by name: `find`](#locating-persons-by-name-find)
+  - [Clearing all entries : `clear`](#clearing-all-entries--clear)
+  - [Create Relations between Profiles : `relate`](#create-relations-between-profiles--relate)
+  - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
+  - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
+  - [Open on Last State](#open-on-last-state)
+  - [Export Current View to CSV File : `export`](#export-current-view-to-csv-file--export)
+  - [Exiting the program : `exit`](#exiting-the-program--exit)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [Future Implementations](#future-implementations)
+  - [Truncate text in GUI](#truncate-text-in-gui)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+- [Command summary](#command-summary)
 
 # Quick start
 
@@ -325,7 +326,10 @@ Removes a relation between two profiles in the address book.
 
 Format: `unrelate i/ID i/ID`
 
-Example: `unrelate i/1 i/2` removes a relation between the profiles with ID of 1 and 2.
+Example: `unrelate i/1 i/23` removes a relation between the profiles with ID of 1 and 3.
+
+![result for 'unrelate result'](images/unrelateResult.png)
+
 
 </section>
 
@@ -375,13 +379,14 @@ Step 2: `export` a CSV file containing all contacts to a folder on your laptop t
 **To export a _specific_ group of profiles to a CSV file:**
 
 Format
-Step 1: returns all Client contacts 
+Step 1: `find [keyword]` 
 Step 2: `export [filename]`
 
 * The first step is to filter the profiles you want to export into the current view.
 
 Example
 Step 1: `find role/Client`  
+![result for 'CSV file'](images/findClient.png)
 Step 2: `export client.csv` 
 ![result for 'export current view'](images/exportview.png)
 export a CSV file named clients.csv containing all client contacts to a folder on your laptop located within the same directory as the NetConnect application.
