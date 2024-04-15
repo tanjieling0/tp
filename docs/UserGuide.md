@@ -16,28 +16,30 @@ If you relate to this problem we identified, then NetConnect might be just right
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-
-* [Quick start](#quick-start)
-* [Features](#features)
-    + [Viewing help : `help`](#help)
-    + [Adding a person: `add` ](#add)
-    + [Deleting a person : `delete`](#delete)
-    + [Listing all persons : `list`](#list)
-    + [Editing a person : `edit`](#edit)
-    + [Locating persons by name: `find`](#find)
-    + [Clearing all entries : `clear`](#clear)
-    + [Create Relations between Profiles : `relate`](#relate)
-    + [Show Relations Associated to a Person : `showrelated`](#showrelated)
-    + [Open on Last State](#open-on-last-state)
-    + [Export Current View to CSV File : `export`](#export)
-    + [Never Miss a Birthday!](#birthday)
-    + [Exiting the program : `exit`](#exit-program)
-    + [Saving the data](#saving-the-data)
-    + [Editing the data file](#editing-the-data-file)
-* [Future Implementations](#future-implementations)
-* [FAQ](#faq)
-* [Known issues](#known-issues)
-* [Command summary](#command-summary)
+- [NetConnect User Guide](#netconnect-user-guide)
+- [Table of Contents](#table-of-contents)
+- [Quick start](#quick-start)
+- [Features](#features)
+  - [Viewing help : `help`](#viewing-help--help)
+  - [Adding a person: `add`](#adding-a-person-add)
+  - [Deleting a person : `delete`](#deleting-a-person--delete)
+  - [Listing all persons : `list`](#listing-all-persons--list)
+  - [Editing a person : `edit`](#editing-a-person--edit)
+  - [Locating persons by name: `find`](#locating-persons-by-name-find)
+  - [Clearing all entries : `clear`](#clearing-all-entries--clear)
+  - [Create Relations between Profiles : `relate`](#create-relations-between-profiles--relate)
+  - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
+  - [Open on Last State](#open-on-last-state)
+  - [Export Current View to CSV File : `export`](#export-current-view-to-csv-file--export)
+  - [Never Miss a Birthday!](#never-miss-a-birthday)
+  - [Exiting the program : `exit`](#exiting-the-program--exit)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [Future Implementations](#future-implementations)
+  - [Truncate text in GUI](#truncate-text-in-gui)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+- [Command summary](#command-summary)
 
 # Quick start
 
@@ -134,7 +136,10 @@ Examples (Supplier):
 * Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`
 * `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
-**Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
+<div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
+<Strong>Info:</Strong> NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
+</div>
+<br>
 
 **Constraints:**
 Constraints for each field. Here are the constraints for each field in the application:
@@ -172,7 +177,10 @@ Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
 * `delete n/John Doe` deletes the person with the name John Doe (if no one else have the same name).
 
-**Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+</div>
+
 </section>
 
 <section id="list">
@@ -281,7 +289,10 @@ Clears all entries from the address book.
 
 Format: `clear`
 
-**Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+</section>
+
 
 </section>
 
