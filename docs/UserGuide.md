@@ -23,7 +23,7 @@ If you relate to this problem we identified, then NetConnect might be just right
   - [Viewing help : `help`](#viewing-help--help)
   - [Adding a person: `add`](#adding-a-person-add)
   - [Deleting a person : `delete`](#deleting-a-person--delete)
-  - [Listing all persons : `list`](#listing-all-persons--list)
+  - [Listing all contacts : `list`](#listing-all-contacts--list)
   - [Editing a person : `edit`](#editing-a-person--edit)
   - [Locating Contacts : `find`](#locating-contacts--find)
   - [Clearing all entries : `clear`](#clearing-all-entries--clear)
@@ -117,27 +117,27 @@ Adds a person (Client, Supplier or Employee) to the address book. Note that each
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG]…​` (other fields specific to the role)
 
-Client:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG]... [pref/PREFERENCES] [prod/PRODUCT]...`
+**Client:**
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/Client [r/remark] [t/TAG]... [pref/PREFERENCES] [prod/PRODUCT]...`
 * Example: `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
 
-Employee:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROL [r/remark] [t/TAG]... [dept/DEPARTMENT] [job/JOB] [skills/SKILL]...`
+**Employee:**
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/Employee [r/remark] [t/TAG]... [dept/DEPARTMENT] [job/JOBTITLE] [skills/SKILL]...`
 * Example: `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
 
-Supplier:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE  [r/remark] [t/TAG]... [tos/TERMS OF SERVICE] [prod/PRODUCT]...`
+**Supplier:**
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/Supplier  [r/remark] [t/TAG]... [tos/TERMS OF SERVICE] [prod/PRODUCT]...`
 * Example: `add n/Fiona Kunz p/94824272 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
 ![Add Command Result](images/addExample.png)
 
 <div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
-<Strong>Info:</Strong> NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
+<Strong>Info:</Strong> NetConnect checks for unique profiles by its NAME, PHONE NUMBER and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
 </div>
 <br>
 
 **Constraints:**
-Constraints for each field. Here are the constraints for each field in the application:
+Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
@@ -164,7 +164,7 @@ Deletes the specified person from the address book.
 Format: `delete [n/NAME] [i/ID]`
 
 * Deletes the person with the specified `NAME` or `ID`.
-* If there are more than one person with the specified `NAME`, `ID` has to be used.
+* If there are more than one person with the same specified `NAME`, `ID` has to be used.
 * `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
 * Full name must be provided for `NAME`.
@@ -184,9 +184,9 @@ Examples:
 
 <section id="list">
 
-## Listing all persons : `list`
+## Listing all contacts : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all contacts in the address book.
 
 Format: `list`
 ![list](images/list.png)
@@ -203,7 +203,7 @@ Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/remark] [t/TAG]�
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
-* At least one of the optional fields [..] must be provided.
+* At least one of the optional fields `[..]` must be provided.
 * Existing values will be updated to the input values.
 * When editing multiple-value fields, all existing values of that field will be removed and replaced with the new values, i.e., adding tags, products, skills is not cumulative.
 * You can remove the value of the optional fields by typing the respective field flag without specifying any value. For example, `edit i/6 t/` will clear all the tags in contact ID 6.
@@ -215,8 +215,7 @@ Examples:
 ![EditResultExample](images/editExample.png)
 * `edit i/2 n/Betsy Crower t/` Edits the name of the person with ID of 2 to be `Betsy Crower` and clears all existing tags.
 
-**Constraints:**
-Constraints for each field. Here are the constraints for each field in the application:
+**Constraints:**Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
@@ -339,7 +338,9 @@ Format: `showrelated i/ID`
 
 Example: `showrelated i/1` shows all relations between the profile with ID 1 and all other contacts.
 
-**Info:** If there are no persons related to the provided ID, the interface will show `0 persons listed`.
+<div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
+<Strong>Info:</Strong> If there are no persons related to the provided ID, the interface will show "0 persons listed".
+</div>
 
 ![result for 'showrelated result'](images/showrelatedResult.png)
 
