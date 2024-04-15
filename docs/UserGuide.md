@@ -20,7 +20,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 - [Table of Contents](#table-of-contents)
 - [Quick start](#quick-start)
 - [Features](#features)
-- [Data Constraints](#data-constraints)
+  - [Data Constraints](#data-constraints)
   - [Viewing help : `help`](#viewing-help--help)
   - [Adding a person: `add`](#adding-a-person-add)
   - [Deleting a person : `delete`](#deleting-a-person--delete)
