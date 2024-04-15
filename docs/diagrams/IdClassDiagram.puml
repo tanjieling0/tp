@@ -4,7 +4,6 @@ skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-Class Person
 Class Id {
     - {static} nextId : int
     - Id()
@@ -13,7 +12,4 @@ Class Id {
     +generateId() : Id
     +generateTempId(int) : Id
 }
-
-Person *--> "1" Id
-
 @enduml
