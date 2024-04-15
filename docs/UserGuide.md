@@ -144,9 +144,9 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG
 
 ![Add Command Result](images/addExample.png)
 
-<div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
+<box type="info">
 <Strong>Info:</Strong> NetConnect checks for unique profiles by its NAME, PHONE NUMBER and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
-</div>
+</box>
 <br>
 
 <section id="delete">
@@ -171,10 +171,8 @@ Examples:
 <box type="warning">
 
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
-
 ![Delete Warning](images/deletewarning.png)
-
-</box>
+</box> <br>
 
 </section>
 
@@ -213,7 +211,7 @@ Examples:
 
 </section>
 
-<section id="find">
+<section id="find"> <br>
 
 ## Locating Contacts : `find`
 
@@ -260,7 +258,7 @@ Stacking find by role and tag example
 
 </section>
 
-<section id="clear">
+<box id="clear">
 
 ## Clearing all entries : `clear`
 
@@ -268,14 +266,15 @@ Clears all entries from the address book.
 
 Format: `clear`
 
-<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<box type="warning">
+
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 
 ![result for 'clear warning'](images/ClearWarning.png)
-</section>
+</box>
 
 
-</section>
+</section> <br>
 
 <section id="relate">
 
@@ -316,9 +315,9 @@ Format: `showrelated i/ID`
 
 Example: `showrelated i/1` shows all relations between the profile with ID 1 and all other contacts.
 
-<div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
+<box type="info">
 <Strong>Info:</Strong> If there are no persons related to the provided ID, the interface will show "0 persons listed".
-</div>
+</box>
 
 ![result for 'showrelated result'](images/showrelatedResult.png)
 
