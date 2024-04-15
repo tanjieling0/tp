@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
+import static seedu.address.model.util.TestCommandFormatUtil.checkArgumentContainSlash;
 
 /**
  * Represents a Person's job title in the address book.
@@ -30,6 +31,7 @@ public class JobTitle {
     public JobTitle(String title) {
         requireNonNull(title);
         title = title.trim();
+        checkArgumentContainSlash(title);
         checkArgument(isValidJobTitle(title), MESSAGE_CONSTRAINTS);
         this.title = title;
     }
