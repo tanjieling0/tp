@@ -118,7 +118,7 @@ How the parsing works:
 
 Here's a (partial) class diagram of the `Model` component:
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagram.puml" width="450" alt="ModelClassDiagram"/>
 
 The `Model` component,
 
@@ -131,13 +131,13 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `NetConnect`, which `Person` references. This allows `NetConnect` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="450" alt="BetterModelClassDiagram"/>
 
 </box>
 
 Here are the other classes in `Model` (omitted from the class diagram above) that are used for filtering the list that is displayed to users:
 
-<puml src="diagrams/FilterClasses.puml" width="300" />
+<puml src="diagrams/FilterClasses.puml" width="300" alt="FilterClasses"/>
 
 How the filtering works:
 * `ModelManager` stores only one instance of `Filter` at any one time. The stored `Filter` instance in turn stores all the `XYZPredicate` objects currently applied to the filtered view.
@@ -147,7 +147,7 @@ How the filtering works:
 
 **API** : [`Storage.java`](https://github.com/se-edu/netconnect-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
-<puml src="diagrams/StorageClassDiagram.puml" width="550" />
+<puml src="diagrams/StorageClassDiagram.puml" width="550" alt="StorageClassDiagram"/>
 
 The `Storage` component,
 * can save both netconnect data and user preference data in JSON format, and read them back into corresponding objects.
@@ -383,35 +383,46 @@ The unique id of `Person` is stored as a private field `Id` instance in `Person`
 
 Operations with `Id` on `Person` in NetConnect is facilitated through `Model#hasId(Id)` and `Model#getPersonById(Id)`.
 
-### `Findnum` feature
+### `Find` feature
 
 #### Expected behaviour
-The `findnum` command allows users to identify one or more `Person`s from NetConnect using one or more `Phone` numbers
-Exceptional behaviour:
-* If any of the phone numbers provided is invalid, an error message is shown.
-* If there are no `Person`s with the given `Phone`, the display is updated to show an empty list.
-
-<puml src="diagrams/FindNumActivityDiagram.puml" alt="FindNumActivityDiagram" />
+The `find` command allows users to filter the display to show `Person`s from NetConnect with fields matching certain values. The command allows finding by name, phone number, tag, role, remark. Parameters provided are subjected to its respective validity checks, and mentions of these checks will be omitted in this section.
 
 #### Current implementation
-Given a command `findnum 98765432`, the `NetConnectParser` recognises the `findnum` command and first instantiates a `FindNumCommandParser` object. It then passes the command string into `FindNumCommandParser#parse(...)`, where each number is validated using the `Phone#isValidPhone(...)` method. Following which, `FindNumCommandParser` instantiates a predicate called `PhoneContainsNumbersPredicate`, which is then used to create the `FindNumCommand` object.
 
-The`FindNumCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. Hence we will require the `updateFilteredPersonList(predicate)` method in the `model` object to update the filtered list of persons to only include persons with the given phone number.
+The execution of `find` is facilitated by `Model#clearFilter()` and `Model#stackFilters(NetConnectPredicate)`. `Model` uses the `Filter` classes in the `Model` component to facilitate the implementation. `find` by each field uses its respective `XYZPredicate`:
+* `find` by name uses `NameContainsKeywordsPredicate`
+* `find` by tag uses `TagsContainsKeywordsPredicate`
+* `find` by phone number uses `PhoneMatchesDigitsPredicate`
+* `find` by role uses `RoleMatchesKeywordsPredicate`
+* `find` by remark uses `RemarkContainsKeywordsPredicate`
 
-Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `FindNumCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the names of the people listed, and also the number of people listed.
+The sequence diagram below shows the parsing of a `find n/John` command. The process is similar for `find` command with other parameters.
+
+<puml src="diagrams/FindParseSequenceDiagram.puml" alt="FindParseSequenceDiagram" />
+
+<box type="info" seamless>
+
+**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
+</box>
+
+The sequence diagram below shows the execution of the `find` command created from a `find n/John` command.
+
+<puml src="diagrams/FindExecuteSequenceDiagram.puml" alt="FindExecuteSequenceDiagram" />
+
+The `list` command, or any other command that alters the displayed view can be used to clear all existing filters. In these cases, the stored `Filter` object in `ModelManager` will be set to a `Filter` containing no predicates.
 
 #### Design considerations
 
-**Aspect: How `PhoneContainsDigitsPredicate` tests a person's phone number**
+**Aspect: How the view of the displayed list is filtered**
 
-* **Alternative 1 (current choice)**: Use a regular expression to check if the phone number contains the specified numbers.
-  * Pros: This approach is straightforward and efficient for checking if a string contains a certain pattern. It also supports checking for multiple numbers at once.
-  * Cons: Regular expressions can be difficult to understand and maintain.
+* **Alternative 1 (current choice)**: Create a new `Filter` class to store all the predicates.
+  * Pros: Allows retrieval of current predicates, and can be displayed to user.
+  * Cons: Require an additional private field in `ModelManager`.
 
-* **Alternative 2**: Instead of using `StringUtil#containsWordIgnoreCase(...)`, we could use Java's built-in `String#contains(...)` method.
-  * Pros: This method checks if the phone number string contains the specified number string.
-  * Cons: The result of `findnum 9` or other short numbers would be unhelpful, given that many numbers contain the digit 9. As we want an exact match, this method will not work.
-=======
+* **Alternative 2**: Stack the predicates using `FilteredList#setPredicate(...)`, `FilteredList#getPredicate()` and `Predicate#and(...), without explicitly storing the predicates.
+  * Pros: Simple implementation without additional classes or fields.
+  * Cons: Unable to retrieve the current predicates applied and hence unable to display to users the current filters applied.
 
 ### \[Proposed\] Undo/redo feature
 
