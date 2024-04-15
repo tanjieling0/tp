@@ -25,7 +25,7 @@ If you relate to this problem we identified, then NetConnect might be just right
   - [Deleting a person : `delete`](#deleting-a-person--delete)
   - [Listing all persons : `list`](#listing-all-persons--list)
   - [Editing a person : `edit`](#editing-a-person--edit)
-  - [Locating persons by name: `find`](#locating-persons-by-name-find)
+  - [Locating Contacts : `find`](#locating-contacts--find)
   - [Clearing all entries : `clear`](#clearing-all-entries--clear)
   - [Create Relations between Profiles : `relate`](#create-relations-between-profiles--relate)
   - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
@@ -64,8 +64,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
     * `delete i/3` : Deletes the contact with ID 3 from NetConnect.
 
-    * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample
-      contacts provided.
+    * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample contacts provided.
 
     * `exit` : Exits the app.
 
@@ -80,7 +79,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
@@ -103,9 +102,9 @@ If you relate to this problem we identified, then NetConnect might be just right
 
 Shows a message explaining how to access the help page.
 
-![help message](images/helpMessage.png)
-
 Format: `help`
+
+![help message](images/helpMessage.png)
 
 </section>
 
@@ -116,18 +115,18 @@ Format: `help`
 
 Adds a person (Client, Supplier or Employee) to the address book. Note that each role (eg. Client, Supplier, Employee) has its own specific set of fields that can be added.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role)
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG]…​` (other fields specific to the role)
 
 Client:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [r/remark] [pref/PREFERENCES] [prod/PRODUCT]...`
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG]... [pref/PREFERENCES] [prod/PRODUCT]...`
 * Example: `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
 
 Employee:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [r/remark] [dept/DEPARTMENT] [job/JOB] [skills/SKILL]...`
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROL [r/remark] [t/TAG]... [dept/DEPARTMENT] [job/JOB] [skills/SKILL]...`
 * Example: `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
 
 Supplier:
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [r/remark] [tos/TERMS OF SERVICE] [prod/PRODUCT]...`
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE  [r/remark] [t/TAG]... [tos/TERMS OF SERVICE] [prod/PRODUCT]...`
 * Example: `add n/Fiona Kunz p/94824272 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
 ![Add Command Result](images/addExample.png)
@@ -145,8 +144,8 @@ Constraints for each field. Here are the constraints for each field in the appli
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
-* `TAG`: Tags should only contain alphanumeric characters and spaces.
 * `REMARK`: Remark can take any format.
+* `TAG`: Tags should only contain alphanumeric characters and spaces.
 * `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces.
 * `JOB`: Job titles should only contain alphanumeric characters and spaces.
 * `SKILLS`: Skills should only contain alphanumeric characters and spaces.
@@ -171,7 +170,7 @@ Format: `delete [n/NAME] [i/ID]`
 * Full name must be provided for `NAME`.
 
 Examples:
-* `delete n/John Doe` deletes the person with the name John Doe (if no one else have the same name).
+* `delete n/Benson Mayer` deletes the person with the name Benson Mayer (if no one else have the same name).
 * `delete i/2` deletes the person with an ID of 2 in the address book.
 ![Add Command Result](images/deleteExample.png)
 
@@ -200,14 +199,14 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​` (other fields specific to the role)
+Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/remark] [t/TAG]…​` (other fields specific to the role)
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
 * At least one of the optional fields [..] must be provided.
 * Existing values will be updated to the input values.
 * When editing multiple-value fields, all existing values of that field will be removed and replaced with the new values, i.e., adding tags, products, skills is not cumulative.
-* You can remove the value of the optional fields by typing the respective field flag without specifying any value. For example, 'edit i/6 t/' will clear all the tags in contact ID 6.
+* You can remove the value of the optional fields by typing the respective field flag without specifying any value. For example, `edit i/6 t/` will clear all the tags in contact ID 6.
 * You cannot edit a field that is invalid for the current person type
 
 
@@ -237,7 +236,7 @@ Constraints for each field. Here are the constraints for each field in the appli
 
 <section id="find">
 
-## Locating persons by name: `find`
+## Locating Contacts : `find`
 
 Finds persons whose information matches any of the specified parameters. You can find persons by names, phone numbers, tags, roles, and remarks. To search via different fields, you can stack multiple `find`-type commands to narrow down your search.
 
