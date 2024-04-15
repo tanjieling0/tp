@@ -168,12 +168,13 @@ Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
 ![Add Command Result](images/deleteExample.png)
 
-<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<box type="warning">
+
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 
 ![Delete Warning](images/deletewarning.png)
 
-</div>
+</box>
 
 </section>
 
