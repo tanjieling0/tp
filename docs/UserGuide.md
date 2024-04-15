@@ -349,6 +349,7 @@ Step 2: `export [filename]`
 Example:
 
 Step 1: `list` first returns the list of all contacts
+
 Step 2: `export` a CSV file containing all contacts to a folder on your laptop that is located within the same directory as the NetConnect application. 
 
 **To export a _specific_ group of profiles to a CSV file:**
