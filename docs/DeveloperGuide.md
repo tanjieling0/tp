@@ -296,7 +296,43 @@ Step 2. The user changes the input in the command box. The `TextStateStorage#sav
   * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
   * Cons: May not save the state of the command box in case of a crash.
 
+### Relate feature
+
+#### Expected behaviour
+
+The `relate` command allows users to relate two persons via their unique `ID`. Exceptional behavior:
+* If the `ID` provided by user does not exist, an error message is displayed.
+* If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
+
+<puml src="diagrams/RelateActivityDiagram.puml" alt="RelateActivityDiagram" />
+
+#### Current implementation
+Given a command `relate i/1 i/2`, the `NetConnectParser` recognises the `relate` command and first instantiates a `RelateCommandParser` object. It then passes the command string into `RelateCommandParser#parse(...)`, where the input `i/1` and `i/2` is validated for its format. Following which, `RelateCommandParser` instantiates a `RelateCommand` object.
+
+The`RelateCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also controls the exact contact list that the user will see. In the `execute(...)` command, we validate that NetConnect has both IDs `1` and `2` and, does not already have a relation. We add it to our RelatedList storage if both are true. To change our view and to ratify the successful command, we will have to change the view the user sees by instantiating a predicate called `IdContainsDigitsPredicate`. We will then pass it into the `model#stackFilters(predicate)` method in the `model` object to update the filtered list of persons to only include the two people with ID `1` and `2`.
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `RelateCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the number of people listed.
+
+#### Design considerations
+
+**Aspect: How to store relations between contacts**
+
+* **Alternative 1 (current choice)**: Store the Related List within the NetConnect model as a JSON file. Each time a relate command is done, we will just have to save the NetConnect model.
+    * Pros: This approach requires a single command for saving and loading and does not violate encapsulation of classes. Saving and loading does not have to be exposed to wider classes and done within the NetConnect model interface. 
+    * Cons: JSON files can be difficult to amend and maintain.
+
+* **Alternative 2 (previously implemented)**: Store the Related List as a .txt file.
+    * Pros: Easier to edit, and implement.
+    * Cons: Harder to maintain as there will be multiple files to be used by our application. Save and load implementation is also exposed outside the NetConnect model.
+
+* **Alternative 3**: Store Relations as another field in every person. A relate command would add the opposing contact to both persons provided. 
+    * Pros: Easy to understand as a user. Querying of contacts will also be fast as the relations are stored within the same contact. 
+    * Cons: Unnecessary to user, and complicates UI. Also has a higher potential for bugs given that the entire contact list has to be searched and updated each time a relation is added and subsequently removed. 
+
 ### ShowRelated feature
+
+#### Expected behaviour
+
 The `showrelated` command allows users to view all persons related to a specific person via their unique `ID`. Exceptional behavior:
 * If there are multiple `ID` provided by user, an error message is displayed.
 * If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
@@ -306,7 +342,7 @@ The `showrelated` command allows users to view all persons related to a specific
 #### Current implementation
 Given a command `showrelated i/1`, the `NetConnectParser` recognises the `showrelated` command and first instantiates a `ShowRelatedCommandParser` object. It then passes the command string into `ShowRelatedCommandParser#parse(...)`, where the input `i/1` is validated for its format. Following which, `ShowRelatedCommandParser` instantiates a `ShowRelatedCommand` object.
 
-The`ShowRelatedCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. In the `execute(...)` command, we extract all the tuples that contain ID `1` and use it to instantiate a predicate called `IdContainsDigitsPredicate` which extracts all the `ID` of the related profiles (excluding itself of ID `1`). We will then require the `model#stackFilters(predicate)` method in the `model` object to update the filtered list of persons to only include persons related to the person with ID of `1`.
+The`ShowRelatedCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also controls the exact contact list that the user will see. In the `execute(...)` command, we extract all the tuples that contain ID `1` and use it to instantiate a predicate called `IdContainsDigitsPredicate` which extracts all the `ID` of the related profiles (excluding itself of ID `1`). We will then pass it into the `model#stackFilters(predicate)` method in the `model` object to update the filtered list of persons to only include persons related to the person with ID of `1`.
 
 Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `ShowRelatedCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the number of people listed.
 
@@ -322,6 +358,34 @@ Recalling that we also have a message box to inform the result of the actions ta
     * Pros: Smaller chunk of data is extracted, reducing the amount of data to be processed as data is filtered out during read from storage.
     * Cons: More complex implementation as the data is filtered out during read from storage, requiring filtering with String data instead of as IdTuple.
 
+### Unrelate feature
+
+#### Expected behaviour
+
+The `unrelate` command allows users to unrelate two persons via their unique `ID`. Exceptional behavior:
+* If the `ID` provided by user does not exist, an error message is displayed.
+* If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
+
+<puml src="diagrams/UnrelateActivityDiagram.puml" alt="UnrelateActivityDiagram" />
+
+#### Current implementation
+Given a command `unrelate i/1 i/2`, the `NetConnectParser` recognises the `unrelate` command and first instantiates an `UnrelateCommandParser` object. It then passes the command string into `UnrelateCommandParser#parse(...)`, where the input `i/1` and `i/2` is validated for its format. Following which, `UnrelateCommandParser` instantiates an `UnrelateCommand` object.
+
+The`UnrelateCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also controls the exact contact list that the user will see. In the `execute(...)` command, we validate that NetConnect has both IDs `1` and `2` and already has a relation. We remove it from our RelatedList stored in NetConnect if both are true. To change our view and to ratify the successful user command, we will have to change the view the user sees by instantiating a predicate called `IdContainsDigitsPredicate`. We will then pass it into the `model#stackFilters(predicate)` method in the `model` object to update the filtered list of persons to only show the two people who have just been unrelated with the ID `1` and `2`.
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `UnrelateCommand#execute(...)` method will also return a `CommandResult` object, which contains the id of the two people, in a 1relates2 format..
+
+#### Design considerations
+
+**Aspect: What kind of unrelation will be done using the two IDs**
+
+* **Alternative 1 (current choice)**: The two IDs given will be used to remove that specific relation.
+    * Pros: This approach would allow the user the greatest flexibility in removing relations between contacts.
+    * Cons: User may think that it would delete all relations from each contact.
+
+* **Alternative 2**: The two IDs given will be used to remove all relations for the two contacts. 
+    * Pros: Can help with resetting of all relations for the contact quickly.
+    * Cons: Since the showrelated feature can show the user which relations for the contact already exists, manual and more precise unrelation has more value. This multi-field input for unrelate may confuse users based on the existing relate command usage.
 
 ### Delete feature
 
@@ -522,10 +586,6 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**
@@ -576,6 +636,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | experienced user | export contact lists to a CSV file           | create backups or use the data in other applications                 |
 | `* *`    | experienced user | relate two profiles together                 | connect two contacts together                                        |
 | `* *`    | experienced user | view which contacts are related to a profile | assign tasks to my employees                                         |
+| `* *`    | experienced user | unrelate two profiles                        | disconnect two contacts                                              |
 | `* *`    | new user         | see usage instructions                       | refer to instructions when I forget how to use the App               |
 | `* *`    | new user         | clear all existing contacts                  | populate with my actual contacts                                     |
 
@@ -813,7 +874,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. The given ID or name does not exist.
+* 1a. The given ID does not exist.
 
     * 1a1. NetConnect shows an error message.
 
@@ -848,7 +909,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
-* 1a. The given ID or name does not exist.
+* 1a. The given ID does not exist.
 
     * 1a1. NetConnect shows an error message.
 
@@ -862,7 +923,42 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
   Use case ends.
 
-**Use case: UC15 - Clear all contact list**
+**Use case: UC15 - Unrelate two contacts**
+
+**MSS**
+
+1. User requests to unrelate Contact A with Contact B.
+2. NetConnect removes the relation between the two contacts.
+
+**Extensions**
+
+* 1a. The given ID does not exist.
+
+    * 1a1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1b. The contact list is empty.
+
+    * 1b1. NetConnect shows an error message.
+
+      Use case ends.
+
+* 1c. There is an ambiguous command.
+
+    * 1c1. NetConnect shows an error message requesting to fix ambiguity.
+
+      Use case ends.
+
+* 1c. User unrelates contact to the same contact.
+
+    * 1c1. NetConnect shows an error message.
+
+      Use case ends.
+
+  Use case ends.
+
+**Use case: UC16 - Clear all contact list**
 
 **MSS**
 

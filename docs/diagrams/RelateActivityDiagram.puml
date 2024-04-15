@@ -1,0 +1,22 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+
+title Activity: Relate command
+start
+:User executes relate command;
+
+if () then ([else])
+    :Show error message;
+else ([two numeric IDs provided])
+    if () then ([else])
+        :Show error message;
+    else ([Both IDs exist])
+        :Relate both profiles to each other;
+        :Display both profiles that are related;
+    endif
+endif
+stop
+@enduml
