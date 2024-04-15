@@ -57,17 +57,6 @@ If you relate to this problem we identified, then NetConnect might be just right
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing `help` and pressing Enter will
    open the help window.<br>
-   Some example commands you can try:
-
-    * `list` : Lists all contacts.
-
-    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/employee` : Adds an employee named `John Doe` to the Address Book.
-
-    * `delete i/3` : Deletes the contact with ID 3 from NetConnect.
-
-    * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample contacts provided.
-
-    * `exit` : Exits the app.
 
 1. Refer to the [Features](#features) below for details of each command.
 
