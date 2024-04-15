@@ -1,7 +1,7 @@
 ---
   layout: default.md
-    title: "User Guide"
-    pageNav: 3
+  title: "User Guide"
+  pageNav: 3
 ---
 
 # NetConnect User Guide
@@ -16,27 +16,30 @@ If you relate to this problem we identified, then NetConnect might be just right
 <div style="page-break-after: always;"></div>
 
 # Table of Contents
-* [Quick start](#quick-start)
-* [Features](#features)
-    + [Viewing help : `help`](#help)
-    + [Adding a person: `add` ](#add)
-    + [Deleting a person : `delete`](#delete)
-    + [Listing all persons : `list`](#list)
-    + [Editing a person : `edit`](#edit)
-    + [Locating persons by name: `find`](#find)
-    + [Clearing all entries : `clear`](#clear)
-    + [Create Relations between Profiles : `relate`](#relate)
-    + [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
-    + [Show Relations Associated to a Person : `showrelated`](#showrelated)
-    + [Open on Last State](#open-on-last-state)
-    + [Export Current View to CSV File : `export`](#export)
-    + [Never Miss a Birthday!](#birthday)
-    + [Exiting the program : `exit`](#exit-program)
-    + [Saving the data](#saving-the-data)
-    + [Editing the data file](#editing-the-data-file)
-* [FAQ](#faq)
-* [Known issues](#known-issues)
-* [Command summary](#command-summary)
+- [NetConnect User Guide](#netconnect-user-guide)
+- [Table of Contents](#table-of-contents)
+- [Quick start](#quick-start)
+- [Features](#features)
+  - [Viewing help : `help`](#viewing-help--help)
+  - [Adding a person: `add`](#adding-a-person-add)
+  - [Deleting a person : `delete`](#deleting-a-person--delete)
+  - [Listing all contacts : `list`](#listing-all-contacts--list)
+  - [Editing a person : `edit`](#editing-a-person--edit)
+  - [Locating Contacts : `find`](#locating-contacts--find)
+  - [Clearing all entries : `clear`](#clearing-all-entries--clear)
+  - [Create Relations between Profiles : `relate`](#create-relations-between-profiles--relate)
+  - [Remove Relations between Profiles : `unrelate`](#remove-relations-between-profiles--unrelate)
+  - [Show Relations Associated to a Person : `showrelated`](#show-relations-associated-to-a-person--showrelated)
+  - [Open on Last State](#open-on-last-state)
+  - [Export view to CSV File : `export`](#export-view-to-csv-file--export)
+  - [Exiting the program : `exit`](#exiting-the-program--exit)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [Future Implementations](#future-implementations)
+  - [Truncate text in GUI](#truncate-text-in-gui)
+- [FAQ](#faq)
+- [Known issues](#known-issues)
+- [Command summary](#command-summary)
 
 # Quick start
 
@@ -61,8 +64,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 
     * `delete i/3` : Deletes the contact with ID 3 from NetConnect.
 
-    * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample
-      contacts provided.
+    * `clear` : Deletes all contacts. (We caution against doing this until you have fully experimented with the sample contacts provided.
 
     * `exit` : Exits the app.
 
@@ -77,7 +79,7 @@ If you relate to this problem we identified, then NetConnect might be just right
 **Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
@@ -100,9 +102,9 @@ If you relate to this problem we identified, then NetConnect might be just right
 
 Shows a message explaining how to access the help page.
 
-![help message](images/helpMessage.png)
-
 Format: `help`
+
+![help message](images/helpMessage.png)
 
 </section>
 
@@ -113,42 +115,45 @@ Format: `help`
 
 Adds a person (Client, Supplier or Employee) to the address book. Note that each role (eg. Client, Supplier, Employee) has its own specific set of fields that can be added.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role)
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [r/remark] [t/TAG]…​` (other fields specific to the role)
 
-Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 role/client t/friend`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
-* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
+**Client:**
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/Client [r/remark] [t/TAG]... [pref/PREFERENCES] [prod/PRODUCT]...`
+* Example: `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
 
-Examples (Employee):
-* Format: `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2]`
-* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
+**Employee:**
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/Employee [r/remark] [t/TAG]... [dept/DEPARTMENT] [job/JOBTITLE] [skills/SKILL]...`
+* Example: `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
 
-Examples (Client):
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`
-* `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
+**Supplier:**
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/Supplier  [r/remark] [t/TAG]... [tos/TERMS OF SERVICE] [prod/PRODUCT]...`
+* Example: `add n/Fiona Kunz p/94824272 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
 
-Examples (Supplier):
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`
-* `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
+![Add Command Result](images/addExample.png)
 
-**Info:** NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
+<div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
+<Strong>Info:</Strong> NetConnect checks for unique profiles by its NAME, PHONE NUMBER and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
+</div>
+<br>
+
+</section id="fieldsConstraints"> </section>
 
 **Constraints:**
-Constraints for each field. Here are the constraints for each field in the application:
+Here are the constraints for each field in the application:
 
 * `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
 * `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
 * `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
 * `ADDRESS`: Addresses can take any format, and it should not be blank.
 * `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
-* `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
-* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `JOB`: Job titles should only contain alphanumeric characters and spaces, and it should not be blank.
-* `SKILLS`: Skills should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PREFERENCES`: Preferences can take any format, and it should not be blank.
-* `TERMS OF SERVICE`: Terms of service can take any format, and it should not be blank.
-* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces, and it should not be blank.
+* `REMARK`: Remark can take any format.
+* `TAG`: Tags should only contain alphanumeric characters and spaces.
+* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces.
+* `JOB`: Job titles should only contain alphanumeric characters and spaces.
+* `SKILLS`: Skills should only contain alphanumeric characters and spaces.
+* `PREFERENCES`: Preferences can take any format.
+* `TERMS OF SERVICE`: Terms of service can take any format.
+* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces.
 
 </section>
 
@@ -161,25 +166,33 @@ Deletes the specified person from the address book.
 Format: `delete [n/NAME] [i/ID]`
 
 * Deletes the person with the specified `NAME` or `ID`.
-* If there are more than one person with the specified `NAME`, `ID` has to be used.
+* If there are more than one person with the same specified `NAME`, `ID` has to be used.
 * `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
 * Full name must be provided for `NAME`.
 
 Examples:
+* `delete n/Benson Mayer` deletes the person with the name Benson Mayer (if no one else have the same name).
 * `delete i/2` deletes the person with an ID of 2 in the address book.
-* `delete n/John Doe` deletes the person with the name John Doe (if no one else have the same name).
+![Add Command Result](images/deleteExample.png)
 
-**Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+
+![Delete Warning](images/deletewarning.png)
+</div>
+
 </section>
 
 <section id="list">
 
-## Listing all persons : `list`
+## Listing all contacts : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all contacts in the address book.
 
 Format: `list`
+![list](images/list.png)
+
 </section>
 
 <section id="edit">
@@ -188,41 +201,29 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​` (other fields specific to the role)
+Format: `edit i/ID [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [r/remark] [t/TAG]…​` (other fields specific to the role)
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
-* At least one of the optional fields must be provided.
+* At least one of the optional fields `[..]` must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
-* You cannot edit a field that is invalid to the current person type.
+* When editing multiple-value fields, all existing values of that field will be removed and replaced with the new values, i.e., adding tags, products, skills is not cumulative.
+* You can remove the value of the optional fields by typing the respective field flag without specifying any value. For example, `edit i/6 t/` will clear all the tags in contact ID 6.
+* You cannot edit a field that is invalid for the current person type
+
 
 Examples:
-* `edit i/1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the person with ID of 1 to be `91234567` and `johndoe@example.com` respectively.
+* `edit i/4 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the person with ID of 1 to be `91234567` and `johndoe@example.com` respectively.
+![EditResultExample](images/editExample.png)
 * `edit i/2 n/Betsy Crower t/` Edits the name of the person with ID of 2 to be `Betsy Crower` and clears all existing tags.
 
-**Constraints:**
-Constraints for each field. Here are the constraints for each field in the application:
-
-* `NAME`: Names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PHONE_NUMBER`: Phone numbers should only contain numbers, and it should be at least 3 digits long to accommodate staff extensions.
-* `EMAIL`: Emails should be of the format `local-part@domain`. NetConnect does not check for the validity of the domain part, hence extra attention should be put into ensuring no typos are present in the domain part of the email.
-* `ADDRESS`: Addresses can take any format, and it should not be blank.
-* `ROLE`: Roles can only be `client`, `supplier`, or `employee`.
-* `TAG`: Tags should only contain alphanumeric characters and spaces, and it should not be blank.
-* `DEPARTMENT`: Department names should only contain alphanumeric characters and spaces, and it should not be blank.
-* `JOB`: Job titles should only contain alphanumeric characters and spaces, and it should not be blank.
-* `SKILLS`: Skills should only contain alphanumeric characters and spaces, and it should not be blank.
-* `PREFERENCES`: Preferences can take any format, and it should not be blank.
-* `TERMS OF SERVICE`: Terms of service can take any format, and it should not be blank.
-* `PRODUCTS`: Product names should only contain alphanumeric characters and spaces, and it should not be blank.
+Please refer to the [constraints](#fieldsConstraints) for valid input.
 
 </section>
 
 <section id="find">
 
-## Locating persons by name: `find`
+## Locating Contacts : `find`
 
 Finds persons whose information matches any of the specified parameters. You can find persons by names, phone numbers, tags, roles, and remarks. To search via different fields, you can stack multiple `find`-type commands to narrow down your search.
 
@@ -230,7 +231,7 @@ Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMAR
 
 * Only one type of field is allowed for each `find` command.
 * Multiple parameters of the same field can be provided, showing persons who match any of the field in that command, e.g. `find n/alex n/david` will show all persons with either `alex` or `david` in their names.
-* `list` is required to remove the stacked filters.
+* __`list` is required to remove the stacked filters.__
 * Searches are case-insensitive, e.g. `hans` will match `Hans`.
 * Partial matches are allowed for names, e.g. `Ha` will match `Hans`.
 * Find by remark requires full word match that is contained in the remark sentence, e.g. `find r/marketing` will match `r/marketing IC`, `find r/has dog` will match `r/he has a dog`, `find r/market` will **not** match `r/marketing`.
@@ -241,9 +242,8 @@ Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMAR
 
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
-
-* `find n/alex david` returns `Alex Yeoh`, `David Li`.<br>
-
+* `find n/megan n/roy` returns `Megan Lim`, `Megan Ho`,`Ng Royton`, `Roy Chua`.<br>
+![result for 'find megan roy'](images/findMeganRoy.png)
 
 Find by tag example:
 * `find t/friends` returns all persons who have the tag `friends`.
@@ -261,14 +261,12 @@ Find by remark example:
 * `find r/dog` returns all persons who have the remark `has a dog`.
 * `find r/a has` returns all persons who have the remark `has a dog`.
 
-Stacking find by name and tag example
-* `find n/John` returns all persons who have the name `John`.
+Stacking find by role and tag example
+* `find role/Employee` returns all persons who have the role `Employee`.
+  
+* Followed by `find t/friends`, returns all persons who are `Employee` and have the tag `friends`.
 
-[insert screenshot]
-
-* Followed by `find t/friends`, returns all persons who have the name `John` and the tag `friends`.
-
-[insert screenshot]
+![result for 'find employee friends'](images/stackEmployeeFriends.png)
 
 </section>
 
@@ -280,7 +278,12 @@ Clears all entries from the address book.
 
 Format: `clear`
 
-**Warnings:** Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+
+![result for 'clear warning'](images/ClearWarning.png)
+</section>
+
 
 </section>
 
@@ -292,7 +295,9 @@ Creates a relation between two profiles in the address book.
 
 Format: `relate i/ID i/ID`
 
-Example: `relate i/1 i/2` creates a relation between the profiles with ID of 1 and 2.
+Example: `relate i/1 i/3` creates a relation between the profiles with ID of 1 and 3.
+
+![result for 'relate result'](images/relateResult.png)
 
 </section>
 
@@ -304,7 +309,10 @@ Removes a relation between two profiles in the address book.
 
 Format: `unrelate i/ID i/ID`
 
-Example: `unrelate i/1 i/2` removes a relation between the profiles with ID of 1 and 2.
+Example: `unrelate i/1 i/23` removes a relation between the profiles with ID of 1 and 3.
+
+![result for 'unrelate result'](images/unrelateResult.png)
+
 
 </section>
 
@@ -318,7 +326,11 @@ Format: `showrelated i/ID`
 
 Example: `showrelated i/1` shows all relations between the profile with ID 1 and all other contacts.
 
-**Info:** If there are no persons related to the provided ID, the interface will show `0 persons listed`.
+<div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
+<Strong>Info:</Strong> If there are no persons related to the provided ID, the interface will show "0 persons listed".
+</div>
+
+![result for 'showrelated result'](images/showrelatedResult.png)
 
 </section>
 
@@ -331,24 +343,39 @@ With every change to the command input, NetConnect saves and updates the command
 
 <section id="export">
 
-## Export Current View to CSV File : `export`
+## Export view to CSV File : `export`
 Retrieve information on a group of profiles at once with this function! This can be useful for consolidating all the emails or contact number at once, or to share information with third parties.
 
 **To export _all_ profiles in the address book to a CSV file:**
 
+Format
 Step 1: `list`
-
-Step 2: `export`
+Step 2: `export [filename]`
 
 * The `list` command in the first step is to pull all profiles into the current view.
+* After entering `export`, you can choose the filename. The filename must end with `.csv`. If you do not specify a filename, it will be automatically named as `contact.csv`
+
+Example
+Step 1: `list` first returns the list of all contacts
+Step 2: `export` a CSV file containing all contacts to a folder on your laptop that is located within the same directory as the NetConnect application. 
+  
+![result for 'export all'](images/exportall.png)
 
 **To export a _specific_ group of profiles to a CSV file:**
 
-Step 1: `find [KEYWORD]` or any other function that filters the profiles.
-
-Step 2: `export`
+Format
+Step 1: `find [keyword]` 
+Step 2: `export [filename]`
 
 * The first step is to filter the profiles you want to export into the current view.
+
+Example
+Step 1: `find role/Client`  
+![result for 'CSV file'](images/findClient.png)
+Step 2: `export client.csv` 
+![result for 'export current view'](images/exportview.png)
+export a CSV file named clients.csv containing all client contacts to a folder on your laptop located within the same directory as the NetConnect application.
+![result for 'CSV file'](images/csvfile.png)
 
 </section>
 
@@ -422,7 +449,7 @@ Current implementation of NetConnect GUI is able to accommodate input of approxi
 | **Help**                 | `help`                                                                                                                                                                                              | `help`                                                                                                                                                                                                                     |
 | **Add (Employee)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Employee [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL1] [skills/SKILL2]  `                                                   | `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java` |
 | **Add (Client)**         | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Client [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                                                                     | `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`                                                                      |
-| **Add (Supplier)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Supplier [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                                                               | `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`                                                                              |
+| **Add (Supplier)**       | `add n/NAME p/PHONE e/EMAIL a/ADDRESS role/Supplier [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`                                                                               | `add n/Fiona Kunz p/94824272 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`                                                                              |
 | **List**                 | `list`                                                                                                                                                                                              | `list`                                                                                                                                                                                                                     |
 | **Delete**               | `delete [i/ID] [n/NAME]`                                                                                                                                                                            | `delete i/123`, `delete n/John Doe`                                                                                                                                                                                        |
 | **Edit**                 | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG]…​` (other fields specific to the role) | `edit i/123 n/James Lee e/jameslee@example.com`                                                                                                                                                                            |
