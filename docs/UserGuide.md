@@ -36,8 +36,7 @@ If you relate to this problem we identified, then NetConnect might be just right
   - [Exiting the program : `exit`](#exiting-the-program--exit)
   - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
-- [Future Implementations](#future-implementations)
-  - [Truncate text in GUI](#truncate-text-in-gui)
+- [Planned Enhancements](#planned-enhancements)
 - [FAQ](#faq)
 - [Known issues](#known-issues)
 - [Command summary](#command-summary)
@@ -168,12 +167,13 @@ Examples:
 * `delete i/2` deletes the person with an ID of 2 in the address book.
 ![Add Command Result](images/deleteExample.png)
 
-<div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
+<box type="warning">
+
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
 
 ![Delete Warning](images/deletewarning.png)
 
-</div>
+</box>
 
 </section>
 
