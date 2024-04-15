@@ -123,17 +123,19 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 role/supplier`
 * `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years prod/Laptop skills/Java`
 
-Examples (Employee):
-* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`
-* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager pref/Likes to work from home tos/2 years skills/Java`
-
 Examples (Client):
 * Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [pref/PREFERENCES] [prod/PRODUCT 1] [prod/PRODUCT 2]`
 * `add n/Benson Mayer p/87728933 e/mayerb@example.com a/311, Clementi Ave 2, #02-25 role/Client pref/Dairy-free prod/Sourdough bread prod/Raisin Bread`
 
+Examples (Employee):
+* Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [dept/DEPARTMENT] [job/JOB] [skills/SKILL 1, SKILL 2] [pref/PREFERENCES] [tos/TERMS OF SERVICE]`
+* `add n/Bob Ye p/8928732 e/boby@example.com a/Blk 11, Clementi Ave 1, #03-32 t/friends t/coreTeam r/requires follow up on pay raise role/employee dept/HR job/Manager skills/Java`
+
 Examples (Supplier):
 * Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS role/ROLE [t/TAG] [tos/TERMS OF SERVICE] [prod/PRODUCT 1] [prod/PRODUCT 2]`
 * `add n/Fiona Kunz p/9482427 e/lydia@example.com a/little tokyo role/Supplier tos/Delivery within 2 weeks prod/Office Supplies prod/Furniture`
+
+![Add Command Result](images/addExample.png)
 
 <div style="background-color: #C7DFED; padding: 10px; border: 1px solid #ccc;">
 <Strong>Info:</Strong> NetConnect checks for unique profiles by its NAME, PHONE and EMAIL. It does not allow you to create two profiles with identical name, phone number and email.
@@ -173,11 +175,14 @@ Format: `delete [n/NAME] [i/ID]`
 * Full name must be provided for `NAME`.
 
 Examples:
-* `delete i/2` deletes the person with an ID of 2 in the address book.
 * `delete n/John Doe` deletes the person with the name John Doe (if no one else have the same name).
+* `delete i/2` deletes the person with an ID of 2 in the address book.
+![Add Command Result](images/deleteExample.png)
 
 <div style="background-color: #ffdbdd; padding: 10px; border: 1px solid #ccc;">
 <strong>Warnings: </Strong> Due to the destructive nature of this action, NetConnect will require a confirmation from the user before it is executed.
+
+![Delete Warning](images/deletewarning.png)
 </div>
 
 </section>
@@ -189,6 +194,8 @@ Examples:
 Shows a list of all persons in the address book.
 
 Format: `list`
+![list](images/list.png)
+
 </section>
 
 <section id="edit">
@@ -201,14 +208,16 @@ Format: `edit i/ID [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [role/ROLE] [
 
 * Edits the person with the specified `ID`. `ID` refers to the unique identification number assigned to each person when first added to the list.
 * `ID` **must refer to a person that exist within NetConnect**.
-* At least one of the optional fields must be provided.
+* At least one of the optional fields [..] must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e. adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without specifying any tags after it.
-* You cannot edit a field that is invalid to the current person type.
+* When editing multiple-value fields, all existing values of that field will be removed and replaced with the new values, i.e., adding tags, products, skills is not cumulative.
+* You can remove the value of the optional fields by typing the respective field flag without specifying any value. For example, 'edit i/6 t/' will clear all the tags in contact ID 6.
+* You cannot edit a field that is invalid for the current person type
+
 
 Examples:
-* `edit i/1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the person with ID of 1 to be `91234567` and `johndoe@example.com` respectively.
+* `edit i/4 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the person with ID of 1 to be `91234567` and `johndoe@example.com` respectively.
+![EditResultExample](images/editExample.png)
 * `edit i/2 n/Betsy Crower t/` Edits the name of the person with ID of 2 to be `Betsy Crower` and clears all existing tags.
 
 **Constraints:**
@@ -250,8 +259,8 @@ Format: `find [n/NAME]... [t/TAG]... [p/PHONE_NUMBER]... [role/ROLE]... [r/REMAR
 
 Find by name example:
 * `find n/John` returns `john` and `John Doe`.
-* `find n/alex n/david` returns `Alex Yeoh`, `David Li`.<br>
-![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find n/megan n/roy` returns `Megan Lim`, `Megan Ho`,`Ng Royton`, `Roy Chua`.<br>
+![result for 'find alex david'](images/findMeganRoy.png)
 
 Find by tag example:
 * `find t/friends` returns all persons who have the tag `friends`.
@@ -269,14 +278,12 @@ Find by remark example:
 * `find r/dog` returns all persons who have the remark `has a dog`.
 * `find r/a has` returns all persons who have the remark `has a dog`.
 
-Stacking find by name and tag example
-* `find n/John` returns all persons who have the name `John`.
+Stacking find by role and tag example
+* `find role/Employee` returns all persons who have the role `Employee`.
+  
+* Followed by `find t/friends`, returns all persons who are `Employee` and have the tag `friends`.
 
-[insert screenshot]
-
-* Followed by `find t/friends`, returns all persons who have the name `John` and the tag `friends`.
-
-[insert screenshot]
+![result for 'find employee friends'](images/stackEmployeeFriends.png)
 
 </section>
 
