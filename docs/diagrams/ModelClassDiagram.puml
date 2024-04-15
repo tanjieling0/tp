@@ -12,6 +12,8 @@ Class NetConnect
 Class ModelManager
 Class UserPrefs
 
+package "Filter classes" as Filter {}
+
 Class UniquePersonList
 Class Person
 Class Address
@@ -54,6 +56,7 @@ Model .right.> ReadOnlyUserPrefs
 Model .left.> ReadOnlyNetConnect
 ModelManager -left-> "1" NetConnect
 ModelManager -right-> "1" UserPrefs
+ModelManager --> "1" Filter
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 NetConnect *--> "1" UniquePersonList

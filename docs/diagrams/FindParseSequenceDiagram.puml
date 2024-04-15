@@ -1,0 +1,66 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":NetConnectParser" as NetConnectParser LOGIC_COLOR
+participant ":FindCommandParser" as FindCommandParser LOGIC_COLOR
+participant "f:FindCommand" as FindCommand LOGIC_COLOR
+participant "FindCommandParser" as StaticParser << class >> LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "pred:NameContainsKeywordsPredicate" as NameContainsKeywordsPredicate LOGIC_COLOR
+end box
+
+[-> LogicManager : execute("find n/John")
+activate LogicManager
+
+LogicManager -> NetConnectParser : parseCommand("find n/John")
+activate NetConnectParser
+
+create FindCommandParser
+NetConnectParser -> FindCommandParser
+activate FindCommandParser
+
+FindCommandParser --> NetConnectParser
+deactivate FindCommandParser
+
+NetConnectParser -> FindCommandParser : parse("n/John")
+activate FindCommandParser
+
+FindCommandParser -> StaticParser : createPredicate(...)
+activate StaticParser
+
+create NameContainsKeywordsPredicate
+StaticParser -> NameContainsKeywordsPredicate :
+activate NameContainsKeywordsPredicate
+
+NameContainsKeywordsPredicate --> StaticParser :
+deactivate NameContainsKeywordsPredicate
+
+StaticParser --> FindCommandParser : pred
+deactivate StaticParser
+
+create FindCommand
+FindCommandParser --> FindCommand : FindCommand(pred)
+activate FindCommand
+
+FindCommand --> FindCommandParser
+deactivate FindCommand
+
+FindCommandParser --> NetConnectParser : f
+deactivate FindCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+FindCommandParser -[hidden]-> NetConnectParser
+destroy FindCommandParser
+
+NetConnectParser --> LogicManager : f
+deactivate NetConnectParser
+
+ref over LogicManager : execute find command
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

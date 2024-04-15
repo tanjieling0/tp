@@ -1,0 +1,42 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+mainframe **sd** execute find command
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant "f:FindCommand" as FindCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+participant ":Filter" as Filter MODEL_COLOR
+end box
+
+LogicManager -> FindCommand : execute(m)
+activate FindCommand
+
+FindCommand -> Model : stackFilter(pred)
+activate Model
+
+Model -> Filter : add(pred)
+activate Filter
+
+Filter -> Model
+deactivate Filter
+
+Model --> FindCommand
+deactivate Model
+
+create CommandResult
+FindCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> FindCommand
+deactivate CommandResult
+
+FindCommand --> LogicManager : r
+deactivate FindCommand
+@enduml
