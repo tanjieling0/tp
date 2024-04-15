@@ -1,6 +1,9 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
+import java.util.List;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -23,18 +26,17 @@ public class RelateCommand extends Command {
             + "Parameters: i/ID_1 i/ID_2\n"
             + "Example: " + COMMAND_WORD + " i/4 i/12";
 
-    private final IdContainsDigitsPredicate predicate;
-
     private final Id firstPersonId;
     private final Id secondPersonId;
 
     /**
      * Creates a RelateCommand to relate the two specified {@code IdContainsDigitsPredicate}
      */
-    public RelateCommand(IdContainsDigitsPredicate predicate) {
-        this.predicate = predicate;
-        this.firstPersonId = Id.generateTempId(predicate.getFirstId());
-        this.secondPersonId = Id.generateTempId(predicate.getSecondId());
+    public RelateCommand(Id firstPersonId, Id secondPersonId) {
+        requireAllNonNull(firstPersonId, secondPersonId);
+
+        this.firstPersonId = firstPersonId;
+        this.secondPersonId = secondPersonId;
     }
 
     @Override
@@ -53,14 +55,12 @@ public class RelateCommand extends Command {
         }
 
         IdTuple tuple = new IdTuple(firstPersonId, secondPersonId);
-
         if (model.hasRelatedIdTuple(tuple)) {
             throw new CommandException(Messages.MESSAGE_RELATION_EXISTS);
-        } else {
-            model.addRelatedIdTuple(tuple);
         }
 
-        model.updateFilteredList(predicate);
+        model.addRelatedIdTuple(tuple);
+        model.updateFilteredList(new IdContainsDigitsPredicate(List.of(firstPersonId.value, secondPersonId.value)));
 
         return new CommandResult(
             String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
@@ -78,13 +78,17 @@ public class RelateCommand extends Command {
         }
 
         RelateCommand otherFindNumCommand = (RelateCommand) other;
-        return predicate.equals(otherFindNumCommand.predicate);
+        return (this.firstPersonId.equals(otherFindNumCommand.firstPersonId)
+                && this.secondPersonId.equals(otherFindNumCommand.secondPersonId))
+                || (this.firstPersonId.equals(otherFindNumCommand.secondPersonId)
+                && this.secondPersonId.equals(otherFindNumCommand.firstPersonId));
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("predicate", predicate)
+                .add("first id", firstPersonId)
+                .add("second id", secondPersonId)
                 .toString();
     }
 }
