@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.ParserUtil.isContainSlash;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import seedu.address.model.person.filter.RemarkContainsKeywordsPredicate;
 import seedu.address.model.person.filter.RoleMatchesKeywordsPredicate;
 import seedu.address.model.person.filter.TagsContainsKeywordsPredicate;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.util.TestCommandFormatUtil;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -53,18 +55,27 @@ public class FindCommandParser implements Parser<FindCommand> {
             ArgumentMultimap argMultimap) throws ParseException {
         if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             List<String> names = argMultimap.getAllValues(PREFIX_NAME);
+            if (isContainSlash(names)) {
+                throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+            }
             if (!names.stream().allMatch(Name::isValidName)) {
                 throw new ParseException(Name.MESSAGE_CONSTRAINTS);
             }
             return new NameContainsKeywordsPredicate(names);
         } else if (argMultimap.getValue(PREFIX_TAG).isPresent()) {
             List<String> tags = argMultimap.getAllValues(PREFIX_TAG);
+            if (isContainSlash(tags)) {
+                throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+            }
             if (!tags.stream().allMatch(Tag::isValidTagName)) {
                 throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
             }
             return new TagsContainsKeywordsPredicate(tags);
         } else if (argMultimap.getValue(PREFIX_ROLE).isPresent()) {
             List<String> roles = argMultimap.getAllValues(PREFIX_ROLE);
+            if (isContainSlash(roles)) {
+                throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+            }
             if (!roles.stream().allMatch(Person::isValidRole)) {
                 throw new ParseException(Person.MESSAGE_ROLE_CONSTRAINTS);
             }
@@ -74,6 +85,9 @@ public class FindCommandParser implements Parser<FindCommand> {
             return new RemarkContainsKeywordsPredicate(remarks);
         } else if (argMultimap.getValue(PREFIX_PHONE).isPresent()) {
             List<String> phones = argMultimap.getAllValues(PREFIX_PHONE);
+            if (isContainSlash(phones)) {
+                throw new ParseException(TestCommandFormatUtil.MESSAGE_CONSTRAINTS);
+            }
             if (!phones.stream().allMatch(Phone::isValidPhone)) {
                 throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
             }

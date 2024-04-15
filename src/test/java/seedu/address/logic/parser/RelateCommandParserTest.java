@@ -8,29 +8,29 @@ import static seedu.address.testutil.TypicalIds.ID_SECOND_PERSON;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.UnrelateCommand;
+import seedu.address.logic.commands.RelateCommand;
 
-public class UnrelateCommandParserTest {
+public class RelateCommandParserTest {
 
-    private final UnrelateCommandParser parser = new UnrelateCommandParser();
+    private final RelateCommandParser parser = new RelateCommandParser();
 
     @Test
-    public void parse_validArgs_returnsUnrelateCommand() {
+    public void parse_validArgs_returnsRelateCommand() {
         assertParseSuccess(parser, " i/1 i/2",
-                new UnrelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON));
+                new RelateCommand(ID_FIRST_PERSON, ID_SECOND_PERSON));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, " ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                UnrelateCommand.MESSAGE_USAGE));
+                RelateCommand.MESSAGE_USAGE));
         assertParseFailure(parser, " i/1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                UnrelateCommand.MESSAGE_USAGE));
+                RelateCommand.MESSAGE_USAGE));
         assertParseFailure(parser, " i/1 i/2 i/3",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         assertParseFailure(parser, " i/1 i/2 i/3 i/4",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
         assertParseFailure(parser, " i/1 i/2 i/3 i/4 i/5",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, UnrelateCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, RelateCommand.MESSAGE_USAGE));
     }
 }
