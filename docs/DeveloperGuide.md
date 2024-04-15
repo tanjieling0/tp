@@ -319,8 +319,8 @@ Recalling that we also have a message box to inform the result of the actions ta
     * Cons: JSON files can be difficult to amend and maintain.
 
 * **Alternative 2 (previously implemented)**: Store the Related List as a .txt file.
-    * Pros: Easier to edit, maintain, and implement.
-    * Cons: Not secure, and save and load implementation is exposed outside the NetConnect model.
+    * Pros: Easier to edit, and implement.
+    * Cons: Harder to maintain as there will be multiple files to be used by our application. Save and load implementation is also exposed outside the NetConnect model.
 
 * **Alternative 3**: Store Relations as another field in every person. A relate command would add the opposing contact to both persons provided. 
     * Pros: Easy to understand as a user. Querying of contacts will also be fast as the relations are stored within the same contact. 
@@ -576,10 +576,6 @@ The following activity diagram summarizes what happens when a user executes a ne
     * Cons: We must ensure that the implementation of each individual command are correct.
 
 _{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
 
 --------------------------------------------------------------------------------------------------------------------
 

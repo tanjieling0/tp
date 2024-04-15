@@ -9,10 +9,10 @@ start
 :User executes relate command;
 
 if () then ([else])
-    :Display error message;
+    :Show error message;
 else ([two numeric IDs provided])
     if () then ([else])
-        :Display error message;
+        :Show error message;
     else ([Both IDs exist])
         :Relate both profiles to each other;
         :Display both profiles that are related;
