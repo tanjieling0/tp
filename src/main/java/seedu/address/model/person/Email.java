@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
+import static seedu.address.model.util.TestCommandFormatUtil.checkArgumentContainSlash;
 
 /**
  * Represents a Person's email in the address book.
@@ -40,6 +41,7 @@ public class Email {
      */
     public Email(String email) {
         requireNonNull(email);
+        checkArgumentContainSlash(email);
         checkArgument(isValidEmail(email), MESSAGE_CONSTRAINTS);
         value = email;
     }
