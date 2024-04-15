@@ -10,9 +10,6 @@
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
-## **Acknowledgements**
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
 
@@ -133,7 +130,6 @@ The `Model` component,
 
 </box>
 
-
 ### Storage component
 
 **API** : [`Storage.java`](https://github.com/se-edu/netconnect-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
@@ -202,6 +198,14 @@ The sequence diagram below illustrates the creation and execution of a `CsvExpor
 
 The person can be categorized into three roles: `Client`, `Supplier`, and `Employee`. These classes extend the base `Person` class and encapsulate various role-specific functionalities and attributes, improving the application's ability to cater to a diverse range of user interactions.
 
+The `Person` class is extended by three other classes, each with their own additional attributes:
+
+* `Client` Subclass contains `products` attribute of type `Products`, representing the products associated with the client, and contains `preferences` as a `String`, detailing client-specific preferences.
+
+* `Supplier` Subclass contains `products` attribute of type `Products`, which lists the items supplied, and holds `termsOfService` of type `TermsOfService`, outlining the agreement with the supplier.
+
+* `Employee` Subclass includes a `department` attribute of type `Department`, signifying the department the employee belongs to, has a `jobTitle` attribute of type `JobTitle`, representing the employee's official title, and features `skills` of type `Skills`, indicating the competencies of the employee.
+
 #### Overview
 
 * **Client**: Represents a customer, associated with products and preferences.
@@ -240,7 +244,7 @@ The person can be categorized into three roles: `Client`, `Supplier`, and `Emplo
 
 * **Role-Specific UI Elements**: The decision to dynamically adjust the UI based on the person's role enhances the overall user experience by providing context-sensitive information.
 
-<puml src="diagrams/ModelClassDiagram.puml" alt="ModelClassDiagram" />
+<puml src="diagrams/PersonClassDiagram.puml" width="650" alt="PersonClass"/>
 
 ### Save state feature
 
