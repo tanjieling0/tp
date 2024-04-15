@@ -296,6 +296,36 @@ Step 2. The user changes the input in the command box. The `TextStateStorage#sav
   * Pros: Reduces the number of writes to the storage file, reducing performance overhead.
   * Cons: May not save the state of the command box in case of a crash.
 
+### Relate feature
+The `relate` command allows users to relate two persons via their unique `ID`. Exceptional behavior:
+* If the `ID` provided by user does not exist, an error message is displayed.
+* If the `ID` provided is not an integer value that is more than 0, an error message is displayed.
+
+<puml src="diagrams/RelateActivityDiagram.puml" alt="RelateActivityDiagram" />
+
+#### Current implementation
+Given a command `relate i/1 i/2`, the `NetConnectParser` recognises the `relate` command and first instantiates a `RelateCommandParser` object. It then passes the command string into `RelateCommandParser#parse(...)`, where the input `i/1` and `i/2` is validated for its format. Following which, `RelateCommandParser` instantiates a `RelateCommand` object.
+
+The`RelateCommand` object extends the `Command` interface, and hence contains a method called `execute(...)`, which takes in a `model`. A model can be thought of as a container for the application's data, and it also can control the exact contact list that the user will see. In the `execute(...)` command, we validate that NetConnect has both IDs `1` and `2` and, does not already have a relation. We add it to our RelatedList storage otherwise. To change our view and to ratify the successful command, we will have to change the view the user sees by instantiate a predicate called `IdContainsDigitsPredicate`. We will then require the `model#stackFilters(predicate)` method in the `model` object to update the filtered list of persons to only include persons related to the person with ID of `1` and `2`.
+
+Recalling that we also have a message box to inform the result of the actions taken (in prose form), the `RelateCommand#execute(...)` method will also return a `CommandResult` object, which contains the summary of the number of people listed.
+
+#### Design considerations
+
+**Aspect: How to store relations between contacts**
+
+* **Alternative 1 (current choice)**: Store the Related List within the NetConnect model as a JSON file. Each time a relate command is done, we will just have to save the NetConnect model.
+    * Pros: This approach requires a single command for saving and loading and does not violate encapsulation of classes. Saving and loading does not have to be exposed to wider classes and done within the NetConnect model interface. 
+    * Cons: JSON files can be difficult to amend and maintain.
+
+* **Alternative 2 (previously implemented)**: Store the Related List as a .txt file.
+    * Pros: Easier to edit, maintain, and implement.
+    * Cons: Not secure, and save and load implementation is exposed outside the NetConnect model.
+
+* **Alternative 3**: Store Relations as another field in every person. A relate command would add the opposing contact to both persons provided. 
+    * Pros: Easy to understand as a user. Querying of contacts will also be fast as the relations are stored within the same contact. 
+    * Cons: Unnecessary to user, and complicates UI. Also has a higher potential for bugs given that the entire contact list has to be searched and updated each time a relation is added and removed. 
+
 ### ShowRelated feature
 The `showrelated` command allows users to view all persons related to a specific person via their unique `ID`. Exceptional behavior:
 * If there are multiple `ID` provided by user, an error message is displayed.
